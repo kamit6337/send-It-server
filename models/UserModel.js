@@ -9,6 +9,12 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
     email: {
       type: String,
       required: true,
@@ -22,14 +28,38 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      default: null,
+      default: "",
       select: false,
       trim: true,
     },
     photo: {
       type: String,
       required: [true, "Please provide pic"],
-      default: null,
+      trim: true,
+    },
+    bg_photo: {
+      type: String,
+      default: "",
+      select: false,
+      trim: true,
+    },
+    bio: {
+      type: String,
+      default: "",
+      select: false,
+      trim: true,
+    },
+    location: {
+      type: String,
+      default: "",
+      select: false,
+      trim: true,
+    },
+    website: {
+      type: String,
+      default: "",
+      select: false,
+      trim: true,
     },
     OAuthId: {
       type: String,
@@ -51,6 +81,9 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+userSchema.index({ username: 1 });
+userSchema.index({ email: 1 });
 
 userSchema.methods.checkPassword = function (given_password) {
   //   WORK: CHECK IF USER PASSWORD DOES NOT MATCH WITH HASH PASSWORD

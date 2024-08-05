@@ -1,11 +1,14 @@
 import * as Sentry from "@sentry/node";
 import express from "express";
 import authRouter from "./routes/authRoutes.js";
+import userRouter from "./routes/userRoutes.js";
+import postRouter from "./routes/postRoutes.js";
+import replyRouter from "./routes/replyRoutes.js";
 import "./utils/passport.js";
 import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 import HandleGlobalError from "./utils/HandleGlobalError.js";
 import globalMiddlewares from "./middlewares/globalMiddlewares.js";
-import rateLimit from "express-rate-limit";
+import protectRoute from "./middlewares/protectRoute.js";
 
 const app = express();
 
@@ -16,18 +19,11 @@ app.get("/", (req, res) => {
 // NOTE: GLOBAL MIDDLEWARES
 globalMiddlewares(app);
 
-const limiter = rateLimit({
-  limit: 100, // 100 request
-  windowMs: 60 * 60 * 1000, // one hour
-  message: "Request goes beyound 100. try after one hour",
-});
-
 // NOTE: DIFFERENT ROUTES
 app.use("/auth", authRouter);
-
-app.use(limiter);
-
-// custom-routes
+app.use("/user", protectRoute, userRouter);
+app.use("/post", protectRoute, postRouter);
+app.use("/reply", protectRoute, replyRouter);
 
 // NOTE: The error handler must be registered before any other error middleware and after all controllers
 Sentry.setupExpressErrorHandler(app);

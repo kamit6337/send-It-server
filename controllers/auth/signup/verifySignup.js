@@ -6,6 +6,7 @@ import {
   encrypt,
 } from "../../../utils/encryption/encryptAndDecrypt.js";
 import HandleGlobalError from "../../../utils/HandleGlobalError.js";
+import createUserName from "../../../utils/javaScript/createUserName.js";
 import Req from "../../../utils/Req.js";
 
 const verifySignup = catchAsyncError(async (req, res, next) => {
@@ -35,8 +36,11 @@ const verifySignup = catchAsyncError(async (req, res, next) => {
 
   const profilePicUrl = `https://ui-avatars.com/api/?background=random&name=${name}&size=128&bold=true`;
 
+  const userName = createUserName(name);
+
   const createUser = await User.create({
     name,
+    username: userName,
     email,
     password,
     photo: profilePicUrl,
@@ -57,9 +61,7 @@ const verifySignup = catchAsyncError(async (req, res, next) => {
 
   res.cookie("_use", token, cookieOptions);
 
-  res.status(200).json({
-    message: "SignUp Successfully",
-  });
+  res.redirect(`${environment.CLIENT_URL}/flow?username=${userName}`);
 });
 
 export default verifySignup;

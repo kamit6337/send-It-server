@@ -6,8 +6,6 @@ import connectToDB from "./utils/connectToDB.js";
 
 const PORT = environment.PORT || 8080;
 
-
-
 (async () => {
   try {
     console.log("Connecting to MongoDB...");
@@ -28,6 +26,3 @@ const PORT = environment.PORT || 8080;
     });
   }
 })();
-
-// Export the app instance for Vercel
-export default app;

@@ -20,8 +20,10 @@ const getUserProfile = catchAsyncError(async (req, res, next) => {
   const replyCount = Reply.countDocuments({ user: findUser._id.toString() });
   const followerCount = Follower.countDocuments({
     user: findUser._id.toString(),
+    follower: { $ne: findUser._id.toString() },
   });
   const followingCount = Follower.countDocuments({
+    user: { $ne: findUser._id.toString() },
     follower: findUser._id.toString(),
   });
 

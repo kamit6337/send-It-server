@@ -1,5 +1,6 @@
 import Follower from "../../../models/FollowerModel.js";
 import catchAsyncError from "../../../utils/catchAsyncError.js";
+import ObjectID from "../../../utils/ObjectID.js";
 
 const getUserFollowingPost = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
@@ -10,7 +11,7 @@ const getUserFollowingPost = catchAsyncError(async (req, res, next) => {
   const skip = (page - 1) * limit;
 
   const following = await Follower.aggregate([
-    { $match: { follower: userId } },
+    { $match: { follower: ObjectID(userId) } },
     {
       $lookup: {
         from: "posts",
@@ -49,12 +50,10 @@ const getUserFollowingPost = catchAsyncError(async (req, res, next) => {
     },
   ]);
 
-  console.log("following", following);
-
   res.json({
     message: "user following posts",
     page,
-    data: following.map(({ posts }) => posts),
+    data: following.map((obj) => obj.posts),
   });
 });
 

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import validation from "validator";
 import bcrypt from "bcryptjs";
+import Follower from "./FollowerModel.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -100,6 +101,15 @@ userSchema.pre("save", function (next) {
   if (this.password) {
     this.password = bcrypt.hashSync(this.password, 12);
   }
+
+  next();
+});
+
+userSchema.pre("save", async function (next) {
+  await Follower.create({
+    user: this._id,
+    follower: this._id,
+  });
 
   next();
 });

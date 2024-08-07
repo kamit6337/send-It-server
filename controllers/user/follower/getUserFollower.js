@@ -11,6 +11,7 @@ const getUserFollower = catchAsyncError(async (req, res, next) => {
 
   const followers = await Follower.find({
     user: userId,
+    follower: { $ne: userId },
   })
     .skip(skip)
     .limit(limit)

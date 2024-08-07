@@ -11,11 +11,11 @@ const getPostLike = catchAsyncError(async (req, res, next) => {
     return next(new HandleGlobalError("PostId is required", 404));
   }
 
-  const isLiked = await Like.exists({ user: userId, post: postId });
+  const liked = await Like.findOne({ user: userId, post: postId }).lean();
 
   res.json({
     message: "check whether post is liked by user or not",
-    data: !!isLiked,
+    data: liked,
   });
 });
 

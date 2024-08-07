@@ -4,6 +4,7 @@ import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import postRouter from "./routes/postRoutes.js";
 import replyRouter from "./routes/replyRoutes.js";
+import fileRouter from "./routes/fileRoutes.js";
 import "./utils/passport.js";
 import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 import HandleGlobalError from "./utils/HandleGlobalError.js";
@@ -21,6 +22,7 @@ globalMiddlewares(app);
 
 // NOTE: DIFFERENT ROUTES
 app.use("/auth", authRouter);
+app.use("/file", protectRoute, fileRouter);
 app.use("/user", protectRoute, userRouter);
 app.use("/post", protectRoute, postRouter);
 app.use("/reply", protectRoute, replyRouter);

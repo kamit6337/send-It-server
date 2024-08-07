@@ -10,6 +10,7 @@ const getUserFollowing = catchAsyncError(async (req, res, next) => {
   const skip = (page - 1) * limit;
 
   const following = await Follower.find({
+    user: { $ne: userId },
     follower: userId,
   })
     .skip(skip)

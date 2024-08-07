@@ -4,6 +4,7 @@ import HandleGlobalError from "../../utils/HandleGlobalError.js";
 
 const createPost = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
+  const user = req.user;
 
   const { message = "", media = "" } = req.body;
 
@@ -17,9 +18,22 @@ const createPost = catchAsyncError(async (req, res, next) => {
     media,
   });
 
+  const obj = {
+    _id: post._id,
+    message: post.message,
+    media: post.media,
+    user: {
+      username: user.username,
+      name: user.name,
+      photo: user.photo,
+    },
+    createdAt: post.createdAt,
+    updatedAt: post.updatedAt,
+  };
+
   res.json({
     message: "Post created",
-    data: post,
+    data: obj,
   });
 });
 

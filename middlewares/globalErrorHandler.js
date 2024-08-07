@@ -12,6 +12,11 @@ const globalErrorHandler = (err, req, res, next) => {
   }
 
   if (err.name === "TypeError") {
+    console.log(
+      "Error from GLobal error handler .................................."
+    );
+    console.log(err);
+
     err.statusCode = 404;
     err.status = "Server Error";
     err.message = "Server is down. Please login again after sometime!";

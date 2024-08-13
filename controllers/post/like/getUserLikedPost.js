@@ -27,7 +27,7 @@ const getUserLikedPost = catchAsyncError(async (req, res, next) => {
   res.json({
     message: "user liked posts",
     page,
-    data: posts,
+    data: posts.map((obj) => obj.post),
   });
 });
 

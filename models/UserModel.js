@@ -3,85 +3,88 @@ import validation from "validator";
 import bcrypt from "bcryptjs";
 import Follower from "./FollowerModel.js";
 
-const userSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      validate: {
-        validator: function (value) {
-          return validation.isEmail(value);
-        },
-        message: (props) => `${props.value} is not a valid email`,
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    validate: {
+      validator: function (value) {
+        return validation.isEmail(value);
       },
-    },
-    password: {
-      type: String,
-      default: "",
-      select: false,
-      trim: true,
-    },
-    photo: {
-      type: String,
-      required: [true, "Please provide pic"],
-      trim: true,
-    },
-    bg_photo: {
-      type: String,
-      default: "",
-      select: false,
-      trim: true,
-    },
-    bio: {
-      type: String,
-      default: "",
-      select: false,
-      trim: true,
-    },
-    location: {
-      type: String,
-      default: "",
-      select: false,
-      trim: true,
-    },
-    website: {
-      type: String,
-      default: "",
-      select: false,
-      trim: true,
-    },
-    OAuthId: {
-      type: String,
-      default: null,
-      select: false,
-    },
-    OAuthProvider: {
-      type: String,
-      default: null,
-      select: false,
-    },
-    role: {
-      type: String,
-      enum: ["user", "admin"],
-      default: "user",
+      message: (props) => `${props.value} is not a valid email`,
     },
   },
-  {
-    timestamps: true,
-  }
-);
+  password: {
+    type: String,
+    default: "",
+    select: false,
+    trim: true,
+  },
+  photo: {
+    type: String,
+    required: [true, "Please provide pic"],
+    trim: true,
+  },
+  bg_photo: {
+    type: String,
+    default: "",
+    select: false,
+    trim: true,
+  },
+  bio: {
+    type: String,
+    default: "",
+    select: false,
+    trim: true,
+  },
+  location: {
+    type: String,
+    default: "",
+    select: false,
+    trim: true,
+  },
+  website: {
+    type: String,
+    default: "",
+    select: false,
+    trim: true,
+  },
+  OAuthId: {
+    type: String,
+    default: null,
+    select: false,
+  },
+  OAuthProvider: {
+    type: String,
+    default: null,
+    select: false,
+  },
+  role: {
+    type: String,
+    enum: ["user", "admin"],
+    default: "user",
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now(),
+  },
+});
 
 userSchema.index({ username: 1 });
 userSchema.index({ email: 1 });

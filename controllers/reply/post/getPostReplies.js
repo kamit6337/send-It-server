@@ -18,10 +18,13 @@ const getPostReplies = catchAsyncError(async (req, res, next) => {
     .sort("-updatedAt")
     .skip(skip)
     .limit(limit)
-    .populate({ path: "replyPost" })
     .populate({
-      path: "user",
-      select: "username name photo",
+      path: "replyPost",
+      populate: {
+        path: "user",
+        model: "User",
+        select: "_id username name photo",
+      },
     });
 
   res.json({

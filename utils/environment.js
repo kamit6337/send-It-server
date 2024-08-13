@@ -9,7 +9,7 @@ export const environment = {
   CLIENT_URL: process.env.CLIENT_URL,
   GOOGLE_CLIENT_ID: process.env.GOOGLE_OAUTH_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-  EXPIRES_IN: Number(process.env.EXPIRES_IN) || 86400000, // default 1 day
+  EXPIRES_IN: Number(process.env.EXPIRES_IN) || 86400000 * 30, // default 1 day
   MY_GMAIL_ID: process.env.MY_GMAIL_ID,
   MY_GMAIL_PASSWORD: process.env.MY_GMAIL_PASSWORD,
   ENCRYPTION_KEY: process.env.ENCRYPTION_KEY, // Must be 256 bits (32 characters)

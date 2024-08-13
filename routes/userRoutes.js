@@ -9,6 +9,8 @@ import createFollowing from "../controllers/user/following/createFollowing.js";
 import removeFollowing from "../controllers/user/following/removeFollowing.js";
 import getUserFollower from "../controllers/user/follower/getUserFollower.js";
 import updateUserUsername from "../controllers/user/username/updateUserUsername.js";
+import getSearchUser from "../controllers/user/search/getSearchUser.js";
+import getUserFollowingCheck from "../controllers/user/following/getUserFollowingCheck.js";
 
 const router = express.Router();
 
@@ -17,6 +19,11 @@ router
 .route("/")
 .get(getUserProfile)
 .patch(updateUserProfile);
+
+//prettier-ignore
+router
+.route("/search")
+.get(getSearchUser)
 
 //prettier-ignore
 router
@@ -36,6 +43,11 @@ route("/following")
 .get(getUserFollowing)
 .post(createFollowing)
 .delete(removeFollowing)
+
+//prettier-ignore
+router.
+route("/following/check")
+.get(getUserFollowingCheck)
 
 //prettier-ignore
 router.

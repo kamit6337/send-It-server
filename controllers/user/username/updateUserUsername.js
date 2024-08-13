@@ -11,6 +11,17 @@ const updateUserUsername = catchAsyncError(async (req, res, next) => {
     return next(new HandleGlobalError("Username must be provided", 404));
   }
 
+  const findUser = await User.findOne({
+    _id: { $ne: userId },
+    username,
+  });
+
+  if (findUser) {
+    return next(
+      new HandleGlobalError("Username is already present. Try different.", 404)
+    );
+  }
+
   const user = await User.findOneAndUpdate(
     {
       _id: userId,

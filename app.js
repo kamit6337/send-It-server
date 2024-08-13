@@ -10,11 +10,39 @@ import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 import HandleGlobalError from "./utils/HandleGlobalError.js";
 import globalMiddlewares from "./middlewares/globalMiddlewares.js";
 import protectRoute from "./middlewares/protectRoute.js";
+import socketAuthMiddleware from "./middlewares/socketAuthMiddleware.js";
+import { Server } from "socket.io";
+import { createServer } from "http";
 
 const app = express();
 
+const httpServer = createServer(app);
+export const io = new Server(httpServer, {
+  cors: {
+    credentials: true,
+    origin: "http://localhost:5173",
+  },
+});
+
 app.get("/", (req, res) => {
   res.send("Hello from the server");
+});
+
+// NOTE: SOCKET CONNECTION
+io.use(socketAuthMiddleware);
+
+io.on("connection", (socket) => {
+  console.log("New client connected");
+
+  socket.on("isConnected", (arg, callback) => {
+    console.log(arg);
+
+    callback("Yeah, is connected");
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
 });
 
 // NOTE: GLOBAL MIDDLEWARES
@@ -44,4 +72,4 @@ app.all("*", (req, res, next) => {
 //  NOTE: GLOBAL ERROR HANDLER
 app.use(globalErrorHandler);
 
-export default app;
+export default httpServer;

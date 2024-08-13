@@ -21,7 +21,8 @@ const getUserFollowingPost = catchAsyncError(async (req, res, next) => {
       },
     },
     { $unwind: "$posts" },
-    { $sort: { "posts.updatedAt": -1 } },
+    { $match: { "posts.ofReply": false } },
+    { $sort: { "posts.createdAt": -1 } },
     { $skip: skip },
     { $limit: limit },
     {

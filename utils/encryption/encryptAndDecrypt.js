@@ -6,7 +6,7 @@ const ENCRYPTION_IV = environment.ENCRYPTION_IV;
 
 const algorithm = "aes-256-cbc";
 
-export const encrypt = (obj, expires = 0) => {
+export const encrypt = (obj, expires = environment.EXPIRES_IN) => {
   const objStr = JSON.stringify({
     ...obj,
     iat: Date.now(),
@@ -35,6 +35,6 @@ export const decrypt = (encryptedText) => {
     const jsonString = decrypted.toString();
     return JSON.parse(jsonString);
   } catch (error) {
-    throw new Error("Failed to decrypt data");
+    throw new Error("Please login again...");
   }
 };

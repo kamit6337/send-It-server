@@ -1,6 +1,7 @@
 import Post from "../../models/PostModel.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
+import { io } from "../../app.js";
 
 const createPost = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
@@ -23,13 +24,19 @@ const createPost = catchAsyncError(async (req, res, next) => {
     message: post.message,
     media: post.media,
     user: {
+      _id: user._id,
       username: user.username,
       name: user.name,
       photo: user.photo,
     },
+    replyCount: 0,
+    likeCount: 0,
+    viewCount: 0,
     createdAt: post.createdAt,
     updatedAt: post.updatedAt,
   };
+
+  io.emit("newPost", obj);
 
   res.json({
     message: "Post created",

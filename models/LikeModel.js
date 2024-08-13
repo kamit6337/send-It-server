@@ -17,6 +17,7 @@ const likeSchema = new Schema(
 );
 
 likeSchema.index({ user: 1 });
+likeSchema.index({ post: 1 });
 
 const Like = model("Like", likeSchema);
 

@@ -29,6 +29,10 @@ const postSchema = new Schema(
       type: Number,
       default: 0,
     },
+    ofReply: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

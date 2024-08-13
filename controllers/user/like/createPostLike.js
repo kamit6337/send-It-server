@@ -26,15 +26,10 @@ const createPostLike = catchAsyncError(async (req, res, next) => {
     }
   );
 
-  const [userLiked, increaseLike] = await Promise.all([like, increase]);
+  await Promise.all([like, increase]);
 
   res.json({
     message: "Like the post",
-    data: userLiked,
-    // data: {
-    //   userLiked,
-    //   increaseLike,
-    // },
   });
 });
 

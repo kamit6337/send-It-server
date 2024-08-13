@@ -20,6 +20,12 @@ const login = catchAsyncError(async (req, res, next) => {
     return next(new HandleGlobalError("Email or Password is incorrect", 404));
   }
 
+  if (!findUser.password) {
+    return next(
+      new HandleGlobalError("Please reset your password to login", 404)
+    );
+  }
+
   //   MARK: IF USER PASSWORD DOES NOT MATCH WITH HASH PASSWORD, THROW ERROR
   const isPasswordValid = findUser.checkPassword(password); // Boolean
 

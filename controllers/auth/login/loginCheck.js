@@ -23,6 +23,19 @@ const loginCheck = catchAsyncError(async (req, res, next) => {
     );
   }
 
+  const currentMilli = Date.now();
+  const expireTokenMin = 30 * 60 * 1000; //30 minutes
+  const diffeInMilli = decoded.exp - currentMilli;
+
+  if (diffeInMilli < expireTokenMin) {
+    return next(
+      new HandleGlobalError(
+        "Your Session has expired. Please Login Again.",
+        400
+      )
+    );
+  }
+
   // MARK: CHECK UPDATED-AT WHEN PASSWORD UPDATE, SO LOGIN AGAIN IF PASSWORD RESET
   const updatedAtInMilli = new Date(findUser.updatedAt).getTime();
 

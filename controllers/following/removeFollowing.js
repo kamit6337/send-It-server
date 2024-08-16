@@ -1,6 +1,6 @@
-import Follower from "../../../models/FollowerModel.js";
-import catchAsyncError from "../../../utils/catchAsyncError.js";
-import HandleGlobalError from "../../../utils/HandleGlobalError.js";
+import Follower from "../../models/FollowerModel.js";
+import catchAsyncError from "../../utils/catchAsyncError.js";
+import HandleGlobalError from "../../utils/HandleGlobalError.js";
 
 const removeFollowing = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;

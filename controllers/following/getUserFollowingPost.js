@@ -1,6 +1,6 @@
-import Follower from "../../../models/FollowerModel.js";
-import catchAsyncError from "../../../utils/catchAsyncError.js";
-import ObjectID from "../../../utils/ObjectID.js";
+import Follower from "../../models/FollowerModel.js";
+import catchAsyncError from "../../utils/catchAsyncError.js";
+import ObjectID from "../../utils/ObjectID.js";
 
 const getUserFollowingPost = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
@@ -45,6 +45,7 @@ const getUserFollowingPost = catchAsyncError(async (req, res, next) => {
         "posts.replyCount": 1,
         "posts.likeCount": 1,
         "posts.viewCount": 1,
+        "posts.saveCount": 1,
         "posts.createdAt": 1,
         "posts.updatedAt": 1,
       },

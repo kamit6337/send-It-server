@@ -1,5 +1,5 @@
-import Post from "../../../models/PostModel.js";
-import catchAsyncError from "../../../utils/catchAsyncError.js";
+import Post from "../../models/PostModel.js";
+import catchAsyncError from "../../utils/catchAsyncError.js";
 
 const getUserPost = catchAsyncError(async (req, res, next) => {
   const { page = 1, id } = req.query;

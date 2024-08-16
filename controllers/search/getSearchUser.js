@@ -1,6 +1,6 @@
-import User from "../../../models/UserModel.js";
-import catchAsyncError from "../../../utils/catchAsyncError.js";
-import HandleGlobalError from "../../../utils/HandleGlobalError.js";
+import User from "../../models/UserModel.js";
+import catchAsyncError from "../../utils/catchAsyncError.js";
+import HandleGlobalError from "../../utils/HandleGlobalError.js";
 
 const getSearchUser = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;

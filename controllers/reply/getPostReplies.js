@@ -1,6 +1,6 @@
-import Reply from "../../../models/ReplyModel.js";
-import catchAsyncError from "../../../utils/catchAsyncError.js";
-import HandleGlobalError from "../../../utils/HandleGlobalError.js";
+import Reply from "../../models/ReplyModel.js";
+import catchAsyncError from "../../utils/catchAsyncError.js";
+import HandleGlobalError from "../../utils/HandleGlobalError.js";
 
 const getPostReplies = catchAsyncError(async (req, res, next) => {
   const { id, page = 1 } = req.query;

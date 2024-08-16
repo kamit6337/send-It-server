@@ -1,6 +1,6 @@
-import Follower from "../../../models/FollowerModel.js";
-import catchAsyncError from "../../../utils/catchAsyncError.js";
-import ObjectID from "../../../utils/ObjectID.js";
+import Follower from "../../models/FollowerModel.js";
+import catchAsyncError from "../../utils/catchAsyncError.js";
+import ObjectID from "../../utils/ObjectID.js";
 
 const getUserFollower = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;

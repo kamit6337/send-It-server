@@ -7,7 +7,7 @@ const createPost = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
   const user = req.user;
 
-  const { message = "", media = "" } = req.body;
+  const { message = "", media = "", duration = 0, thumbnail = "" } = req.body;
 
   if (!message && !media) {
     return next(new HandleGlobalError("All fields is required", 404));
@@ -17,6 +17,8 @@ const createPost = catchAsyncError(async (req, res, next) => {
     user: userId,
     message,
     media,
+    thumbnail,
+    duration,
   });
 
   const obj = {
@@ -32,6 +34,8 @@ const createPost = catchAsyncError(async (req, res, next) => {
     replyCount: 0,
     likeCount: 0,
     viewCount: 0,
+    saveCount: 0,
+    retweetCount: 0,
     createdAt: post.createdAt,
     updatedAt: post.updatedAt,
   };

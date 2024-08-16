@@ -41,11 +41,12 @@ const getSinglePost = catchAsyncError(async (req, res, next) => {
         replyCount: 1, // Include the post's reply count
         likeCount: 1, // Include the post's like count
         viewCount: 1, // Include the post's view count
+        saveCount: 1, // Include the post's view count
+        retweetCount: 1, // Include the post's view count
         createdAt: 1, // Include the post's creation date
         updatedAt: 1, // Include the post's update date
       },
     },
-
     {
       $lookup: {
         from: "likes",
@@ -63,6 +64,25 @@ const getSinglePost = catchAsyncError(async (req, res, next) => {
           },
         ],
         as: "isLiked",
+      },
+    },
+    {
+      $lookup: {
+        from: "saves",
+        let: { postId: ObjectID(id), userId: ObjectID(userId) },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ["$user", "$$userId"] },
+                  { $eq: ["$post", "$$postId"] },
+                ],
+              },
+            },
+          },
+        ],
+        as: "isSaved",
       },
     },
     {
@@ -89,6 +109,13 @@ const getSinglePost = catchAsyncError(async (req, res, next) => {
         isLiked: {
           $cond: {
             if: { $eq: [{ $size: "$isLiked" }, 1] },
+            then: true,
+            else: false,
+          },
+        },
+        isSaved: {
+          $cond: {
+            if: { $eq: [{ $size: "$isSaved" }, 1] },
             then: true,
             else: false,
           },

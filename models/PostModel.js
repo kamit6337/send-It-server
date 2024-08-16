@@ -17,6 +17,15 @@ const postSchema = new Schema(
       default: "",
       trim: true,
     },
+    thumbnail: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+    duration: {
+      type: Number,
+      default: 0,
+    },
     replyCount: {
       type: Number,
       default: 0,
@@ -26,6 +35,14 @@ const postSchema = new Schema(
       default: 0,
     },
     viewCount: {
+      type: Number,
+      default: 0,
+    },
+    saveCount: {
+      type: Number,
+      default: 0,
+    },
+    retweetCount: {
       type: Number,
       default: 0,
     },

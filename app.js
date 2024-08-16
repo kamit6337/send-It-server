@@ -5,6 +5,12 @@ import userRouter from "./routes/userRoutes.js";
 import postRouter from "./routes/postRoutes.js";
 import replyRouter from "./routes/replyRoutes.js";
 import fileRouter from "./routes/fileRoutes.js";
+import followerRouter from "./routes/followerRoutes.js";
+import followingRouter from "./routes/followingRoutes.js";
+import likeRouter from "./routes/likeRoutes.js";
+import mediaRouter from "./routes/mediaRoutes.js";
+import saveRouter from "./routes/saveRoutes.js";
+import searchRouter from "./routes/searchRoutes.js";
 import "./utils/passport.js";
 import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 import HandleGlobalError from "./utils/HandleGlobalError.js";
@@ -54,6 +60,12 @@ app.use("/file", protectRoute, fileRouter);
 app.use("/user", protectRoute, userRouter);
 app.use("/post", protectRoute, postRouter);
 app.use("/reply", protectRoute, replyRouter);
+app.use("/save", protectRoute, saveRouter);
+app.use("/follower", protectRoute, followerRouter);
+app.use("/following", protectRoute, followingRouter);
+app.use("/like", protectRoute, likeRouter);
+app.use("/media", protectRoute, mediaRouter);
+app.use("/search", protectRoute, searchRouter);
 
 // NOTE: The error handler must be registered before any other error middleware and after all controllers
 Sentry.setupExpressErrorHandler(app);

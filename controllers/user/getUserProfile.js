@@ -15,7 +15,9 @@ const getUserProfile = catchAsyncError(async (req, res, next) => {
     return next(new HandleGlobalError("Username must be provided", 404));
   }
 
-  const findUser = await User.findOne({ username }).lean();
+  const findUser = await User.findOne({ username })
+    .select("+bg_photo +bio +location +website")
+    .lean();
 
   if (!findUser) {
     res.json({

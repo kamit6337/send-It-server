@@ -56,7 +56,6 @@ const createPostReply = catchAsyncError(async (req, res, next) => {
 
   res.json({
     message: "Reply created",
-    data: obj,
   });
 });
 

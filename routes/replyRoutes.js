@@ -3,6 +3,7 @@ import createPostReply from "../controllers/reply/createPostReply.js";
 import getUserReplies from "../controllers/reply/getUserReplies.js";
 import getPostReplies from "../controllers/reply/getPostReplies.js";
 import getPostReply from "../controllers/reply/getPostReply.js";
+import updateReplyPost from "../controllers/reply/updateReplyPost.js";
 
 const router = express.Router();
 
@@ -11,6 +12,7 @@ router
 .route("/")
 .get(getPostReply)
 .post(createPostReply)
+.patch(updateReplyPost)
 
 //prettier-ignore
 router

@@ -46,19 +46,16 @@ const userSchema = new mongoose.Schema({
   bio: {
     type: String,
     default: "",
-    select: false,
     trim: true,
   },
   location: {
     type: String,
     default: "",
-    select: false,
     trim: true,
   },
   website: {
     type: String,
     default: "",
-    select: false,
     trim: true,
   },
   OAuthId: {

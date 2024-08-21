@@ -11,6 +11,8 @@ import likeRouter from "./routes/likeRoutes.js";
 import mediaRouter from "./routes/mediaRoutes.js";
 import saveRouter from "./routes/saveRoutes.js";
 import searchRouter from "./routes/searchRoutes.js";
+import roomRouter from "./routes/roomRoutes.js";
+import chatRouter from "./routes/chatRoutes.js";
 import "./utils/passport.js";
 import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 import HandleGlobalError from "./utils/HandleGlobalError.js";
@@ -46,6 +48,14 @@ io.on("connection", (socket) => {
     callback("Yeah, is connected");
   });
 
+  socket.on("joinRooms", (roomIds) => {
+    if (!roomIds || roomIds.length === 0) return;
+    roomIds.map((roomId) => {
+      console.log("room joined", roomId);
+      socket.join(roomId);
+    });
+  });
+
   socket.on("disconnect", () => {
     console.log("Client disconnected");
   });
@@ -66,6 +76,8 @@ app.use("/following", protectRoute, followingRouter);
 app.use("/like", protectRoute, likeRouter);
 app.use("/media", protectRoute, mediaRouter);
 app.use("/search", protectRoute, searchRouter);
+app.use("/room", protectRoute, roomRouter);
+app.use("/chat", protectRoute, chatRouter);
 
 // NOTE: The error handler must be registered before any other error middleware and after all controllers
 Sentry.setupExpressErrorHandler(app);

@@ -27,16 +27,11 @@ const getUserProfile = catchAsyncError(async (req, res, next) => {
     return;
   }
 
-  const postCount = Post.countDocuments({
-    user: findUser._id.toString(),
-    ofReply: false,
-  });
-  const likeCount = Like.countDocuments({ user: findUser._id.toString() });
-  const replyCount = Reply.countDocuments({ user: findUser._id.toString() });
   const followerCount = Follower.countDocuments({
     user: findUser._id.toString(),
     follower: { $ne: findUser._id.toString() },
   });
+
   const followingCount = Follower.countDocuments({
     user: { $ne: findUser._id.toString() },
     follower: findUser._id.toString(),
@@ -47,21 +42,14 @@ const getUserProfile = catchAsyncError(async (req, res, next) => {
     follower: userId,
   });
 
-  const [post, like, reply, followers, following, isFollowed] =
-    await Promise.all([
-      postCount,
-      likeCount,
-      replyCount,
-      followerCount,
-      followingCount,
-      findFollowing,
-    ]);
+  const [followers, following, isFollowed] = await Promise.all([
+    followerCount,
+    followingCount,
+    findFollowing,
+  ]);
 
   const obj = {
     ...findUser,
-    postCount: post,
-    likeCount: like,
-    replyCount: reply,
     followersCount: followers,
     followingCount: following,
     isFollowed: !!isFollowed,

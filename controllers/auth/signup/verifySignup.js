@@ -61,7 +61,11 @@ const verifySignup = catchAsyncError(async (req, res, next) => {
 
   res.cookie("_use", token, cookieOptions);
 
-  res.redirect(`${environment.CLIENT_URL}/flow?username=${userName}`);
+  // res.redirect(`${environment.CLIENT_URL}/flow?username=${userName}`);
+  res.json({
+    message: "User verified and account created",
+    data: userName,
+  });
 });
 
 export default verifySignup;

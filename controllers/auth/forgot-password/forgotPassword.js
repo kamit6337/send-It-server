@@ -1,20 +1,10 @@
 import catchAsyncError from "../../../utils/catchAsyncError.js";
-import nodemailer from "nodemailer";
 import { environment } from "../../../utils/environment.js";
 import HandleGlobalError from "../../../utils/HandleGlobalError.js";
 import User from "../../../models/UserModel.js";
 import resetPasswordLinkTemplate from "../../../utils/email/resetPasswordLinkTemplate.js";
 import { encrypt } from "../../../utils/encryption/encryptAndDecrypt.js";
 import sendingEmail from "../../../utils/email/email.js";
-
-// Set up nodemailer transporter
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: environment.MY_GMAIL_ID,
-    pass: environment.MY_GMAIL_PASSWORD,
-  },
-});
 
 const forgotPassword = catchAsyncError(async (req, res, next) => {
   const { email } = req.body;

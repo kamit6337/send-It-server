@@ -8,7 +8,12 @@ const loginCheck = catchAsyncError(async (req, res, next) => {
   const { _use } = Req(req);
 
   if (!_use) {
-    throw new Error("Your do not have active session. Please Login");
+    return next(
+      new HandleGlobalError(
+        "Your do not have active session. Please Login",
+        403
+      )
+    );
   }
 
   const decoded = decrypt(_use);
@@ -39,7 +44,8 @@ const loginCheck = catchAsyncError(async (req, res, next) => {
   // MARK: CHECK UPDATED-AT WHEN PASSWORD UPDATE, SO LOGIN AGAIN IF PASSWORD RESET
   const updatedAtInMilli = new Date(findUser.updatedAt).getTime();
 
-  if (decoded.iat * 1000 + 5000 <= updatedAtInMilli) {
+  if (decoded.iat + 5000 <= updatedAtInMilli) {
+    //5seconds advantage
     return next(new HandleGlobalError("Please login again...", 403));
   }
 

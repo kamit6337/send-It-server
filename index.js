@@ -8,11 +8,12 @@ const PORT = environment.PORT || 8080;
 
 try {
   console.log("Connecting to MongoDB...");
-  await connectToDB();
-
-  server.listen(PORT, () => {
-    console.log(`Server is connected on port ${PORT}`);
-  });
+  if (environment.NODE_ENV !== "test") {
+    await connectToDB();
+    server.listen(PORT, () => {
+      console.log(`Server is connected on port ${PORT}`);
+    });
+  }
 } catch (error) {
   console.error("Failed to start server:", error);
 }

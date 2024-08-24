@@ -33,7 +33,7 @@ export const io = new Server(httpServer, {
 });
 
 app.get("/", (req, res) => {
-  res.send("Hello from the server");
+  res.json({ message: "Hello from the server" });
 });
 
 // NOTE: SOCKET CONNECTION

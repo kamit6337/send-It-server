@@ -25,7 +25,7 @@ const newPassword = catchAsyncError(async (req, res, next) => {
   }
 
   if (email !== decoded.email) {
-    return next(new HandleGlobalError("Issue in create new Password"));
+    return next(new HandleGlobalError("Issue in create new Password", 404));
   }
 
   const hashPassword = bcrypt.hashSync(password, 12);
@@ -40,7 +40,7 @@ const newPassword = catchAsyncError(async (req, res, next) => {
     }
   );
 
-  res.status(200).json({
+  res.json({
     message: "Password has been updated",
   });
 });

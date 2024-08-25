@@ -1,11 +1,9 @@
-import Req from "../../../utils/Req.js";
+import cookieOptions from "../../../utils/cookieOptions.js";
 
 const logout = (req, res) => {
-  const cookies = Req(req);
+  // const cookies = Req(req);
 
-  Object.keys(cookies).forEach((cookie) => {
-    res.clearCookie(cookie);
-  });
+  res.clearCookie("_use", cookieOptions);
 
   res.status(200).json({
     message: "Successfully Logout",

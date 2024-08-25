@@ -31,11 +31,12 @@ it("send email successfully", async () => {
     role: "user",
     password: "hashedpassword",
     checkPassword: jest.fn().mockReturnValue(true),
-    select: jest.fn().mockResolvedValue(true),
   };
 
+  const select = jest.fn().mockResolvedValue(findUser);
+
   User.findOne.mockReturnValue({
-    select: jest.fn().mockResolvedValue(findUser),
+    select,
   });
 
   encrypt.mockReturnValue("encrypted");

@@ -13,7 +13,7 @@ const protectRoute = catchAsyncError(async (req, res, next) => {
 
   const decoded = decrypt(_use);
 
-  const findUser = await User.findById(decoded.id).lean();
+  const findUser = await User.findById(decoded.id);
 
   if (!findUser) {
     return next(

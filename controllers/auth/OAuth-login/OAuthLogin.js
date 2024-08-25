@@ -25,6 +25,7 @@ const OAuthLogin = catchAsyncError(async (req, res, next) => {
     // MARK: IF NOT FIND USER
 
     const userName = createUserName(name);
+
     const createUser = await User.create({
       name,
       username: userName,

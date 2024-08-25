@@ -1,8 +1,15 @@
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import Req from "../../../utils/Req.js";
 import {
   decrypt,
   encrypt,
 } from "../../../utils/encryption/encryptAndDecrypt.js";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { environment } from "../../../utils/environment.js";
+import preSignedAWS from "../../../controllers/functions/preSignedAWS.js";
+
+jest.mock("@aws-sdk/client-s3");
+jest.mock("@aws-sdk/s3-request-presigner");
 
 describe("check all utils functions", () => {
   // NOTE: CHECK REQ FUNCTION
@@ -75,5 +82,76 @@ describe("check all utils functions", () => {
       expect(result).toThrow("Please login again...");
       expect(result2).toThrow("Please login again...");
     });
+  });
+
+  // NOTE: CHECK AWS PRE-SIGNED URL
+  it("aws pre-signed url created successfully", async () => {
+    const fileType = "image/png";
+    const keyFolder = "posts";
+
+    const req = {
+      body: {
+        fileType: fileType,
+      },
+    };
+
+    const res = {
+      status: jest.fn(() => res),
+      json: jest.fn(),
+    };
+
+    const next = jest.fn();
+
+    // Mock Date.now() to return a fixed value for testing
+    const mockTimestamp = 1724586813125; // Replace with the actual timestamp you received in the test
+    jest.spyOn(Date, "now").mockReturnValue(mockTimestamp);
+
+    const file = fileType.split("/");
+    const fileKey = `${keyFolder}/${file[0]}-${mockTimestamp}.${file[1]}`;
+
+    const command = {
+      middlewareStack: {},
+      input: {
+        Bucket: environment.AWS_S3_BUCKET,
+        Key: fileKey,
+        ContentType: fileType,
+        ACL: "public-read",
+      },
+    };
+
+    PutObjectCommand.mockResolvedValue(command);
+
+    const url = "https://aws.com";
+    getSignedUrl.mockResolvedValue(url);
+
+    expect(await preSignedAWS(req, res, next, { keyFolder })).toEqual({
+      url,
+      fileType,
+      fileKey,
+    });
+  });
+
+  // NOTE: FAILED: DUE TO NOT PRESENT OF FILETYPE
+  it("failed, due to not present of filetype", async () => {
+    const keyFolder = "posts";
+
+    const req = {
+      body: {},
+    };
+
+    const res = {
+      status: jest.fn(() => res),
+      json: jest.fn(),
+    };
+
+    const next = jest.fn();
+
+    await preSignedAWS(req, res, next, { keyFolder });
+
+    expect(next).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: "FileType must be provided",
+      })
+    );
   });
 });

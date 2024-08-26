@@ -1,3 +1,4 @@
+import newFollowing from "../../database/Follower/newFollowing.js";
 import Follower from "../../models/FollowerModel.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
@@ -10,10 +11,7 @@ const createFollowing = catchAsyncError(async (req, res, next) => {
     return next(new HandleGlobalError("Follwing ID must be provided", 404));
   }
 
-  const following = await Follower.create({
-    user: followingId,
-    follower: userId,
-  });
+  const following = await newFollowing(followingId, userId);
 
   res.json({
     message: "New Following",

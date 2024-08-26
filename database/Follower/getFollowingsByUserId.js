@@ -1,4 +1,4 @@
-import Follower from "../../models/FollowerModel";
+import Follower from "../../models/FollowerModel.js";
 import catchAsyncDBError from "../../utils/catchAsyncDBError.js";
 import ObjectID from "../../utils/ObjectID.js";
 

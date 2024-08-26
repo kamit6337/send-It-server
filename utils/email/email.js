@@ -5,10 +5,6 @@ import { environment } from "../environment.js";
 const EMAIL_USER = environment.MY_GMAIL_ID;
 const EMAIL_PASS = environment.MY_GMAIL_PASSWORD;
 
-if (!EMAIL_USER || !EMAIL_PASS) {
-  throw new Error("User Email and Pasword is not present");
-}
-
 const transporter = nodemailer.createTransport({
   service: "Gmail", // or another email service
   auth: {

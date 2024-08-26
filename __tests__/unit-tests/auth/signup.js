@@ -1,11 +1,14 @@
 import signup from "../../../controllers/auth/signup/signup.js";
 import User from "../../../models/UserModel.js";
 import sendingEmail from "../../../utils/email/email.js";
+import otpTemplate from "../../../utils/email/otpTemplate.js";
 import { encrypt } from "../../../utils/encryption/encryptAndDecrypt.js";
+import generate8digitOTP from "../../../utils/javaScript/generate8digitOTP.js";
 
 jest.mock("../../../models/UserModel.js");
 jest.mock("../../../utils/email/email.js");
 jest.mock("../../../utils/encryption/encryptAndDecrypt.js");
+jest.mock("../../../utils/javaScript/generate8digitOTP.js");
 
 let req, res, next;
 
@@ -35,7 +38,19 @@ it("user signup successfully", async () => {
 
   encrypt.mockReturnValue("encryptedData");
 
+  const otp = 45896587;
+
+  generate8digitOTP.mockReturnValue(otp);
+
+  const html = otpTemplate(otp);
+
   await signup(req, res, next);
+
+  expect(sendingEmail).toHaveBeenCalledWith(
+    "user@gmail.com",
+    "OTP for verification",
+    html
+  );
 
   // Ensure the cookie is set with the correct token
   expect(res.cookie).toHaveBeenCalledWith(

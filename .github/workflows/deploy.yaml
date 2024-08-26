@@ -17,6 +17,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Set up environment variables
+        run: |
+          echo "ENCRYPTION_KEY=${{ secrets.ENCRYPTION_KEY }}" >> $GITHUB_ENV
+          echo "ENCRYPTION_IV=${{ secrets.ENCRYPTION_IV }}" >> $GITHUB_ENV
+          echo "MY_GMAIL_ID=${{ secrets.MY_GMAIL_ID }}" >> $GITHUB_ENV
+          echo "MY_GMAIL_PASSWORD=${{ secrets.MY_GMAIL_PASSWORD }}" >> $GITHUB_ENV
       - name: "Installing Dependencies"
         run: npm i
       - name: "Running test cases"

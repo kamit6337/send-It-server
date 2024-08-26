@@ -48,7 +48,7 @@ it("create chat successfully", async () => {
   });
 
   expect(res.json).toHaveBeenCalledWith({
-    message: "Chat",
+    message: "Chat created",
   });
 
   // Verify next was not called (no error case)

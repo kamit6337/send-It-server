@@ -2,8 +2,9 @@ import Like from "../../models/LikeModel.js";
 import Post from "../../models/PostModel.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
-import { io } from "../../app.js";
+
 import { v4 as uuidv4 } from "uuid";
+import { removeLikeIO } from "../../socketIO/like.js";
 
 const removePostLike = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
@@ -37,7 +38,7 @@ const removePostLike = catchAsyncError(async (req, res, next) => {
     post: postId,
   };
 
-  io.emit("removeLike", obj);
+  removeLikeIO(obj);
 
   res.json({
     message: "remove Like",

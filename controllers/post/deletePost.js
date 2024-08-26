@@ -1,8 +1,8 @@
-import { io } from "../../app.js";
 import Like from "../../models/LikeModel.js";
 import Post from "../../models/PostModel.js";
 import Reply from "../../models/ReplyModel.js";
 import Save from "../../models/SaveModel.js";
+import { deletePostIO } from "../../socketIO/post.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
 
@@ -26,7 +26,7 @@ const deletePost = catchAsyncError(async (req, res, next) => {
 
   await Promise.all(promises);
 
-  io.emit("deletePost", id);
+  deletePostIO(id);
 
   res.json({
     message: "Post deleted",

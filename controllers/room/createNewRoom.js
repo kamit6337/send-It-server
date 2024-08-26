@@ -1,7 +1,7 @@
 import Room from "../../models/RoomModel.js";
-import { io } from "../../app.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
+import { sendNewRoomIO } from "../../socketIO/room.js";
 
 const createNewRoom = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
@@ -33,7 +33,7 @@ const createNewRoom = catchAsyncError(async (req, res, next) => {
     select: "_id name username photo",
   });
 
-  io.emit("newRoom", findRoom);
+  sendNewRoomIO(findRoom);
 
   res.json({
     message: "New Romm is created",

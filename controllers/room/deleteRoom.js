@@ -1,6 +1,6 @@
-import { io } from "../../app.js";
 import Chat from "../../models/ChatModel.js";
 import Room from "../../models/RoomModel.js";
+import { deleteRoomIO } from "../../socketIO/room.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
 
@@ -16,7 +16,7 @@ const deleteRoom = catchAsyncError(async (req, res, next) => {
 
   await Promise.all([room, deleteRoomChats]);
 
-  io.to(id).emit("deleteRoom", id);
+  deleteRoomIO(id);
 
   res.json({
     message: "Room and its chats are deleted",

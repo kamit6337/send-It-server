@@ -1,8 +1,8 @@
 import Post from "../../models/PostModel.js";
 import Save from "../../models/SaveModel.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
-import { io } from "../../app.js";
 import { v4 as uuidv4 } from "uuid";
+import { removeSaveIO } from "../../socketIO/save.js";
 
 const removeSavedPost = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
@@ -36,7 +36,7 @@ const removeSavedPost = catchAsyncError(async (req, res, next) => {
     post: postId,
   };
 
-  io.emit("removeSave", obj);
+  removeSaveIO(obj);
 
   res.json({
     message: "remove save",

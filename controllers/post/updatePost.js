@@ -1,5 +1,5 @@
-import { io } from "../../app.js";
 import Post from "../../models/PostModel.js";
+import { sendNewPostIO } from "../../socketIO/post.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
 
@@ -46,7 +46,7 @@ const updatePost = catchAsyncError(async (req, res, next) => {
     },
   };
 
-  io.emit("newPost", newObj);
+  sendNewPostIO(newObj);
 
   res.json({
     message: "Post updated",

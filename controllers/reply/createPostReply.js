@@ -2,7 +2,7 @@ import Post from "../../models/PostModel.js";
 import Reply from "../../models/ReplyModel.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
-import { io } from "../../app.js";
+import { sendNewReplyIO } from "../../socketIO/reply.js";
 
 const createPostReply = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
@@ -52,7 +52,7 @@ const createPostReply = catchAsyncError(async (req, res, next) => {
     },
   };
 
-  io.emit("newReply", obj);
+  sendNewReplyIO(obj);
 
   res.json({
     message: "Reply created",

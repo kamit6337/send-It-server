@@ -1,7 +1,7 @@
 import Post from "../../models/PostModel.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
-import { io } from "../../app.js";
+import { sendNewPostIO } from "../../socketIO/post.js";
 
 const createPost = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
@@ -40,7 +40,7 @@ const createPost = catchAsyncError(async (req, res, next) => {
     updatedAt: post.updatedAt,
   };
 
-  io.emit("newPost", obj);
+  sendNewPostIO(obj);
 
   res.json({
     message: "Post created",

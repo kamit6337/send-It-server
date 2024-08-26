@@ -1,5 +1,4 @@
 import * as Sentry from "@sentry/node";
-import express from "express";
 import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import postRouter from "./routes/postRoutes.js";
@@ -19,18 +18,9 @@ import HandleGlobalError from "./utils/HandleGlobalError.js";
 import globalMiddlewares from "./middlewares/globalMiddlewares.js";
 import protectRoute from "./middlewares/protectRoute.js";
 import socketAuthMiddleware from "./middlewares/socketAuthMiddleware.js";
-import { Server } from "socket.io";
-import { createServer } from "http";
+import socketConnect from "./lib/socketConnect.js";
 
-const app = express();
-
-const httpServer = createServer(app);
-export const io = new Server(httpServer, {
-  cors: {
-    credentials: true,
-    origin: "http://localhost:5173",
-  },
-});
+const { app, httpServer, io } = socketConnect();
 
 app.get("/", (req, res) => {
   res.json({ message: "Hello from the server" });

@@ -1,7 +1,7 @@
 import Chat from "../../models/ChatModel.js";
+import { sendNewPostIO } from "../../socketIO/chat.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
-import { io } from "../../app.js";
 
 const createChat = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
@@ -25,7 +25,7 @@ const createChat = catchAsyncError(async (req, res, next) => {
     media,
   });
 
-  io.to(roomId).emit("newChat", chat);
+  sendNewPostIO(roomId, chat);
 
   res.json({
     message: "Chat created",

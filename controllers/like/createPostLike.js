@@ -2,8 +2,8 @@ import Like from "../../models/LikeModel.js";
 import Post from "../../models/PostModel.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
-import { io } from "../../app.js";
 import { v4 as uuidv4 } from "uuid";
+import { sendNewLikeIO } from "../../socketIO/like.js";
 
 const createPostLike = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
@@ -36,7 +36,7 @@ const createPostLike = catchAsyncError(async (req, res, next) => {
     post: postId,
   };
 
-  io.emit("newLike", obj);
+  sendNewLikeIO(obj);
 
   res.json({
     message: "Like the post",

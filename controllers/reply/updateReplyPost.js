@@ -1,6 +1,6 @@
-import { io } from "../../app.js";
 import Post from "../../models/PostModel.js";
 import Reply from "../../models/ReplyModel.js";
+import { sendNewReplyIO } from "../../socketIO/reply.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
 
@@ -54,7 +54,7 @@ const updateReplyPost = catchAsyncError(async (req, res, next) => {
     },
   };
 
-  io.emit("newReply", replyObj);
+  sendNewReplyIO(replyObj);
 
   res.json({
     message: "Reply Post updated",

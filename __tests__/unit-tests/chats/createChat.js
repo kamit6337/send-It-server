@@ -1,9 +1,9 @@
-import { io } from "../../../app.js";
 import createChat from "../../../controllers/chat/createChat.js";
 import Chat from "../../../models/ChatModel.js";
+import { sendNewPostIO } from "../../../socketIO/chat.js";
 
-jest.mock("../../../app.js");
 jest.mock("../../../models/ChatModel.js");
+jest.mock("../../../socketIO/chat.js");
 
 let req, res, next;
 
@@ -27,23 +27,18 @@ beforeEach(() => {
 
 // NOTE: CREATE CHAT SUCCESSFULLY
 it("create chat successfully", async () => {
-  const mockUser = {
+  const mockValue = {
     room: "roomId",
     sender: "userId",
     message: "message",
     media: "media",
   };
 
-  Chat.create.mockResolvedValue(mockUser);
-
-  const emit = jest.fn().mockReturnValue(mockUser);
-  io.to.mockReturnValue({ emit });
+  Chat.create.mockResolvedValue(mockValue);
 
   await createChat(req, res, next);
 
-  expect(io.to).toHaveBeenCalledWith("roomId");
-
-  expect(emit).toHaveBeenCalledWith("newChat", mockUser);
+  expect(sendNewPostIO).toHaveBeenCalledWith("roomId", mockValue);
 
   expect(Chat.create).toHaveBeenCalledWith({
     room: "roomId",

@@ -2,8 +2,7 @@ import Post from "../../models/PostModel.js";
 import Save from "../../models/SaveModel.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import { v4 as uuidv4 } from "uuid";
-import {io} from "../../app.js"
-
+import { sendNewSaveIO } from "../../socketIO/save.js";
 
 const createNewSave = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
@@ -36,7 +35,7 @@ const createNewSave = catchAsyncError(async (req, res, next) => {
     post: postId,
   };
 
-  io.emit("newSave", obj);
+  sendNewSaveIO(obj);
 
   res.json({
     message: "Save the post",

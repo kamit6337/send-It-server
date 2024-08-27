@@ -9,3 +9,13 @@ services:
       - 8000:8000
     env_file:
       - .env
+    depends_on:
+      - redis # Ensure Redis starts before the server
+
+  redis:
+    image: redis/redis-stack:latest
+    container_name: redis-stack
+    ports:
+      - 6379:6379
+      - 8001:8001 # Optional: Web UI port for Redis Stack
+

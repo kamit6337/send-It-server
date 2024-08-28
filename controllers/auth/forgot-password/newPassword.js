@@ -1,4 +1,4 @@
-import User from "../../../models/UserModel.js";
+import patchUserProfile from "../../../database/User/patchUserProfile.js";
 import HandleGlobalError from "../../../utils/HandleGlobalError.js";
 import catchAsyncError from "../../../utils/catchAsyncError.js";
 import { decrypt } from "../../../utils/encryption/encryptAndDecrypt.js";
@@ -30,15 +30,12 @@ const newPassword = catchAsyncError(async (req, res, next) => {
 
   const hashPassword = bcrypt.hashSync(password, 12);
 
-  await User.findOneAndUpdate(
-    {
-      _id: decoded.id,
-    },
-    {
-      password: hashPassword,
-      updatedAt: Date.now(),
-    }
-  );
+  const obj = {
+    password: hashPassword,
+    updatedAt: Date.now(),
+  };
+
+  await patchUserProfile(decoded.id, obj);
 
   res.json({
     message: "Password has been updated",

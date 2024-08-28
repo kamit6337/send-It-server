@@ -1,10 +1,10 @@
 import catchAsyncError from "../../../utils/catchAsyncError.js";
 import { environment } from "../../../utils/environment.js";
 import HandleGlobalError from "../../../utils/HandleGlobalError.js";
-import User from "../../../models/UserModel.js";
 import resetPasswordLinkTemplate from "../../../utils/email/resetPasswordLinkTemplate.js";
 import { encrypt } from "../../../utils/encryption/encryptAndDecrypt.js";
 import sendingEmail from "../../../utils/email/email.js";
+import getUserByEmail from "../../../database/User/getUserByEmail.js";
 
 const forgotPassword = catchAsyncError(async (req, res, next) => {
   const { email } = req.body;
@@ -13,7 +13,7 @@ const forgotPassword = catchAsyncError(async (req, res, next) => {
     return next(new HandleGlobalError("Email is not provided", 404));
   }
 
-  const findUser = await User.findOne({ email });
+  const findUser = await getUserByEmail(email);
 
   if (!findUser) {
     return next(

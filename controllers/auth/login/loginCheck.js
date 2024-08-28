@@ -1,8 +1,8 @@
 import HandleGlobalError from "../../../utils/HandleGlobalError.js";
 import catchAsyncError from "../../../utils/catchAsyncError.js";
 import Req from "../../../utils/Req.js";
-import User from "../../../models/UserModel.js";
 import { decrypt } from "../../../utils/encryption/encryptAndDecrypt.js";
+import getUserById from "../../../database/User/getUserById.js";
 
 const loginCheck = catchAsyncError(async (req, res, next) => {
   const { _use } = Req(req);
@@ -18,9 +18,7 @@ const loginCheck = catchAsyncError(async (req, res, next) => {
 
   const decoded = decrypt(_use);
 
-  const findUser = await User.findOne({
-    _id: decoded.id,
-  });
+  const findUser = await getUserById(decoded.id);
 
   if (!findUser) {
     return next(

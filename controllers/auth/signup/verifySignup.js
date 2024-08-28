@@ -1,4 +1,4 @@
-import User from "../../../models/UserModel.js";
+import postCreateUser from "../../../database/User/postCreateUser.js";
 import catchAsyncError from "../../../utils/catchAsyncError.js";
 import cookieOptions from "../../../utils/cookieOptions.js";
 import {
@@ -38,7 +38,7 @@ const verifySignup = catchAsyncError(async (req, res, next) => {
 
   const userName = createUserName(name);
 
-  const createUser = await User.create({
+  const createUser = await postCreateUser({
     name,
     username: userName,
     email,

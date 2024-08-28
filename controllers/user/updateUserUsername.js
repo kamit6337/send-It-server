@@ -1,4 +1,5 @@
-import User from "../../models/UserModel.js";
+import checkUserExistWithSameUsername from "../../database/User/checkUserExistWithSameUsername.js";
+import patchUserProfile from "../../database/User/patchUserProfile.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
 
@@ -11,10 +12,7 @@ const updateUserUsername = catchAsyncError(async (req, res, next) => {
     return next(new HandleGlobalError("Username must be provided", 404));
   }
 
-  const findUser = await User.findOne({
-    _id: { $ne: userId },
-    username,
-  });
+  const findUser = await checkUserExistWithSameUsername(userId, username);
 
   if (findUser) {
     return next(
@@ -22,18 +20,11 @@ const updateUserUsername = catchAsyncError(async (req, res, next) => {
     );
   }
 
-  const user = await User.findOneAndUpdate(
-    {
-      _id: userId,
-    },
-    {
-      username,
-    },
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  const obj = {
+    username,
+  };
+
+  const user = await patchUserProfile(userId, obj);
 
   res.json({
     message: "Updated",

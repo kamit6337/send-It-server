@@ -1,4 +1,4 @@
-import userFollowingPosts from "../../database/Follower/getFollowingsByUserId.js";
+import userFollowingPosts from "../../database/Follower/getFollowingPostsByUserId.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 
 const getUserFollowingPost = catchAsyncError(async (req, res, next) => {

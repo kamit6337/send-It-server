@@ -1,4 +1,4 @@
-import userFollowings from "../../database/Follower/userFollowings.js";
+import getFollowingsByUserId from "../../database/Follower/getFollowingsByUserId.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
 
@@ -14,7 +14,10 @@ const getUserFollowing = catchAsyncError(async (req, res, next) => {
   const limit = 20;
   const skip = (page - 1) * limit;
 
-  const followingAggregate = await userFollowings(id, userId, { skip, limit });
+  const followingAggregate = await getFollowingsByUserId(id, userId, {
+    skip,
+    limit,
+  });
 
   res.json({
     message: "user following",

@@ -1,58 +1,87 @@
-import Follower from "../../models/FollowerModel.js";
-import catchAsyncDBError from "../../utils/catchAsyncDBError.js";
+import {
+  getCachedUserFollowings,
+  setCachedUserFollwings,
+} from "../../redis/Follower/index.js";
 import ObjectID from "../../utils/ObjectID.js";
+import catchAsyncDBError from "../../utils/catchAsyncDBError.js";
 
-const userFollowingPosts = catchAsyncDBError(
-  async (userId, { limit, skip } = {}) => {
-    const following = await Follower.aggregate([
-      { $match: { follower: ObjectID(userId) } },
+const getFollowingsByUserId = catchAsyncDBError(
+  async (id, userId, { skip, limit }) => {
+    const followings = await getCachedUserFollowings(id, { limit, skip });
+
+    if (followings) return followings;
+
+    const followingAggregate = await Follower.aggregate([
+      {
+        $match: {
+          user: { $ne: ObjectID(id) }, // Exclude the user themselves from the following list
+          follower: ObjectID(id), // Current user's followers
+        },
+      },
       {
         $lookup: {
-          from: "posts",
+          from: "followers", // The collection name
+          let: { followedUserId: "$user", currentUserId: ObjectID(userId) },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$user", "$$followedUserId"] },
+                    // Check if the followed user is in the follower list of the current user
+                    { $eq: ["$follower", "$$currentUserId"] },
+                  ],
+                },
+              },
+            },
+          ],
+          as: "isActualUserFollow",
+        },
+      },
+      {
+        $addFields: {
+          isActualUserFollow: {
+            $cond: {
+              if: { $eq: [{ $size: "$isActualUserFollow" }, 1] },
+              then: true,
+              else: false,
+            },
+          },
+        },
+      },
+      {
+        $skip: skip,
+      },
+      {
+        $limit: limit,
+      },
+      {
+        $lookup: {
+          from: "users", // Assuming the users collection name is 'users'
           localField: "user",
-          foreignField: "user",
-          as: "posts",
-        },
-      },
-      { $unwind: "$posts" },
-      { $match: { "posts.ofReply": false } },
-      { $sort: { "posts.createdAt": -1 } },
-      { $skip: skip },
-      { $limit: limit },
-      {
-        $lookup: {
-          from: "users",
-          localField: "posts.user",
           foreignField: "_id",
-          as: "posts.user",
+          as: "user",
         },
       },
-      { $unwind: "$posts.user" },
       {
-        $replaceRoot: {
-          newRoot: "$posts", // Replace the root document with the posts document
-        },
+        $unwind: "$user",
       },
       {
         $project: {
+          _id: 1,
+          "user._id": 1,
           "user.username": 1,
           "user.name": 1,
           "user.photo": 1,
-          _id: 1,
-          message: 1,
-          media: 1,
-          replyCount: 1,
-          likeCount: 1,
-          viewCount: 1,
-          saveCount: 1,
-          createdAt: 1,
-          updatedAt: 1,
+          isActualUserFollow: 1,
         },
       },
     ]);
 
-    return following;
+    await setCachedUserFollwings(id, followingAggregate);
+
+    return followingAggregate;
   }
 );
 
-export default userFollowingPosts;
+export default getFollowingsByUserId;

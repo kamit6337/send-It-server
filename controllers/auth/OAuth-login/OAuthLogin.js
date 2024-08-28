@@ -1,10 +1,12 @@
 import { environment } from "../../../utils/environment.js";
 import HandleGlobalError from "../../../utils/HandleGlobalError.js";
 import catchAsyncError from "../../../utils/catchAsyncError.js";
-import User from "../../../models/UserModel.js";
 import { encrypt } from "../../../utils/encryption/encryptAndDecrypt.js";
 import cookieOptions from "../../../utils/cookieOptions.js";
 import createUserName from "../../../utils/javaScript/createUserName.js";
+import getUserByEmail from "../../../database/User/getUserByEmail.js";
+import postCreateUser from "../../../database/User/postCreateUser.js";
+import uploadProfileImageToS3 from "../../../lib/uploadProfileImageToS3.js";
 
 // NOTE: LOGIN SUCCESS
 const OAuthLogin = catchAsyncError(async (req, res, next) => {
@@ -19,18 +21,19 @@ const OAuthLogin = catchAsyncError(async (req, res, next) => {
     _json: { name, email, picture },
   } = req.user;
 
-  let findUser = await User.findOne({ email });
+  let findUser = await getUserByEmail(email);
 
   if (!findUser) {
     // MARK: IF NOT FIND USER
 
     const userName = createUserName(name);
+    const photo = await uploadProfileImageToS3(picture);
 
-    const createUser = await User.create({
+    const createUser = await postCreateUser({
       name,
       username: userName,
       email,
-      photo: picture,
+      photo,
       OAuthId: id,
       OAuthProvider: provider,
     });

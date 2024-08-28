@@ -1,4 +1,4 @@
-import User from "../../models/UserModel.js";
+import patchUserProfile from "../../database/User/patchUserProfile.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
 
@@ -21,18 +21,7 @@ const updateUserProfile = catchAsyncError(async (req, res, next) => {
   if (location) obj.location = location;
   if (website) obj.website = website;
 
-  const user = await User.findOneAndUpdate(
-    {
-      _id: userId,
-    },
-    {
-      ...obj,
-    },
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  const user = await patchUserProfile(userId, obj);
 
   res.json({
     message: "Updated",

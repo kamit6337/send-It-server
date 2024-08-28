@@ -1,4 +1,4 @@
-import User from "../../../models/UserModel.js";
+import getUserByEmail from "../../../database/User/getUserByEmail.js";
 import HandleGlobalError from "../../../utils/HandleGlobalError.js";
 import catchAsyncError from "../../../utils/catchAsyncError.js";
 import cookieOptions from "../../../utils/cookieOptions.js";
@@ -15,9 +15,7 @@ const signup = catchAsyncError(async (req, res, next) => {
   }
 
   // MARK: CHECK USER IS ALREADY PRESENT OR NOT
-  const findUser = await User.findOne({
-    email,
-  });
+  const findUser = await getUserByEmail(email);
 
   if (findUser) {
     return next(

@@ -8,8 +8,8 @@ import ObjectID from "../../utils/ObjectID.js";
 
 const userFollowingPosts = catchAsyncDBError(
   async (userId, { limit, skip } = {}) => {
-    const posts = await getCachedUserFollowingPosts(userId, { limit, skip });
-    if (posts) return posts;
+    // const posts = await getCachedUserFollowingPosts(userId, { limit, skip });
+    // if (posts) return posts;
 
     const followingPosts = await Follower.aggregate([
       { $match: { follower: ObjectID(userId) } },
@@ -48,17 +48,13 @@ const userFollowingPosts = catchAsyncDBError(
           _id: 1,
           message: 1,
           media: 1,
-          replyCount: 1,
-          likeCount: 1,
-          viewCount: 1,
-          saveCount: 1,
           createdAt: 1,
           updatedAt: 1,
         },
       },
     ]);
 
-    await setCachedUserFollowingPosts(userId, followingPosts);
+    // await setCachedUserFollowingPosts(userId, followingPosts);
 
     return followingPosts;
   }

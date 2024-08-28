@@ -1,9 +1,9 @@
-import Like from "../../models/LikeModel.js";
-import Post from "../../models/PostModel.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
 import { v4 as uuidv4 } from "uuid";
 import { sendNewLikeIO } from "../../socketIO/like.js";
+import createLike from "../../database/Like/createLike.js";
+import updatePostLikeCount from "../../database/Post/updatePostLikeCount.js";
 
 const createPostLike = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
@@ -14,19 +14,8 @@ const createPostLike = catchAsyncError(async (req, res, next) => {
     return next(new HandleGlobalError("PostId is required", 404));
   }
 
-  const like = Like.create({ user: userId, post: postId });
-  const increase = Post.findOneAndUpdate(
-    {
-      _id: postId,
-    },
-    {
-      $inc: { likeCount: 1 },
-    },
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  const like = createLike(userId, postId);
+  const increase = updatePostLikeCount(postId, 1);
 
   await Promise.all([like, increase]);
 

@@ -1,4 +1,4 @@
-import userFollowingPosts from "../../database/Follower/getFollowingPostsByUserId.js";
+import userFollowingPosts from "../../database/Post/getFollowingPostsByUserId.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 
 const getUserFollowingPost = catchAsyncError(async (req, res, next) => {
@@ -11,11 +11,7 @@ const getUserFollowingPost = catchAsyncError(async (req, res, next) => {
 
   const followingPosts = await userFollowingPosts(userId, { limit, skip });
 
-  res.json({
-    message: "user following posts",
-    page,
-    data: followingPosts,
-  });
+  res.json(followingPosts);
 });
 
 export default getUserFollowingPost;

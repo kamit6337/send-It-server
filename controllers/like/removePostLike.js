@@ -1,10 +1,9 @@
-import Like from "../../models/LikeModel.js";
-import Post from "../../models/PostModel.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
-
 import { v4 as uuidv4 } from "uuid";
 import { removeLikeIO } from "../../socketIO/like.js";
+import removeLike from "../../database/Like/removeLike.js";
+import updatePostLikeCount from "../../database/Post/updatePostLikeCount.js";
 
 const removePostLike = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
@@ -15,20 +14,9 @@ const removePostLike = catchAsyncError(async (req, res, next) => {
     return next(new HandleGlobalError("PostId is required", 404));
   }
 
-  const like = Like.deleteOne({ user: userId, post: postId });
+  const like = removeLike(userId, postId);
 
-  const decrease = Post.findOneAndUpdate(
-    {
-      _id: postId,
-    },
-    {
-      $inc: { likeCount: -1 },
-    },
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  const decrease = updatePostLikeCount(postId, -1);
 
   await Promise.all([like, decrease]);
 

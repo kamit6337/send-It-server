@@ -9,7 +9,7 @@ const isUserSavePost = catchAsyncDBError(async (userId, postId) => {
 
   const saved = await Save.exists({ user: userId, post: postId });
 
-  await createPostSave(userId, postId, saved);
+  await createPostSave(userId, postId, !!saved);
 
   return !!saved;
 });

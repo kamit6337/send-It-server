@@ -35,3 +35,34 @@ export const createPostLike = async (userId, postId, liked) => {
     3600
   );
 };
+
+export const updatePostLike = async (userId, postId, like) => {
+  const findPost = await checkPostLike(userId, postId);
+
+  if (!findPost) {
+    await createPostLike(userId, postId, like);
+    return;
+  }
+
+  const get = await redisClient.get(`mine-like-post:${userId}`);
+
+  const allPosts = JSON.parse(get);
+
+  const updateSinglePost = allPosts.map((obj) => {
+    if (obj.post === postId) {
+      const newObj = {
+        ...obj,
+        isLiked: like,
+      };
+      return newObj;
+    }
+    return obj;
+  });
+
+  await redisClient.set(
+    `mine-like-post:${userId}`,
+    JSON.stringify([...updateSinglePost]),
+    "EX",
+    3600
+  );
+};

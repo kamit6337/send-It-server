@@ -1,8 +1,8 @@
-import Post from "../../models/PostModel.js";
-import Save from "../../models/SaveModel.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import { v4 as uuidv4 } from "uuid";
 import { removeSaveIO } from "../../socketIO/save.js";
+import updatePostSaveCount from "../../database/Post/updatePostSaveCount.js";
+import removeSave from "../../database/Save/removeSave.js";
 
 const removeSavedPost = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
@@ -13,20 +13,9 @@ const removeSavedPost = catchAsyncError(async (req, res, next) => {
     return next(new HandleGlobalError("PostId is required", 404));
   }
 
-  const like = Save.deleteOne({ user: userId, post: postId });
+  const like = removeSave(userId, postId);
 
-  const decrease = Post.findOneAndUpdate(
-    {
-      _id: postId,
-    },
-    {
-      $inc: { saveCount: -1 },
-    },
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  const decrease = updatePostSaveCount(postId, -1);
 
   await Promise.all([like, decrease]);
 

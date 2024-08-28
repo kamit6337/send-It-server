@@ -6,15 +6,15 @@ import {
 import catchAsyncDBError from "../../utils/catchAsyncDBError.js";
 
 const postDetails = catchAsyncDBError(async (postId) => {
-  const cachedPostDetails = await getCachedPostDetails(postId);
+  // const cachedPostDetails = await getCachedPostDetails(postId);
 
-  if (cachedPostDetails) return cachedPostDetails;
+  // if (cachedPostDetails) return cachedPostDetails;
 
   const post = await Post.findOne({ _id: postId })
     .select("_id replyCount likeCount viewCount saveCount retweetCount")
     .lean();
 
-  await setPostDetails(postId, post);
+  // await setPostDetails(postId, post);
 
   return post;
 });

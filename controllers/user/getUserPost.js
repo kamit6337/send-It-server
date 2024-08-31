@@ -9,16 +9,9 @@ const getUserPost = catchAsyncError(async (req, res, next) => {
     return next(HandleGlobalError("Id needs to be provided", 403));
   }
 
-  const limit = 20;
-  const skip = (page - 1) * limit;
+  const posts = await userPosts(id, page);
 
-  const posts = await userPosts(id, { limit, skip });
-
-  res.json({
-    message: "user posts",
-    page,
-    data: posts,
-  });
+  res.json(posts);
 });
 
 export default getUserPost;

@@ -27,11 +27,7 @@ const getPostReplies = catchAsyncError(async (req, res, next) => {
       },
     });
 
-  res.json({
-    message: "Post replies",
-    page,
-    data: replies,
-  });
+  res.json(replies);
 });
 
 export default getPostReplies;

@@ -1,12 +1,12 @@
 import Reply from "../../models/ReplyModel.js";
-import { checkPostReply, createPostReply } from "../../redis/Reply/index.js";
+// import { checkPostReply, createPostReply } from "../../redis/Reply/index.js";
 import catchAsyncDBError from "../../utils/catchAsyncDBError.js";
 import ObjectID from "../../utils/ObjectID.js";
 
 const isUserReplyThisPost = catchAsyncDBError(async (userId, postId) => {
-  const checkReply = await checkPostReply(userId, postId);
+  // const checkReply = await checkPostReply(userId, postId);
 
-  if (checkReply) return checkReply.isReplied;
+  // if (checkReply) return checkReply.isReplied;
 
   const result = await Reply.aggregate([
     {
@@ -46,9 +46,9 @@ const isUserReplyThisPost = catchAsyncDBError(async (userId, postId) => {
 
   const hasMatchingReply = result.length > 0 && result[0].hasMatchingReply;
 
-  await createPostReply(userId, postId, hasMatchingReply);
+  // await createPostReply(userId, postId, !!hasMatchingReply);
 
-  return hasMatchingReply;
+  return !!hasMatchingReply;
 });
 
 export default isUserReplyThisPost;

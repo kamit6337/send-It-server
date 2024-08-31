@@ -1,5 +1,5 @@
-import Post from "../../models/PostModel.js";
-import { sendNewPostIO } from "../../socketIO/post.js";
+import updatePostDB from "../../database/Post/updatePostDB.js";
+import { updatePostIO } from "../../socketIO/post.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
 
@@ -23,18 +23,7 @@ const updatePost = catchAsyncError(async (req, res, next) => {
   if (duration) obj.duration = duration;
   if (thumbnail) obj.thumbnail = thumbnail;
 
-  const post = await Post.findOneAndUpdate(
-    {
-      _id: id,
-    },
-    {
-      ...obj,
-    },
-    {
-      new: true,
-      runValidators: true,
-    }
-  ).lean();
+  const post = await updatePostDB(user, id, obj);
 
   const newObj = {
     ...post,
@@ -46,7 +35,7 @@ const updatePost = catchAsyncError(async (req, res, next) => {
     },
   };
 
-  sendNewPostIO(newObj);
+  updatePostIO(newObj);
 
   res.json({
     message: "Post updated",

@@ -19,11 +19,7 @@ const getUserFollowing = catchAsyncError(async (req, res, next) => {
     limit,
   });
 
-  res.json({
-    message: "user following",
-    page: page,
-    data: followingAggregate,
-  });
+  res.json(followingAggregate);
 });
 
 export default getUserFollowing;

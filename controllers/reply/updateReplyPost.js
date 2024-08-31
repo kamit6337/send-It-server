@@ -1,6 +1,6 @@
-import Post from "../../models/PostModel.js";
-import Reply from "../../models/ReplyModel.js";
-import { sendNewReplyIO } from "../../socketIO/reply.js";
+import updatePostDB from "../../database/Post/updatePostDB.js";
+import getReplyByReplyPostID from "../../database/Reply/getReplyByReplyPostID.js";
+import { sendUpdatedReplyIO } from "../../socketIO/reply.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
 
@@ -21,25 +21,14 @@ const updateReplyPost = catchAsyncError(async (req, res, next) => {
     );
   }
 
-  const findReply = await Reply.findOne({ replyPost: id }).lean();
+  const findReply = await getReplyByReplyPostID(id);
 
   const obj = {};
 
   if (message) obj.message = message;
   if (media) obj.media = media;
 
-  const updatePost = await Post.findOneAndUpdate(
-    {
-      _id: id,
-    },
-    {
-      ...obj,
-    },
-    {
-      new: true,
-      runValidators: true,
-    }
-  ).lean();
+  const updatePost = await updatePostDB(id, obj);
 
   const replyObj = {
     ...findReply,
@@ -54,11 +43,10 @@ const updateReplyPost = catchAsyncError(async (req, res, next) => {
     },
   };
 
-  sendNewReplyIO(replyObj);
+  sendUpdatedReplyIO(replyObj);
 
   res.json({
     message: "Reply Post updated",
-    data: findReply.post,
   });
 });
 

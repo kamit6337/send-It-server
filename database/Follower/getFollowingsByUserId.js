@@ -1,22 +1,32 @@
-import {
-  getCachedUserFollowings,
-  setCachedUserFollwings,
-} from "../../redis/Follower/index.js";
+// import {
+//   getCachedUserFollowings,
+//   setCachedUserFollwings,
+// } from "../../redis/Follower/index.js";
+import Follower from "../../models/FollowerModel.js";
 import ObjectID from "../../utils/ObjectID.js";
 import catchAsyncDBError from "../../utils/catchAsyncDBError.js";
 
 const getFollowingsByUserId = catchAsyncDBError(
   async (id, userId, { skip, limit }) => {
-    const followings = await getCachedUserFollowings(id, { limit, skip });
+    // const followings = await getCachedUserFollowings(id, { limit, skip });
 
-    if (followings) return followings;
+    // if (followings) return followings;
 
     const followingAggregate = await Follower.aggregate([
       {
         $match: {
-          user: { $ne: ObjectID(id) }, // Exclude the user themselves from the following list
-          follower: ObjectID(id), // Current user's followers
+          user: { $ne: ObjectID(id) },
+          follower: ObjectID(id),
         },
+      },
+      {
+        $sort: { createdAt: -1 },
+      },
+      {
+        $skip: skip,
+      },
+      {
+        $limit: limit,
       },
       {
         $lookup: {
@@ -50,12 +60,6 @@ const getFollowingsByUserId = catchAsyncDBError(
         },
       },
       {
-        $skip: skip,
-      },
-      {
-        $limit: limit,
-      },
-      {
         $lookup: {
           from: "users", // Assuming the users collection name is 'users'
           localField: "user",
@@ -77,8 +81,6 @@ const getFollowingsByUserId = catchAsyncDBError(
         },
       },
     ]);
-
-    await setCachedUserFollwings(id, followingAggregate);
 
     return followingAggregate;
   }

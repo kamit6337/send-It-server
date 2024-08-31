@@ -1,4 +1,4 @@
-import User from "../../models/UserModel.js";
+import getUserBySearch from "../../database/User/getUserBySearch.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
 
@@ -10,18 +10,9 @@ const getSearchUser = catchAsyncError(async (req, res, next) => {
     return next(new HandleGlobalError("Please provide search text", 404));
   }
 
-  const users = await User.find({
-    $or: [
-      { name: { $regex: new RegExp(search, "i") } },
-      { username: { $regex: new RegExp(search, "i") } },
-    ],
-    _id: { $ne: userId },
-  });
+  const users = await getUserBySearch(userId, search);
 
-  res.json({
-    message: "Searched user",
-    data: users,
-  });
+  res.json(users);
 });
 
 export default getSearchUser;

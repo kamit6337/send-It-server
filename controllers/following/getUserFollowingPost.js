@@ -6,10 +6,7 @@ const getUserFollowingPost = catchAsyncError(async (req, res, next) => {
 
   const { page = 1 } = req.query;
 
-  const limit = 20;
-  const skip = (page - 1) * limit;
-
-  const followingPosts = await userFollowingPosts(userId, { limit, skip });
+  const followingPosts = await userFollowingPosts(userId, page);
 
   res.json(followingPosts);
 });

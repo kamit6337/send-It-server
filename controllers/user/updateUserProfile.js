@@ -23,10 +23,7 @@ const updateUserProfile = catchAsyncError(async (req, res, next) => {
 
   const user = await patchUserProfile(userId, obj);
 
-  res.json({
-    message: "Updated",
-    data: user,
-  });
+  res.json(user);
 });
 
 export default updateUserProfile;

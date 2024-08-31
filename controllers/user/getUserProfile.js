@@ -28,7 +28,7 @@ const getUserProfile = catchAsyncError(async (req, res, next) => {
 
   const followingCount = userFollowingsCount(findUser._id.toString());
 
-  const findFollowing = amIFollowThisUser(userId, findUser._id.toString());
+  const findFollowing = amIFollowThisUser(findUser._id.toString(), userId);
 
   const [followers, following, isFollowed] = await Promise.all([
     followerCount,
@@ -40,13 +40,10 @@ const getUserProfile = catchAsyncError(async (req, res, next) => {
     ...findUser,
     followersCount: followers,
     followingCount: following,
-    isFollowed: isFollowed,
+    isFollowed: !!isFollowed,
   };
 
-  res.json({
-    message: "user profile",
-    data: obj,
-  });
+  res.json(obj);
 });
 
 export default getUserProfile;

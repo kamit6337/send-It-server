@@ -13,7 +13,7 @@ const getSinglePost = catchAsyncError(async (req, res, next) => {
 
   const post = await singlePost(userId, id);
 
-  res.json(post[0]);
+  res.json(post);
 });
 
 export default getSinglePost;

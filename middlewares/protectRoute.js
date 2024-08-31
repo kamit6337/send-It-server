@@ -13,7 +13,9 @@ const protectRoute = catchAsyncError(async (req, res, next) => {
 
   const decoded = decrypt(_use);
 
-  const findUser = await User.findById(decoded.id);
+  const findUser = await User.findById(decoded.id)
+    .select("_id name username photo")
+    .lean();
 
   if (!findUser) {
     return next(

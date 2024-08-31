@@ -14,8 +14,8 @@ const createPostLike = catchAsyncError(async (req, res, next) => {
     return next(new HandleGlobalError("PostId is required", 404));
   }
 
-  const like = createLike(userId, postId);
   const increase = updatePostLikeCount(postId, 1);
+  const like = createLike(userId, postId);
 
   await Promise.all([like, increase]);
 

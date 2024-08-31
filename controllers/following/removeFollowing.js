@@ -1,24 +1,33 @@
-import Follower from "../../models/FollowerModel.js";
+import deleteFollowing from "../../database/Follower/deleteFollowing.js";
+import { deleteFollowingIO } from "../../socketIO/following.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
 
 const removeFollowing = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
 
-  const { id: followingId } = req.query;
+  const { id: followingId, username } = req.query;
 
-  if (!followingId) {
+  if (!followingId || !username) {
     return next(new HandleGlobalError("Follwing ID must be provided", 404));
   }
 
-  const following = await Follower.deleteOne({
-    user: followingId,
-    follower: userId,
-  });
+  await deleteFollowing(userId, followingId);
+
+  const obj = {
+    user: {
+      _id: followingId,
+      username,
+    },
+    follower: {
+      _id: userId,
+    },
+  };
+
+  deleteFollowingIO(obj);
 
   res.json({
     message: "New Following",
-    data: following,
   });
 });
 

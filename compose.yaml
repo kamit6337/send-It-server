@@ -22,7 +22,7 @@ services:
       - .env
     depends_on:
       - redis # Ensure Redis starts before the worker
-    command: node worker.js # Command to run the worker script
+    command: npm run worker # Command to run the worker script
     # You can adjust this path based on where your worker entry point is located
 
   redis:

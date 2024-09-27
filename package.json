@@ -7,6 +7,7 @@
   "scripts": {
     "start": "node  --import ./utils/instrument.mjs index.js",
     "dev": "nodemon --legacy-watch index.js",
+    "worker": "nodemon --legacy-watch worker.js",
     "update": "node update/update.js",
     "crypto": "node update/generateHexCode.js",
     "test": "jest",

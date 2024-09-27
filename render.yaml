@@ -1,0 +1,34 @@
+services:
+  - name: server
+    type: web # This is the main web service
+    env: docker
+    dockerfilePath: Dockerfile
+    buildCommand: npm install
+    startCommand: npm run dev
+    envVars:
+      - key: NODE_ENV
+        value: production
+    plan: starter # Choose the appropriate plan for your needs
+    healthCheckPath: /
+    healthCheckPort: 8000
+    autoDeploy: true
+    regions: [Singapore] # Optional: Choose region
+
+  - name: worker
+    type: worker # This is a worker service that will run the background tasks
+    env: docker
+    dockerfilePath: Dockerfile
+    buildCommand: npm install
+    startCommand: node worker.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+    plan: starter
+    autoDeploy: true
+    regions: [Singapore]
+
+  - name: redis
+    type: redis # Redis database
+    plan: free # Use Redis free tier or choose based on your needs
+    autoDeploy: true
+    regions: [Singapore]

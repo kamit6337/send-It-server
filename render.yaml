@@ -4,7 +4,6 @@ services:
     env: docker
     dockerfilePath: Dockerfile
     buildCommand: npm install
-    startCommand: npm run dev
     envVars:
       - key: NODE_ENV
         value: production
@@ -16,7 +15,6 @@ services:
     env: docker
     dockerfilePath: Dockerfile
     buildCommand: npm install
-    startCommand: npm run worker
     envVars:
       - key: NODE_ENV
         value: production
@@ -25,3 +23,6 @@ services:
   - name: redis
     type: redis
     plan: starter
+    envVars:
+      - key: REDIS_BIND
+        value: 13.228.225.19,18.142.128.26,54.254.162.138 # Allow these IPs

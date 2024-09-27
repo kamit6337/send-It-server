@@ -12,6 +12,7 @@ import saveRouter from "./routes/saveRoutes.js";
 import searchRouter from "./routes/searchRoutes.js";
 import roomRouter from "./routes/roomRoutes.js";
 import chatRouter from "./routes/chatRoutes.js";
+import viewRouter from "./routes/viewRoutes.js";
 import "./utils/passport.js";
 import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 import HandleGlobalError from "./utils/HandleGlobalError.js";
@@ -30,12 +31,15 @@ app.get("/", (req, res) => {
 io.use(socketAuthMiddleware);
 
 io.on("connection", (socket) => {
-  console.log("New client connected");
-
   socket.on("isConnected", (arg, callback) => {
     console.log(arg);
-
     callback("Yeah, is connected");
+  });
+
+  console.log(`User connected: ${socket.id}`);
+
+  socket.on("keepAlive", (data) => {
+    console.log("Keep-alive ping received:", data);
   });
 
   socket.on("joinRooms", (roomIds) => {
@@ -46,8 +50,8 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
+  socket.on("disconnect", (reason) => {
+    console.log(`User disconnected: ${socket.id}, Reason: ${reason}`);
   });
 });
 
@@ -68,6 +72,7 @@ app.use("/media", protectRoute, mediaRouter);
 app.use("/search", protectRoute, searchRouter);
 app.use("/room", protectRoute, roomRouter);
 app.use("/chat", protectRoute, chatRouter);
+app.use("/view", protectRoute, viewRouter);
 
 // NOTE: The error handler must be registered before any other error middleware and after all controllers
 Sentry.setupExpressErrorHandler(app);

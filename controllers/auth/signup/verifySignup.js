@@ -5,6 +5,7 @@ import {
   decrypt,
   encrypt,
 } from "../../../utils/encryption/encryptAndDecrypt.js";
+import { environment } from "../../../utils/environment.js";
 import HandleGlobalError from "../../../utils/HandleGlobalError.js";
 import createUserName from "../../../utils/javaScript/createUserName.js";
 import Req from "../../../utils/Req.js";
@@ -38,13 +39,15 @@ const verifySignup = catchAsyncError(async (req, res, next) => {
 
   const userName = createUserName(name);
 
-  const createUser = await postCreateUser({
+  const obj = {
     name,
     username: userName,
     email,
     password,
     photo: profilePicUrl,
-  });
+  };
+
+  const createUser = await postCreateUser(obj);
 
   if (!createUser) {
     return next(
@@ -61,9 +64,7 @@ const verifySignup = catchAsyncError(async (req, res, next) => {
 
   res.cookie("_use", token, cookieOptions);
 
-  // res.redirect(`${environment.CLIENT_URL}/flow?username=${userName}`);
   res.json({
-    message: "User verified and account created",
     data: userName,
   });
 });

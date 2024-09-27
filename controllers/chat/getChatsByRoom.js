@@ -1,4 +1,4 @@
-import Chat from "../../models/ChatModel.js";
+import chatsByRoomId from "../../database/Chat/chatsByRoomId.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
 
@@ -9,19 +9,9 @@ const getChatsByRoom = catchAsyncError(async (req, res, next) => {
     return next(new HandleGlobalError("Please provide room id", 404));
   }
 
-  const limit = 50;
-  const skip = (page - 1) * limit;
+  const findChats = await chatsByRoomId(id, page);
 
-  const findChats = await Chat.find({
-    room: id,
-  })
-    .skip(skip)
-    .limit(limit);
-
-  res.json({
-    message: "Chats by Room",
-    data: findChats,
-  });
+  res.json(findChats);
 });
 
 export default getChatsByRoom;

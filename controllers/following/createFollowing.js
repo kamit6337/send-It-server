@@ -1,3 +1,4 @@
+import { sendNotificationAsync } from "../../BullMQ/notification/notificationQueue.js";
 import amIFollowThisUser from "../../database/Follower/amIFollowThisUser.js";
 import newFollowing from "../../database/Follower/newFollowing.js";
 import { sendNewFollowingIO } from "../../socketIO/following.js";
@@ -21,9 +22,13 @@ const createFollowing = catchAsyncError(async (req, res, next) => {
     return next(new HandleGlobalError("You already follow this user", 404));
   }
 
-  await newFollowing(followingId, userId);
+  const promises = [
+    amIFollowThisUser(userId, followingId),
+    newFollowing(followingId, userId),
+    sendNotificationAsync("follow", followingId, userId),
+  ];
 
-  const checkFollow = await amIFollowThisUser(userId, followingId);
+  const [checkFollow] = await Promise.all(promises);
 
   const obj = {
     _id: checkFollow?._id || uuid(),

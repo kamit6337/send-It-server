@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { sendNewSaveIO } from "../../socketIO/save.js";
 import updatePostSaveCount from "../../database/Post/updatePostSaveCount.js";
 import createSave from "../../database/Save/createSave.js";
+import viewCountFunction from "../functions/viewCountFunction.js";
 
 const createNewSave = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
@@ -15,8 +16,9 @@ const createNewSave = catchAsyncError(async (req, res, next) => {
 
   const like = createSave(userId, postId);
   const increase = updatePostSaveCount(postId, 1);
+  const viewCount = viewCountFunction(postId);
 
-  await Promise.all([like, increase]);
+  await Promise.all([like, increase, viewCount]);
 
   const obj = {
     _id: uuidv4(),

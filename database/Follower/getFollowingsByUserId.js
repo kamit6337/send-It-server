@@ -1,17 +1,9 @@
-// import {
-//   getCachedUserFollowings,
-//   setCachedUserFollwings,
-// } from "../../redis/Follower/index.js";
 import Follower from "../../models/FollowerModel.js";
 import ObjectID from "../../utils/ObjectID.js";
 import catchAsyncDBError from "../../utils/catchAsyncDBError.js";
 
 const getFollowingsByUserId = catchAsyncDBError(
   async (id, userId, { skip, limit }) => {
-    // const followings = await getCachedUserFollowings(id, { limit, skip });
-
-    // if (followings) return followings;
-
     const followingAggregate = await Follower.aggregate([
       {
         $match: {

@@ -29,14 +29,16 @@ const OAuthLogin = catchAsyncError(async (req, res, next) => {
     const userName = createUserName(name);
     const photo = await uploadProfileImageToS3(picture);
 
-    const createUser = await postCreateUser({
+    const obj = {
       name,
       username: userName,
       email,
       photo,
       OAuthId: id,
       OAuthProvider: provider,
-    });
+    };
+
+    const createUser = await postCreateUser(obj);
 
     if (!createUser) {
       return next(new HandleGlobalError("Issue in Signup", 404));

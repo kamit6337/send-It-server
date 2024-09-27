@@ -9,6 +9,7 @@ import newPassword from "../controllers/auth/forgot-password/newPassword.js";
 import OAuthLogin from "../controllers/auth/OAuth-login/OAuthLogin.js";
 import logout from "../controllers/auth/general/logout.js";
 import verifySignup from "../controllers/auth/signup/verifySignup.js";
+import resendOtp from "../controllers/auth/signup/resendOtp.js";
 
 const router = express.Router();
 
@@ -20,8 +21,9 @@ router.post("/forgot", forgotPassword);
 router.post("/newPassword", newPassword);
 
 // NOTE: CUSTOM SIGNUP AND LOGIN
-router.post("/signup", signup);
 router.post("/signup/verify", verifySignup);
+router.post("/signup/resendOtp", resendOtp);
+router.post("/signup", signup);
 router.post("/login", login);
 
 // NOTE: OAUTH SIGNUP AND LOGIN

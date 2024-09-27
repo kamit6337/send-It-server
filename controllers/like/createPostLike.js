@@ -4,20 +4,35 @@ import { v4 as uuidv4 } from "uuid";
 import { sendNewLikeIO } from "../../socketIO/like.js";
 import createLike from "../../database/Like/createLike.js";
 import updatePostLikeCount from "../../database/Post/updatePostLikeCount.js";
+import viewCountFunction from "../functions/viewCountFunction.js";
+import { sendNotificationAsync } from "../../BullMQ/notification/notificationQueue.js";
 
 const createPostLike = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
+  const user = req.user;
 
-  const { id: postId } = req.body;
+  const { id: postId, user: postUserId } = req.body;
 
-  if (!postId) {
+  if (!postId || !postUserId) {
     return next(new HandleGlobalError("PostId is required", 404));
   }
 
   const increase = updatePostLikeCount(postId, 1);
   const like = createLike(userId, postId);
+  const viewCount = viewCountFunction(postId);
 
-  await Promise.all([like, increase]);
+  const notificationObj = {
+    post: postId,
+  };
+
+  const notification = sendNotificationAsync(
+    "like",
+    postUserId,
+    user,
+    notificationObj
+  );
+
+  await Promise.all([like, increase, viewCount, notification]);
 
   const obj = {
     _id: uuidv4(),

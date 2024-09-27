@@ -1,8 +1,9 @@
-import Post from "../../models/PostModel.js";
-import Reply from "../../models/ReplyModel.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
 import { sendNewReplyIO } from "../../socketIO/reply.js";
+import createNewPost from "../../database/Post/createNewPost.js";
+import createNewReply from "../../database/Reply/createNewReply.js";
+import viewCountFunction from "../functions/viewCountFunction.js";
 
 const createPostReply = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
@@ -18,20 +19,22 @@ const createPostReply = catchAsyncError(async (req, res, next) => {
     return next(new HandleGlobalError("Message or media is needed", 404));
   }
 
-  const post = await Post.create({
-    user: userId,
+  const obj = {
     message,
     media,
     ofReply: true,
-  });
+  };
 
-  const reply = await Reply.create({
-    user: userId,
-    post: postId,
-    replyPost: post._id.toString(),
-  });
+  const post = await createNewPost(userId, obj);
 
-  const obj = {
+  const promises = [
+    createNewReply(userId, postId, post._id.toString()),
+    viewCountFunction(postId),
+  ];
+
+  const [reply] = await Promise.all(promises);
+
+  const modifyReply = {
     _id: reply._id,
     post: postId,
     replyPost: {
@@ -49,7 +52,7 @@ const createPostReply = catchAsyncError(async (req, res, next) => {
     },
   };
 
-  sendNewReplyIO(obj);
+  sendNewReplyIO(modifyReply);
 
   res.json({
     message: "Reply created",

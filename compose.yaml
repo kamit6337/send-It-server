@@ -11,6 +11,19 @@ services:
       - .env
     depends_on:
       - redis # Ensure Redis starts before the server
+    command: npm run dev # Command to run the server
+
+  worker:
+    build:
+      context: .
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - redis # Ensure Redis starts before the worker
+    command: node worker.js # Command to run the worker script
+    # You can adjust this path based on where your worker entry point is located
 
   redis:
     image: redis/redis-stack:latest

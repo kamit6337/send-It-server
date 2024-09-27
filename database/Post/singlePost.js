@@ -1,15 +1,8 @@
 import Post from "../../models/PostModel.js";
-// import {
-//   getCacheSinglePost,
-//   setCacheSinglePost,
-// } from "../../redis/Post/cacheSinglePost.js";
 import catchAsyncDBError from "../../utils/catchAsyncDBError.js";
 import ObjectID from "../../utils/ObjectID.js";
 
 const singlePost = catchAsyncDBError(async (userId, postId) => {
-  // const cache = await getCacheSinglePost(postId);
-  // if (cache) return cache;
-
   const post = await Post.aggregate([
     {
       $match: {
@@ -71,8 +64,6 @@ const singlePost = catchAsyncDBError(async (userId, postId) => {
       },
     },
   ]);
-
-  // await setCacheSinglePost(postId, post[0]);
 
   return post[0];
 });

@@ -1,16 +1,9 @@
 import Follower from "../../models/FollowerModel.js";
-// import {
-//   getCachedUserFollwers,
-//   setCachedUserFollwers,
-// } from "../../redis/Follower/index.js";
 import catchAsyncDBError from "../../utils/catchAsyncDBError.js";
 import ObjectID from "../../utils/ObjectID.js";
 
 const getFollowersByUserId = catchAsyncDBError(
   async (userId, id, { limit, skip }) => {
-    // const followers = await getCachedUserFollwers(id, { limit, skip });
-    // if (followers) return followers;
-
     const followersAggregate = await Follower.aggregate([
       {
         $match: {
@@ -80,8 +73,6 @@ const getFollowersByUserId = catchAsyncDBError(
         },
       },
     ]);
-
-    // await setCachedUserFollwers(id, followersAggregate);
 
     return followersAggregate;
   }

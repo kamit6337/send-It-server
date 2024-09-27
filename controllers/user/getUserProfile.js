@@ -4,6 +4,11 @@ import getUserByUsername from "../../database/User/getUserByUsername.js";
 import userFollowersCount from "../../database/Follower/userFollowersCount.js";
 import userFollowingsCount from "../../database/Follower/userFollowingsCount.js";
 import amIFollowThisUser from "../../database/Follower/amIFollowThisUser.js";
+import userPostCount from "../../database/Post/userPostCount.js";
+import userLikeCount from "../../database/Like/userLikeCount.js";
+import userReplyCount from "../../database/Reply/userReplyCount.js";
+import userMediaPostCount from "../../database/Post/userMediaPostCount.js";
+import userSavePostCount from "../../database/Save/userSavePostCount.js";
 
 const getUserProfile = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
@@ -30,10 +35,34 @@ const getUserProfile = catchAsyncError(async (req, res, next) => {
 
   const findFollowing = amIFollowThisUser(findUser._id.toString(), userId);
 
-  const [followers, following, isFollowed] = await Promise.all([
+  const postCount = userPostCount(userId);
+
+  const likePostCount = userLikeCount(userId);
+
+  const replyPostCount = userReplyCount(userId);
+
+  const mediaPostCount = userMediaPostCount(userId);
+
+  const savePostCount = userSavePostCount(userId);
+
+  const [
+    followers,
+    following,
+    isFollowed,
+    userPosts,
+    likePosts,
+    replyPosts,
+    mediaPosts,
+    savePosts,
+  ] = await Promise.all([
     followerCount,
     followingCount,
     findFollowing,
+    postCount,
+    likePostCount,
+    replyPostCount,
+    mediaPostCount,
+    savePostCount,
   ]);
 
   const obj = {
@@ -41,6 +70,11 @@ const getUserProfile = catchAsyncError(async (req, res, next) => {
     followersCount: followers,
     followingCount: following,
     isFollowed: !!isFollowed,
+    userPosts,
+    likePosts,
+    replyPosts,
+    mediaPosts,
+    savePosts,
   };
 
   res.json(obj);

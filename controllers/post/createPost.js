@@ -12,14 +12,30 @@ const createPost = catchAsyncError(async (req, res, next) => {
     return next(new HandleGlobalError("All fields is required", 404));
   }
 
-  const post = await createNewPost(user, {
+  const obj = {
     message,
     media,
     duration,
     thumbnail,
-  });
+  };
 
-  sendNewPostIO(post);
+  const post = await createNewPost(user._id, obj);
+
+  const modifyPost = {
+    _id: post._id,
+    message: post.message,
+    media: post.media,
+    user: {
+      _id: user._id,
+      username: user.username,
+      name: user.name,
+      photo: user.photo,
+    },
+    createdAt: post.createdAt,
+    updatedAt: post.updatedAt,
+  };
+
+  sendNewPostIO(modifyPost);
 
   res.json({
     message: "Post created",

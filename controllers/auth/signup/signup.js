@@ -1,9 +1,8 @@
+import { sendEmailAsync } from "../../../BullMQ/otp/otpQueue.js";
 import getUserByEmail from "../../../database/User/getUserByEmail.js";
 import HandleGlobalError from "../../../utils/HandleGlobalError.js";
 import catchAsyncError from "../../../utils/catchAsyncError.js";
 import cookieOptions from "../../../utils/cookieOptions.js";
-import sendingEmail from "../../../utils/email/email.js";
-import otpTemplate from "../../../utils/email/otpTemplate.js";
 import { encrypt } from "../../../utils/encryption/encryptAndDecrypt.js";
 import generate8digitOTP from "../../../utils/javaScript/generate8digitOTP.js";
 
@@ -27,9 +26,7 @@ const signup = catchAsyncError(async (req, res, next) => {
 
   const otp = generate8digitOTP();
 
-  const html = otpTemplate(otp);
-
-  await sendingEmail(email, "OTP for verification", html);
+  await sendEmailAsync(email, otp);
 
   const token = encrypt({
     otp,

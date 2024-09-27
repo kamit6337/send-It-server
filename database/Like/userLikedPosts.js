@@ -1,15 +1,8 @@
 import Like from "../../models/LikeModel.js";
-// import {
-//   getCachedUserLikedPosts,
-//   setUserLikedPosts,
-// } from "../../redis/Post/index.js";
 import catchAsyncDBError from "../../utils/catchAsyncDBError.js";
 import ObjectID from "../../utils/ObjectID.js";
 
 const userLikedPosts = catchAsyncDBError(async (userId, { limit, skip }) => {
-  // const cachedPosts = await getCachedUserLikedPosts(userId, { limit, skip });
-  // if (cachedPosts) return cachedPosts;
-
   const posts = await Like.aggregate([
     {
       $match: {
@@ -94,8 +87,6 @@ const userLikedPosts = catchAsyncDBError(async (userId, { limit, skip }) => {
       $replaceRoot: { newRoot: "$post" }, // Replace root to make "post" the root object
     },
   ]);
-
-  // await setUserLikedPosts(userId, posts);
 
   return posts;
 });

@@ -7,7 +7,7 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-    plan: starter # Choose the appropriate plan for your needs
+    plan: free # Choose the appropriate plan for your needs
     healthCheckPath: /
 
   - name: worker
@@ -18,11 +18,11 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-    plan: starter
+    plan: free
 
   - name: redis
     type: redis
-    plan: starter
+    plan: free
     ipAllowList: # Required
       - source: 0.0.0.0/0
         description: everywhere

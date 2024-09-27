@@ -10,8 +10,6 @@ services:
         value: production
     plan: starter # Choose the appropriate plan for your needs
     healthCheckPath: /
-    healthCheckPort: 8000
-    regions: [Singapore]
 
   - name: worker
     type: worker # This is a worker service that will run the background tasks
@@ -23,13 +21,7 @@ services:
       - key: NODE_ENV
         value: production
     plan: starter
-    regions: [Singapore]
 
   - name: redis
     type: redis
-    image: redis:latest
     plan: starter
-    autoDeploy: true
-    regions: [Singapore]
-    ports:
-      - 6379:6379

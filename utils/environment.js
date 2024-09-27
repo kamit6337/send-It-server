@@ -19,4 +19,5 @@ export const environment = {
   AWS_S3_ACCESS_KEY_SECRET: process.env.AWS_S3_ACCESS_KEY_SECRET,
   AWS_S3_REGION: process.env.AWS_S3_REGION,
   AWS_S3_BUCKET: process.env.AWS_S3_BUCKET,
+  REDIS_URL: process.env.REDIS_URL,
 };

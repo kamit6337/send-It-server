@@ -5,24 +5,27 @@ const notificationSchema = new Schema(
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     sender: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     type: {
+      type: String,
       enum: ["like", "reply", "follow"],
       required: [true, "Notification type is a must"],
     },
     post: {
       type: Schema.Types.ObjectId,
       ref: "Post",
-      default: "",
+      default: null,
     },
     replyPost: {
       type: Schema.Types.ObjectId,
       ref: "Post",
-      default: "",
+      default: null,
     },
   },
   {

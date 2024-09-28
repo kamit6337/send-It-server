@@ -27,6 +27,10 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello from the server" });
 });
 
+app.get("/health", (req, res) => {
+  res.json({ message: "Server Health is fine" });
+});
+
 // NOTE: SOCKET CONNECTION
 io.use(socketAuthMiddleware);
 

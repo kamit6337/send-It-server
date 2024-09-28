@@ -9,3 +9,10 @@ services:
         value: production
     plan: free # Choose the appropriate plan for your needs
     healthCheckPath: /
+
+  - name: redis
+    type: redis
+    plan: free
+    ipAllowList: # Required
+      - source: 0.0.0.0/0
+        description: everywhere

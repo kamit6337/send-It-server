@@ -9,20 +9,3 @@ services:
         value: production
     plan: free # Choose the appropriate plan for your needs
     healthCheckPath: /
-
-  - name: worker
-    type: worker # This is a worker service that will run the background tasks
-    env: docker
-    dockerfilePath: Dockerfile
-    buildCommand: npm install
-    envVars:
-      - key: NODE_ENV
-        value: production
-    plan: free
-
-  - name: redis
-    type: redis
-    plan: free
-    ipAllowList: # Required
-      - source: 0.0.0.0/0
-        description: everywhere

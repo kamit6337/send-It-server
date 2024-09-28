@@ -1,6 +1,7 @@
-import { sendEmailAsync } from "../../../BullMQ/otp/otpQueue.js";
 import catchAsyncError from "../../../utils/catchAsyncError.js";
 import cookieOptions from "../../../utils/cookieOptions.js";
+import sendingEmail from "../../../utils/email/email.js";
+import otpTemplate from "../../../utils/email/otpTemplate.js";
 import {
   decrypt,
   encrypt,
@@ -24,7 +25,8 @@ const resendOtp = catchAsyncError(async (req, res, next) => {
 
   const newOtp = generate8digitOTP();
 
-  await sendEmailAsync(email, newOtp);
+  const html = otpTemplate(newOtp);
+  await sendingEmail(email, "OTP for verification", html);
 
   const token = encrypt({
     otp: newOtp,

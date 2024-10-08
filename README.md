@@ -1,6 +1,6 @@
 # SendIt
 
-<p>It's a Full Stack Social Media Web App build in MERN Stack including live-communication</p>
+<p>It's a Full Stack Social Media Web App build in MERN Stack including real-time communications</p>
 
 You can visit the [Live website](https://commercify-client.vercel.app)
 
@@ -52,22 +52,22 @@ Here are the screenshots of my project:
 
 To run this server locally using Docker Image :
 
-- install Docker Desktop from Docker website and start to run in background
+- install Docker Desktop from [Docker website](https://www.docker.com/products/docker-desktop) and start to run in background
 - create a folder in desktop, open this folder in VS Code
 - create a .env file
 - copy .env.example file variables from above and paste in .env file
 - start filling all environment variables
 
-### All environment variables is necessary to run smoothly and see all functionality except EXPIRES_IN, SENTRY_DSN, REDIS_URL
+### All environment variables is necessary except EXPIRES_IN, SENTRY_DSN, REDIS_URL to run smoothly and see all functionality
 
 - open VS Code terminal
 
 ```
-docker run ---env-file .env -p 8000:8000 kamit6337:sendit-server
+docker run --env-file .env -p 8000:8000 kamit6337:sendit-server
 ```
 
 - server started on http://localhost:8000
 - check by go to url: http://localhost:8000, you will get a response means server is working fine
 
-Thank you,
+Thank you,  
 Amit

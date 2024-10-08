@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
 
 app.get("/health", (req, res) => {
   console.log("CLIENT-URL", environment.CLIENT_URL);
-  res.json({ message: "Server Health is fine" });
+  res.json({ message: "Server Health is fine and good" });
 });
 
 // NOTE: SOCKET CONNECTION

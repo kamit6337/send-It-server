@@ -20,6 +20,7 @@ import globalMiddlewares from "./middlewares/globalMiddlewares.js";
 import protectRoute from "./middlewares/protectRoute.js";
 import socketAuthMiddleware from "./middlewares/socketAuthMiddleware.js";
 import socketConnect from "./lib/socketConnect.js";
+import { environment } from "./utils/environment.js";
 
 const { app, httpServer, io } = socketConnect();
 
@@ -28,6 +29,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/health", (req, res) => {
+  console.log("CLIENT-URL", environment.CLIENT_URL);
   res.json({ message: "Server Health is fine" });
 });
 

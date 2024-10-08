@@ -63,11 +63,8 @@ To run this server locally using Docker Image :
 - open VS Code terminal
 
 ```
-docker run --env-file .env -p 8000:8000 kamit6337:sendit-server
+docker run --env-file .env -p 8000:8000 kamit6337/sendit-server
 ```
 
 - server started on http://localhost:8000
 - check by go to url: http://localhost:8000, you will get a response means server is working fine
-
-Thank you,  
-Amit

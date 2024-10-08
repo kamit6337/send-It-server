@@ -22,9 +22,8 @@ const createPost = catchAsyncError(async (req, res, next) => {
   const post = await createNewPost(user._id, obj);
 
   const modifyPost = {
+    ...obj,
     _id: post._id,
-    message: post.message,
-    media: post.media,
     user: {
       _id: user._id,
       username: user.username,

@@ -3,7 +3,7 @@ import HandleGlobalError from "../../utils/HandleGlobalError.js";
 import { sendNewReplyIO } from "../../socketIO/reply.js";
 import createNewPost from "../../database/Post/createNewPost.js";
 import createNewReply from "../../database/Reply/createNewReply.js";
-import viewCountFunction from "../functions/viewCountFunction.js";
+import updatePostReplyCount from "../../database/Post/updatePostReplyCount.js";
 
 const createPostReply = catchAsyncError(async (req, res, next) => {
   const userId = req.userId;
@@ -29,7 +29,7 @@ const createPostReply = catchAsyncError(async (req, res, next) => {
 
   const promises = [
     createNewReply(userId, postId, post._id.toString()),
-    viewCountFunction(postId),
+    updatePostReplyCount(postId),
   ];
 
   const [reply] = await Promise.all(promises);

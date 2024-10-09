@@ -2,7 +2,7 @@
 
 <p>It's a Full Stack Social Media Web App build in MERN Stack including real-time communications</p>
 
-You can visit the [Live website](https://commercify-client.vercel.app)
+Docker Image : [kamit6337/sendit-server](https://hub.docker.com/repository/docker/kamit6337/sendit-server/general)
 
 ## Table of Contents
 

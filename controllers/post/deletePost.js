@@ -7,10 +7,19 @@ import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
 
 const deletePost = catchAsyncError(async (req, res, next) => {
+  const user = req.user;
   const { id } = req.query;
 
   if (!id) {
     return next(new HandleGlobalError("Id is not provided", 404));
+  }
+
+  const replyPostIds = await Reply.find({ post: id }).lean();
+
+  let ids = [id];
+  if (replyPostIds?.length > 0) {
+    const replyIds = replyPostIds.map((reply) => reply.replyPost);
+    ids = [...ids, ...replyIds];
   }
 
   const promises = [
@@ -20,13 +29,18 @@ const deletePost = catchAsyncError(async (req, res, next) => {
     Like.deleteMany({ post: id }),
     Save.deleteMany({ post: id }),
     Reply.deleteMany({
-      $or: [{ post: id }, { replyPost: id }],
+      $or: [{ post: { $in: ids } }, { replyPost: id }],
     }),
   ];
 
   await Promise.all(promises);
 
-  deletePostIO(id);
+  const obj = {
+    id,
+    username: user.username,
+  };
+
+  deletePostIO(obj);
 
   res.json({
     message: "Post deleted",

@@ -23,7 +23,7 @@ const updatePost = catchAsyncError(async (req, res, next) => {
   if (duration) obj.duration = duration;
   if (thumbnail) obj.thumbnail = thumbnail;
 
-  const post = await updatePostDB(user, id, obj);
+  const post = await updatePostDB(id, obj);
 
   const newObj = {
     ...post,

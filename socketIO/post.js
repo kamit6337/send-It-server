@@ -8,6 +8,6 @@ export const updatePostIO = (obj) => {
   io.emit("updatePost", obj);
 };
 
-export const deletePostIO = (id) => {
-  io.emit("deletePost", id);
+export const deletePostIO = (obj) => {
+  io.emit("deletePost", obj);
 };

@@ -97,4 +97,6 @@ app.all("*", (req, res, next) => {
 //  NOTE: GLOBAL ERROR HANDLER
 app.use(globalErrorHandler);
 
+export { app };
+
 export default httpServer;

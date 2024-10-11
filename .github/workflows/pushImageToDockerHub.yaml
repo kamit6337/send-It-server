@@ -30,6 +30,10 @@ jobs:
       # Step 4: Run tests
       - name: Run tests
         run: npm test
+        env:
+          # Provide environment variables from GitHub Secrets
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+          ENCRYPTION_IV: ${{ secrets.ENCRYPTION_IV }}
 
   build-and-push:
     runs-on: ubuntu-latest

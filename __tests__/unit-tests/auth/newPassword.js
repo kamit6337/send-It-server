@@ -1,10 +1,10 @@
 import newPassword from "../../../controllers/auth/forgot-password/newPassword.js";
-import User from "../../../models/UserModel.js";
+import patchUserProfile from "../../../database/User/patchUserProfile.js";
 import { decrypt } from "../../../utils/encryption/encryptAndDecrypt.js";
 import bcrypt from "bcryptjs";
 
-jest.mock("../../../models/UserModel.js");
 jest.mock("../../../utils/encryption/encryptAndDecrypt.js");
+jest.mock("../../../database/User/patchUserProfile.js");
 jest.mock("bcryptjs");
 
 let req, res, next;
@@ -35,7 +35,7 @@ it("reset password successfully", async () => {
 
   bcrypt.hashSync.mockReturnValue("hashPassword");
 
-  User.findOneAndUpdate.mockResolvedValue("success");
+  patchUserProfile.mockResolvedValue("success");
 
   await newPassword(req, res, next);
 

@@ -1,8 +1,8 @@
 import HandleGlobalError from "../utils/HandleGlobalError.js";
 import catchAsyncError from "../utils/catchAsyncError.js";
-import User from "../models/UserModel.js";
 import Req from "../utils/Req.js";
 import { decrypt } from "../utils/encryption/encryptAndDecrypt.js";
+import getUserById from "../database/User/getUserById.js";
 
 const protectRoute = catchAsyncError(async (req, res, next) => {
   const { _use } = Req(req);
@@ -13,9 +13,7 @@ const protectRoute = catchAsyncError(async (req, res, next) => {
 
   const decoded = decrypt(_use);
 
-  const findUser = await User.findById(decoded.id)
-    .select("_id name username photo")
-    .lean();
+  const findUser = await getUserById(decoded.id);
 
   if (!findUser) {
     return next(

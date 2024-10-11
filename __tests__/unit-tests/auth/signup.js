@@ -1,11 +1,12 @@
 import signup from "../../../controllers/auth/signup/signup.js";
-import User from "../../../models/UserModel.js";
+import getUserByEmail from "../../../database/User/getUserByEmail.js";
+import cookieOptions from "../../../utils/cookieOptions.js";
 import sendingEmail from "../../../utils/email/email.js";
 import otpTemplate from "../../../utils/email/otpTemplate.js";
 import { encrypt } from "../../../utils/encryption/encryptAndDecrypt.js";
 import generate8digitOTP from "../../../utils/javaScript/generate8digitOTP.js";
 
-jest.mock("../../../models/UserModel.js");
+jest.mock("../../../database/User/getUserByEmail.js");
 jest.mock("../../../utils/email/email.js");
 jest.mock("../../../utils/encryption/encryptAndDecrypt.js");
 jest.mock("../../../utils/javaScript/generate8digitOTP.js");
@@ -32,17 +33,15 @@ beforeEach(() => {
 
 // NOTE: USER SIGNED UP SUCCESSFULLY
 it("user signup successfully", async () => {
-  User.findOne.mockResolvedValue(null);
-
-  sendingEmail.mockResolvedValue("success");
-
-  encrypt.mockReturnValue("encryptedData");
+  getUserByEmail.mockResolvedValue(null);
 
   const otp = 45896587;
 
   generate8digitOTP.mockReturnValue(otp);
 
   const html = otpTemplate(otp);
+
+  encrypt.mockReturnValue("encryptedData");
 
   await signup(req, res, next);
 
@@ -56,7 +55,7 @@ it("user signup successfully", async () => {
   expect(res.cookie).toHaveBeenCalledWith(
     "_sig",
     "encryptedData",
-    expect.any(Object)
+    cookieOptions
   );
 
   expect(res.json).toHaveBeenCalledWith({
@@ -79,7 +78,7 @@ it("failed, req.body is empty", async () => {
 
 // NOTE: FAILED, USER ALREADY EXISTS
 it("failed, user already exists", async () => {
-  User.findOne.mockResolvedValue("success");
+  getUserByEmail.mockResolvedValue("success");
 
   await signup(req, res, next);
 

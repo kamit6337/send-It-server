@@ -1,7 +1,7 @@
+import userFollowingPosts from "../../../database/Post/getFollowingPostsByUserId.js";
 import getUserFollowingPost from "../../../controllers/following/getUserFollowingPost.js";
-import userFollowingPosts from "../../../database/Follower/getFollowingsByUserId.js";
 
-jest.mock("../../../database/Follower/getFollowingsByUserId.js");
+jest.mock("../../../database/Post/getFollowingPostsByUserId.js");
 
 let req, res, next;
 
@@ -14,7 +14,6 @@ beforeEach(() => {
   };
 
   res = {
-    status: jest.fn(() => res),
     json: jest.fn(),
   };
 
@@ -38,16 +37,9 @@ it("get user following posts successfully", async () => {
 
   await getUserFollowingPost(req, res, next);
 
-  expect(userFollowingPosts).toHaveBeenCalledWith("userId", {
-    limit: 20,
-    skip: 0,
-  });
+  expect(userFollowingPosts).toHaveBeenCalledWith("userId", 1);
 
-  expect(res.json).toHaveBeenCalledWith({
-    message: "user following posts",
-    page: 1,
-    data: mockData,
-  });
+  expect(res.json).toHaveBeenCalledWith(mockData);
 });
 
 // NOTE: GET USER FOLLOWING POSTS SUCCESSFULLY PAGE 2
@@ -69,14 +61,7 @@ it("get user following posts successfully page 2", async () => {
 
   await getUserFollowingPost(req, res, next);
 
-  expect(userFollowingPosts).toHaveBeenCalledWith("userId", {
-    limit: 20,
-    skip: 20,
-  });
+  expect(userFollowingPosts).toHaveBeenCalledWith("userId", 2);
 
-  expect(res.json).toHaveBeenCalledWith({
-    message: "user following posts",
-    page: 2,
-    data: mockData,
-  });
+  expect(res.json).toHaveBeenCalledWith(mockData);
 });

@@ -9,8 +9,31 @@ on:
       - main
 
 jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Step 2: Setup Node.js environment to run tests
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20" # Specify your Node.js version
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Run tests
+      - name: Run tests
+        run: npm test
+
   build-and-push:
     runs-on: ubuntu-latest
+    needs: test-and-build # Ensures this job runs only after tests pass
 
     steps:
       - name: Checkout repository

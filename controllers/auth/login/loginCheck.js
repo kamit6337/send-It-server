@@ -47,7 +47,7 @@ const loginCheck = catchAsyncError(async (req, res, next) => {
     return next(new HandleGlobalError("Please login again...", 403));
   }
 
-  res.status(200).json({
+  res.json({
     message: "User is present",
     _id: findUser._id,
     name: findUser.name,

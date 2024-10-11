@@ -39,7 +39,7 @@ const signup = catchAsyncError(async (req, res, next) => {
 
   res.cookie("_sig", token, cookieOptions);
 
-  res.status(200).json({
+  res.json({
     message: "Successfull Send OTP to Email",
   });
 });

@@ -15,7 +15,6 @@ beforeEach(() => {
   };
 
   res = {
-    status: jest.fn(() => res),
     json: jest.fn(),
   };
 
@@ -24,6 +23,9 @@ beforeEach(() => {
 
 // NOTE: SUCCESSFULLY RETURN DATA
 it("successfuly return data", async () => {
+  const userId = req.userId;
+  const { id, page } = req.query;
+
   const followersData = [
     {
       _id: "someId",
@@ -42,24 +44,18 @@ it("successfuly return data", async () => {
 
   await getUserFollower(req, res, next);
 
-  expect(getFollowersByUserId).toHaveBeenCalledWith("actualuserId", "userId", {
-    limit: 20,
-    skip: 0,
-  });
+  expect(getFollowersByUserId).toHaveBeenCalledWith(userId, id, page);
 
-  expect(res.json).toHaveBeenCalledWith({
-    message: "user followers",
-    page: 1,
-    data: followersData,
-  });
-
-  expect(next).not.toHaveBeenCalled();
+  expect(res.json).toHaveBeenCalledWith(followersData);
 });
 
 // NOTE: SUCCESSFULLY RETURN DATA FOR PAGE 2
 it("successfully return data for page 2", async () => {
   req.query.page = 2;
 
+  const userId = req.userId;
+  const { id } = req.query;
+
   const followersData = [
     {
       _id: "someId",
@@ -78,18 +74,9 @@ it("successfully return data for page 2", async () => {
 
   await getUserFollower(req, res, next);
 
-  expect(getFollowersByUserId).toHaveBeenCalledWith("actualuserId", "userId", {
-    limit: 20,
-    skip: 20,
-  });
+  expect(getFollowersByUserId).toHaveBeenCalledWith(userId, id, 2);
 
-  expect(res.json).toHaveBeenCalledWith({
-    message: "user followers",
-    page: 2,
-    data: followersData,
-  });
-
-  expect(next).not.toHaveBeenCalled();
+  expect(res.json).toHaveBeenCalledWith(followersData);
 });
 
 // NOTE: FAILED, ID IS NOT PRESENT

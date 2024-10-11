@@ -1,7 +1,7 @@
 import getChatsByRoom from "../../../controllers/chat/getChatsByRoom.js";
-import Chat from "../../../models/ChatModel.js";
+import chatsByRoomId from "../../../database/Chat/chatsByRoomId.js";
 
-jest.mock("../../../models/ChatModel.js");
+jest.mock("../../../database/Chat/chatsByRoomId.js");
 
 let req, res, next;
 
@@ -14,7 +14,6 @@ beforeEach(() => {
   };
 
   res = {
-    status: jest.fn(() => res),
     json: jest.fn(),
   };
 
@@ -23,37 +22,7 @@ beforeEach(() => {
 
 // NOTE: GET CHAT BY ROOM FOR PAGE = 1 SUCCESSFULLY
 it("get chat be room for page = 1 successfully", async () => {
-  const mockChats = [
-    {
-      _id: "chatId",
-      room: "roomId",
-      message: "message",
-    },
-  ];
-
-  const skip = jest.fn().mockReturnThis();
-  const limit = jest.fn().mockResolvedValue(mockChats);
-
-  Chat.find.mockReturnValue({
-    skip,
-    limit,
-  });
-
-  await getChatsByRoom(req, res, next);
-
-  expect(Chat.find).toHaveBeenCalledWith({ room: "roomId" });
-  expect(skip).toHaveBeenCalledWith(0);
-  expect(limit).toHaveBeenCalledWith(50);
-
-  expect(res.json).toHaveBeenCalledWith({
-    message: "Chats by Room",
-    data: mockChats,
-  });
-});
-
-// NOTE: GET CHAT BY ROOM FOR PAGE = 2 SUCCESSFULLY
-it("get chat be room for page = 2 successfully", async () => {
-  req.query.page = 2;
+  const { id, page } = req.query;
 
   const mockChats = [
     {
@@ -63,24 +32,12 @@ it("get chat be room for page = 2 successfully", async () => {
     },
   ];
 
-  const skip = jest.fn().mockReturnThis();
-  const limit = jest.fn().mockResolvedValue(mockChats);
-
-  Chat.find.mockReturnValue({
-    skip,
-    limit,
-  });
+  chatsByRoomId.mockReturnValue(mockChats);
 
   await getChatsByRoom(req, res, next);
 
-  expect(Chat.find).toHaveBeenCalledWith({ room: "roomId" });
-  expect(skip).toHaveBeenCalledWith(50);
-  expect(limit).toHaveBeenCalledWith(50);
-
-  expect(res.json).toHaveBeenCalledWith({
-    message: "Chats by Room",
-    data: mockChats,
-  });
+  expect(chatsByRoomId).toHaveBeenCalledWith(id, page);
+  expect(res.json).toHaveBeenCalledWith(mockChats);
 });
 
 // NOTE: FAILED, DUE TO EMPTY REQ.QUERY

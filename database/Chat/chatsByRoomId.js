@@ -9,8 +9,7 @@ const chatsByRoomId = async (roomId, page) => {
   })
     .sort({ createdAt: -1 })
     .skip(skip)
-    .limit(limit)
-    .lean();
+    .limit(limit);
 
   return findChats;
 };

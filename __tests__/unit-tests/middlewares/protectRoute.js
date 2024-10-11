@@ -1,9 +1,9 @@
+import getUserById from "../../../database/User/getUserById.js";
 import protectRoute from "../../../middlewares/protectRoute.js";
-import User from "../../../models/UserModel.js";
 import { decrypt } from "../../../utils/encryption/encryptAndDecrypt.js";
 import Req from "../../../utils/Req.js";
 
-jest.mock("../../../models/UserModel.js");
+jest.mock("../../../database/User/getUserById.js");
 jest.mock("../../../utils/encryption/encryptAndDecrypt.js");
 jest.mock("../../../utils/Req.js");
 
@@ -25,7 +25,7 @@ it("proceed to next successfully", async () => {
     id: "userId",
   });
 
-  User.findById.mockResolvedValue({
+  getUserById.mockResolvedValue({
     _id: "userId",
     name: "user name",
     email: "user@gmail.com",
@@ -66,7 +66,7 @@ it("failed, due to not find user", async () => {
     id: "userId",
   });
 
-  User.findById.mockResolvedValue(null);
+  getUserById.mockResolvedValue(null);
 
   await protectRoute(req, res, next);
 

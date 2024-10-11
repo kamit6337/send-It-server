@@ -1,10 +1,9 @@
 import loginCheck from "../../../controllers/auth/login/loginCheck.js";
-import User from "../../../models/UserModel.js";
+import getUserById from "../../../database/User/getUserById.js";
 import { decrypt } from "../../../utils/encryption/encryptAndDecrypt.js";
 import Req from "../../../utils/Req.js";
 
-// Mock the external dependencies
-jest.mock("../../../models/UserModel.js");
+jest.mock("../../../database/User/getUserById.js");
 jest.mock("../../../utils/encryption/encryptAndDecrypt.js");
 jest.mock("../../../utils/Req.js");
 
@@ -18,7 +17,6 @@ describe("login check controller", () => {
       },
     };
     res = {
-      status: jest.fn(() => res),
       json: jest.fn(),
     };
     next = jest.fn();
@@ -39,7 +37,7 @@ describe("login check controller", () => {
     });
 
     // Mock the User model's findOne method
-    User.findOne.mockResolvedValue({
+    getUserById.mockResolvedValue({
       _id: "user123",
       name: "John Doe",
       username: "johndoe",
@@ -50,8 +48,6 @@ describe("login check controller", () => {
     });
 
     await loginCheck(req, res, next);
-
-    expect(res.status).toHaveBeenCalledWith(200);
 
     expect(res.json).toHaveBeenCalledWith({
       message: "User is present",
@@ -92,7 +88,7 @@ describe("login check controller", () => {
       exp: Date.now() + 1000 * 60 * 60, // 1 hour from now
     });
 
-    User.findOne.mockResolvedValue(null);
+    getUserById.mockResolvedValue(null);
 
     await loginCheck(req, res, next);
 
@@ -115,7 +111,7 @@ describe("login check controller", () => {
       exp: Date.now() + 15 * 60 * 1000, //15 minutes after
     });
 
-    User.findOne.mockResolvedValue({
+    getUserById.mockResolvedValue({
       _id: "user123",
       name: "John Doe",
       username: "johndoe",
@@ -146,7 +142,7 @@ describe("login check controller", () => {
       exp: Date.now() + 60 * 60 * 1000,
     });
 
-    User.findOne.mockResolvedValue({
+    getUserById.mockResolvedValue({
       _id: "user123",
       name: "John Doe",
       username: "johndoe",

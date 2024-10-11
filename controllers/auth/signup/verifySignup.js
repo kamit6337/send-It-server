@@ -65,7 +65,7 @@ const verifySignup = catchAsyncError(async (req, res, next) => {
   res.cookie("_use", token, cookieOptions);
 
   res.json({
-    data: userName,
+    message: "User verified and account created",
   });
 });
 

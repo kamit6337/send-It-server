@@ -1,7 +1,7 @@
 import getUserFollowing from "../../../controllers/following/getUserFollowing.js";
-import userFollowings from "../../../database/Follower/userFollowings.js";
+import getFollowingsByUserId from "../../../database/Follower/getFollowingsByUserId.js";
 
-jest.mock("../../../database/Follower/userFollowings.js");
+jest.mock("../../../database/Follower/getFollowingsByUserId.js");
 
 let req, res, next;
 
@@ -15,7 +15,6 @@ beforeEach(() => {
   };
 
   res = {
-    status: jest.fn(() => res),
     json: jest.fn(),
   };
 
@@ -32,20 +31,17 @@ it("getting user following successfully", async () => {
     },
   ];
 
-  userFollowings.mockResolvedValue(mockValue);
+  getFollowingsByUserId.mockResolvedValue(mockValue);
 
   await getUserFollowing(req, res, next);
 
-  expect(userFollowings).toHaveBeenCalledWith("userId", "actualUserId", {
-    limit: 20,
-    skip: 0,
-  });
+  expect(getFollowingsByUserId).toHaveBeenCalledWith(
+    "userId",
+    "actualUserId",
+    1
+  );
 
-  expect(res.json).toHaveBeenCalledWith({
-    message: "user following",
-    page: 1,
-    data: mockValue,
-  });
+  expect(res.json).toHaveBeenCalledWith(mockValue);
 });
 
 // NOTE: GETTING USER FOLLOWING SUCCESSFULLY FOR PAGE 2
@@ -60,20 +56,17 @@ it("getting user following successfully for page 2", async () => {
 
   req.query.page = 2;
 
-  userFollowings.mockResolvedValue(mockValue);
+  getFollowingsByUserId.mockResolvedValue(mockValue);
 
   await getUserFollowing(req, res, next);
 
-  expect(userFollowings).toHaveBeenCalledWith("userId", "actualUserId", {
-    limit: 20,
-    skip: 20,
-  });
+  expect(getFollowingsByUserId).toHaveBeenCalledWith(
+    "userId",
+    "actualUserId",
+    2
+  );
 
-  expect(res.json).toHaveBeenCalledWith({
-    message: "user following",
-    page: 2,
-    data: mockValue,
-  });
+  expect(res.json).toHaveBeenCalledWith(mockValue);
 });
 
 // NOTE: FAILED, DUE TO NOT PRESENT OF ID

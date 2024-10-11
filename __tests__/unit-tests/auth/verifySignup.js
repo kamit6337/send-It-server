@@ -1,5 +1,6 @@
 import verifySignup from "../../../controllers/auth/signup/verifySignup.js";
-import User from "../../../models/UserModel.js";
+import postCreateUser from "../../../database/User/postCreateUser.js";
+import cookieOptions from "../../../utils/cookieOptions.js";
 import {
   decrypt,
   encrypt,
@@ -9,7 +10,7 @@ import Req from "../../../utils/Req.js";
 
 jest.mock("../../../utils/javaScript/createUserName.js");
 jest.mock("../../../utils/Req.js");
-jest.mock("../../../models/UserModel.js");
+jest.mock("../../../database/User/postCreateUser.js");
 jest.mock("../../../utils/encryption/encryptAndDecrypt.js");
 
 let req, res, next;
@@ -49,7 +50,7 @@ it("user signup successfully", async () => {
 
   const userName = "user"; // You can mock the expected username value here.
 
-  User.create.mockResolvedValue({
+  postCreateUser.mockResolvedValue({
     _id: "userId",
     role: "user",
   });
@@ -58,19 +59,17 @@ it("user signup successfully", async () => {
 
   await verifySignup(req, res, next);
 
-  // Ensure the cookie is set with the correct token
-  expect(res.clearCookie).toHaveBeenCalledWith("_sig", expect.any(Object));
+  expect(res.clearCookie).toHaveBeenCalledWith("_sig", cookieOptions);
 
   // Ensure the cookie is set with the correct token
   expect(res.cookie).toHaveBeenCalledWith(
     "_use",
     "encryptedData",
-    expect.any(Object)
+    cookieOptions
   );
 
   expect(res.json).toHaveBeenCalledWith({
     message: "User verified and account created",
-    data: userName,
   });
 });
 
@@ -135,7 +134,7 @@ it("failed, user not created", async () => {
     password: "user1234",
   });
 
-  User.create.mockResolvedValue(null);
+  postCreateUser.mockResolvedValue(null);
 
   await verifySignup(req, res, next);
 

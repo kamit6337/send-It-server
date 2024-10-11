@@ -1,11 +1,11 @@
 import forgotPassword from "../../../controllers/auth/forgot-password/forgotPassword.js";
-import User from "../../../models/UserModel.js";
+import getUserByEmail from "../../../database/User/getUserByEmail.js";
 import sendingEmail from "../../../utils/email/email.js";
 import { encrypt } from "../../../utils/encryption/encryptAndDecrypt.js";
 
-jest.mock("../../../models/UserModel.js");
 jest.mock("../../../utils/email/email.js");
 jest.mock("../../../utils/encryption/encryptAndDecrypt.js");
+jest.mock("../../../database/User/getUserByEmail.js");
 
 let req, res, next;
 
@@ -26,7 +26,7 @@ beforeEach(() => {
 
 // NOTE: SUCCESSFULLY SEND EMAIL
 it("send email successfully", async () => {
-  User.findOne.mockResolvedValue({
+  getUserByEmail.mockResolvedValue({
     _id: "user1234",
     name: "user",
     email: "user@gmail.com",
@@ -60,7 +60,7 @@ it("failed, not present of email", async () => {
 
 // NOTE: FAILED, DUE TO NOT FIND USER BASED ON EMAIL
 it("failed, not find user based on email", async () => {
-  User.findOne.mockResolvedValue(null);
+  getUserByEmail.mockResolvedValue(null);
 
   await forgotPassword(req, res, next);
 

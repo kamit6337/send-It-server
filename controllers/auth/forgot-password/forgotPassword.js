@@ -33,9 +33,9 @@ const forgotPassword = catchAsyncError(async (req, res, next) => {
     15 * 60 * 1000 //15 minutes
   );
 
-  const otpUrl = `${environment.CLIENT_URL}/newPassword?token=${token}&email=${email}`;
+  const url = `${environment.CLIENT_URL}/newPassword?token=${token}&email=${email}`;
 
-  const html = resetPasswordLinkTemplate(otpUrl);
+  const html = resetPasswordLinkTemplate(url);
 
   await sendingEmail(email, "Reset Password Link", html);
 

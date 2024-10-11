@@ -11,13 +11,7 @@ const getUserFollower = catchAsyncError(async (req, res, next) => {
     return next(new HandleGlobalError("Pleae provide user id", 404));
   }
 
-  const limit = 20;
-  const skip = (page - 1) * limit;
-
-  const followersAggregate = await getFollowersByUserId(userId, id, {
-    limit,
-    skip,
-  });
+  const followersAggregate = await getFollowersByUserId(userId, id, page);
 
   res.json(followersAggregate);
 });

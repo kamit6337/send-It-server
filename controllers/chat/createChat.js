@@ -1,4 +1,4 @@
-import Chat from "../../models/ChatModel.js";
+import newChatCreate from "../../database/Chat/newChatCreate.js";
 import { sendNewPostIO } from "../../socketIO/chat.js";
 import catchAsyncError from "../../utils/catchAsyncError.js";
 import HandleGlobalError from "../../utils/HandleGlobalError.js";
@@ -18,12 +18,14 @@ const createChat = catchAsyncError(async (req, res, next) => {
     );
   }
 
-  const chat = await Chat.create({
+  const obj = {
     room: roomId,
     sender: userId,
     message,
     media,
-  });
+  };
+
+  const chat = await newChatCreate(obj);
 
   sendNewPostIO(roomId, chat);
 

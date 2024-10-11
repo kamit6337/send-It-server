@@ -1,13 +1,17 @@
 import OAuthLogin from "../../../controllers/auth/OAuth-login/OAuthLogin.js";
-import User from "../../../models/UserModel.js";
+import getUserByEmail from "../../../database/User/getUserByEmail.js";
+import postCreateUser from "../../../database/User/postCreateUser.js";
+import uploadProfileImageToS3 from "../../../lib/uploadProfileImageToS3.js";
+import cookieOptions from "../../../utils/cookieOptions.js";
 import { encrypt } from "../../../utils/encryption/encryptAndDecrypt.js";
 import { environment } from "../../../utils/environment.js";
 import createUserName from "../../../utils/javaScript/createUserName.js";
 
 jest.mock("../../../utils/javaScript/createUserName.js");
-jest.mock("../../../models/UserModel.js");
+jest.mock("../../../lib/uploadProfileImageToS3.js");
+jest.mock("../../../database/User/getUserByEmail.js");
+jest.mock("../../../database/User/postCreateUser.js");
 jest.mock("../../../utils/encryption/encryptAndDecrypt.js");
-jest.mock("../../../utils/environment.js");
 
 let req, res, next;
 
@@ -36,7 +40,7 @@ beforeEach(() => {
 
 // NOTE: USER LOGGED IN WHEN CREATED PREVIOUSLY
 it("OAuth-login, user logged in when create previously successsfully", async () => {
-  User.findOne.mockResolvedValue({
+  getUserByEmail.mockResolvedValue({
     _id: "userId",
     role: "user",
   });
@@ -48,7 +52,7 @@ it("OAuth-login, user logged in when create previously successsfully", async () 
   expect(res.cookie).toHaveBeenCalledWith(
     "_use",
     "encryptedToken",
-    expect.any(Object)
+    cookieOptions
   );
 
   expect(res.redirect).toHaveBeenCalledWith(environment.CLIENT_URL);
@@ -56,13 +60,15 @@ it("OAuth-login, user logged in when create previously successsfully", async () 
 
 // NOTE: USER LOGGED IN WITH CREATED
 it("OAuth-login, user logged in with create user successsfully", async () => {
-  User.findOne.mockResolvedValue(null);
+  getUserByEmail.mockResolvedValue(null);
 
   createUserName.mockReturnValue("user");
 
   const userName = "user";
 
-  User.create.mockResolvedValue({
+  uploadProfileImageToS3.mockResolvedValue("aws-s3-url");
+
+  postCreateUser.mockResolvedValue({
     _id: "userId",
     role: "user",
   });
@@ -74,7 +80,7 @@ it("OAuth-login, user logged in with create user successsfully", async () => {
   expect(res.cookie).toHaveBeenCalledWith(
     "_use",
     "encryptedToken",
-    expect.any(Object)
+    cookieOptions
   );
 
   expect(res.redirect).toHaveBeenCalledWith(
@@ -97,11 +103,11 @@ it("failed, due to empty req.user", async () => {
 
 // NOTE: FAILED DUE TO USER NOT CREATED SUCCESSFULLY
 it("failed, due to user not created successfully", async () => {
-  User.findOne.mockResolvedValue(null);
+  getUserByEmail.mockResolvedValue(null);
 
   createUserName.mockReturnValue("user");
 
-  User.create.mockResolvedValue(null);
+  postCreateUser.mockResolvedValue(null);
 
   await OAuthLogin(req, res, next);
 

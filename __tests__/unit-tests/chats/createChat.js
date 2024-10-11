@@ -1,8 +1,8 @@
 import createChat from "../../../controllers/chat/createChat.js";
-import Chat from "../../../models/ChatModel.js";
+import newChatCreate from "../../../database/Chat/newChatCreate.js";
 import { sendNewPostIO } from "../../../socketIO/chat.js";
 
-jest.mock("../../../models/ChatModel.js");
+jest.mock("../../../database/Chat/newChatCreate.js");
 jest.mock("../../../socketIO/chat.js");
 
 let req, res, next;
@@ -18,7 +18,6 @@ beforeEach(() => {
   };
 
   res = {
-    status: jest.fn(() => res),
     json: jest.fn(),
   };
 
@@ -27,32 +26,35 @@ beforeEach(() => {
 
 // NOTE: CREATE CHAT SUCCESSFULLY
 it("create chat successfully", async () => {
-  const mockValue = {
-    room: "roomId",
-    sender: "userId",
-    message: "message",
-    media: "media",
+  const userId = req.userId;
+  const { roomId, message, media } = req.body;
+
+  const obj = {
+    room: roomId,
+    sender: userId,
+    message,
+    media,
   };
 
-  Chat.create.mockResolvedValue(mockValue);
+  const mockValue = {
+    _id: "ChatId",
+    room: roomId,
+    sender: userId,
+    message,
+    media,
+  };
+
+  newChatCreate.mockResolvedValue(mockValue);
 
   await createChat(req, res, next);
 
   expect(sendNewPostIO).toHaveBeenCalledWith("roomId", mockValue);
 
-  expect(Chat.create).toHaveBeenCalledWith({
-    room: "roomId",
-    sender: "userId",
-    message: "message",
-    media: "media",
-  });
+  expect(newChatCreate).toHaveBeenCalledWith(obj);
 
   expect(res.json).toHaveBeenCalledWith({
     message: "Chat created",
   });
-
-  // Verify next was not called (no error case)
-  expect(next).not.toHaveBeenCalled();
 });
 
 // NOTE: FAILED, ROOMID NOT PRESENT

@@ -2,6 +2,8 @@
 
 <p>It's a Full Stack Social Media Web App build in MERN Stack including real-time communications</p>
 
+[Preview](https://amit-general-bucket.s3.ap-south-1.amazonaws.com/videos/send-it.mp4)
+
 Docker Image : [kamit6337/sendit-server](https://hub.docker.com/repository/docker/kamit6337/sendit-server/general)
 
 ## Table of Contents

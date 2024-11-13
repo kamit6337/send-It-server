@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/node";
 import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import postRouter from "./routes/postRoutes.js";
@@ -20,7 +19,6 @@ import globalMiddlewares from "./middlewares/globalMiddlewares.js";
 import protectRoute from "./middlewares/protectRoute.js";
 import socketAuthMiddleware from "./middlewares/socketAuthMiddleware.js";
 import socketConnect from "./lib/socketConnect.js";
-import { environment } from "./utils/environment.js";
 
 const { app, httpServer, io } = socketConnect();
 
@@ -29,7 +27,6 @@ app.get("/", (req, res) => {
 });
 
 app.get("/health", (req, res) => {
-  console.log("CLIENT-URL", environment.CLIENT_URL);
   res.json({ message: "Server Health is fine and good" });
 });
 
@@ -79,9 +76,6 @@ app.use("/search", protectRoute, searchRouter);
 app.use("/room", protectRoute, roomRouter);
 app.use("/chat", protectRoute, chatRouter);
 app.use("/view", protectRoute, viewRouter);
-
-// NOTE: The error handler must be registered before any other error middleware and after all controllers
-Sentry.setupExpressErrorHandler(app);
 
 // NOTE: UNIDENTIFIED ROUTES
 app.all("*", (req, res, next) => {

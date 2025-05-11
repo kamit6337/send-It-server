@@ -1,0 +1,9 @@
+type Mutation {
+  loginUser(email: String!, password: String!): String!
+  signUpUserInitial(name: String!, email: String!, password: String!): String!
+  signUpUserFinal(otp: String!, email: String!): String!
+  forgotPassword(email: String!): String!
+  otpVerification(otp: String!, email: String!): String!
+  newPassword(email: String!, password: String!): String!
+  resendOtp(email: String!): String!
+}

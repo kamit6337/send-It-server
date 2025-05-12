@@ -23,7 +23,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: Build the Docker image
-        run: docker build -t kamit6337/<project-name>:latest .
+        run: docker build -t kamit6337/sendit-server:latest .
 
       - name: Push the Docker image to Docker Hub
-        run: docker push kamit6337/<project-name>:latest
+        run: docker push kamit6337/sendit-server:latest

@@ -1,0 +1,26 @@
+type URL {
+  timestamp: Int!
+  signature: String!
+  apiKey: String!
+  folder: String!
+  eager: String!
+  url: String!
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum FOLDER {
+  THUMBNAIL
+  PROFILE
+  PROFILE_BG
+}
+
+type Query {
+  getMediaUrlForPosts(type: MediaType!): URL!
+  getMediaUrl(folder: FOLDER!): URL!
+  getMediaUrlForProfile: URL!
+  getMediaUrlForChats(type: MediaType!): URL!
+}

@@ -3,5 +3,5 @@ type User {
   name: String!
   email: String!
   photo: String!
-  role: String!
+  role: String
 }

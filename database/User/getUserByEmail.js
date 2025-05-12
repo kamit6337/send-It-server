@@ -5,6 +5,10 @@ import {
 } from "../../redis/User/user.js";
 
 const getUserByEmail = async (email) => {
+  if (!email) {
+    throw new Error("Email is not provided");
+  }
+
   const get = await getUserByEmailRedis(email);
 
   if (get) {

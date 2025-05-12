@@ -1,0 +1,49 @@
+type Post {
+  _id: ID!
+  message: String!
+  media: String!
+  thumbnail: String!
+  duration: Int!
+  ofReply: Boolean!
+  createdAt: Date!
+  updatedAt: Date!
+  user: User!
+}
+
+type PostDetail {
+  _id: ID!
+  replyCount: Int!
+  likeCount: Int!
+  viewCount: Int!
+  saveCount: Int!
+  retweetCount: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  user: User!
+  isFollow: Boolean!
+  isLiked: Boolean!
+  isSaved: Boolean!
+}
+
+type Query {
+  getSinglePost(id: ID!): Post!
+
+  createPost(
+    message: String
+    media: String
+    duration: Int
+    thumbnail: String
+  ): Post!
+
+  updatePost(
+    id: ID!
+    message: String
+    media: String
+    duration: Int
+    thumbnail: String
+  ): Post!
+
+  deletePost(id: ID!): String!
+
+  getPostDetails(id: ID!): PostDetail!
+}

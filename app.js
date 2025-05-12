@@ -8,6 +8,7 @@ import typeDefs from "./graphql/typeDefs.js";
 import resolvers from "./graphql/resolvers.js";
 import cors from "cors";
 import unIdentifiedUrlError from "./middlewares/unIdentifiedUrlError.js";
+import socketAuthMiddleware from "./middlewares/socketAuthMiddleware.js";
 import socketConnect from "./lib/socketConnect.js";
 import newConnection from "./sockets/newConnection.js";
 import joinRooms from "./sockets/joinRooms.js";

@@ -26,7 +26,7 @@ const OAuthLogin = catchAsyncError(async (req, res, next) => {
 
       let uploadedPicture = picture;
 
-      uploadedPicture = await uploadImageByURL();
+      uploadedPicture = await uploadImageByURL(picture);
 
       const obj = {
         name,
@@ -34,6 +34,7 @@ const OAuthLogin = catchAsyncError(async (req, res, next) => {
         photo: uploadedPicture,
         OAuthId: id,
         OAuthProvider: provider,
+        passwordLastUpdated: new Date(),
       };
 
       const createUser = await postCreateUser(obj);
@@ -48,7 +49,7 @@ const OAuthLogin = catchAsyncError(async (req, res, next) => {
         role: createUser.role,
       });
 
-      res.redirect(`${environment.CLIENT_URL}/oauth?use=${token}`);
+      res.redirect(`${environment.CLIENT_URL}/oauth?token=${token}`);
       return;
     }
 
@@ -58,7 +59,7 @@ const OAuthLogin = catchAsyncError(async (req, res, next) => {
       role: findUser.role,
     });
 
-    res.redirect(`${environment.CLIENT_URL}/oauth?use=${token}`);
+    res.redirect(`${environment.CLIENT_URL}/oauth?token=${token}`);
   } catch (error) {
     console.log("Error in OAuth Login", error);
     res.redirect(`${environment.CLIENT_URL}/oauth`);

@@ -1,7 +1,7 @@
 import catchGraphQLError from "../../lib/catchGraphQLError.js";
 import uploadImageByFormData from "../../lib/cloudinary/uploadImageByFormData.js";
 import uploadVideoByFormData from "../../lib/cloudinary/uploadVideoByFormData.js";
-import Req from "../../lib/Req";
+import Req from "../../lib/Req.js";
 
 const getMediaUrlForChats = catchGraphQLError(
   async (parent, args, contextValue) => {

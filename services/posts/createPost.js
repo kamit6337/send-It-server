@@ -25,8 +25,12 @@ const createPost = catchGraphQLError(async (parent, args, contextValue) => {
 
   const response = {
     ...createPostResult,
-    user: findUser,
-    isFollow: false,
+    user: {
+      _id: findUser._id,
+      name: findUser.name,
+      email: findUser.email,
+      photo: findUser.photo,
+    },
   };
 
   io.to(findUser._id?.toString()).emit("new-post", response);

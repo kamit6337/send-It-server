@@ -10,7 +10,7 @@ const postCreateUser = async (obj) => {
     ...obj,
   });
 
-  await setUserIntoRedis(createUser);
+  // await setUserIntoRedis(createUser);
 
   return createUser;
 };

@@ -1,0 +1,13 @@
+scalar Date
+
+type Post {
+  _id: ID!
+  message: String!
+  media: String!
+  thumbnail: String
+  duration: Int
+  ofReply: Boolean
+  createdAt: Date!
+  updatedAt: Date!
+  user: User!
+}

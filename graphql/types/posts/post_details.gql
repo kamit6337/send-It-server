@@ -1,0 +1,16 @@
+scalar Date
+
+type PostDetail {
+  _id: ID!
+  replyCount: Int!
+  likeCount: Int!
+  viewCount: Int!
+  saveCount: Int!
+  retweetCount: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  user: User!
+  isFollow: Boolean!
+  isLiked: Boolean!
+  isSaved: Boolean!
+}

@@ -6,16 +6,16 @@ const getUserById = async (userId) => {
     throw new Error("UserId is not provided");
   }
 
-  const get = await getUserByIdRedis(userId);
-  if (get) {
-    return get;
-  }
+  // const get = await getUserByIdRedis(userId);
+  // if (get) {
+  //   return get;
+  // }
 
   const findUser = await User.findOne({
     _id: userId,
   });
 
-  await setUserIntoRedis(findUser);
+  // await setUserIntoRedis(findUser);
 
   return findUser;
 };

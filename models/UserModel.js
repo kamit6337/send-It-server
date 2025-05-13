@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import validation from "validator";
 import { hashUserPassword } from "../lib/bcrypt.js";
+import Follower from "../models/FollowerModel.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -28,6 +29,27 @@ const userSchema = new mongoose.Schema(
     photo: {
       type: String,
       default: [true, "Please provide pic"],
+      trim: true,
+    },
+    bg_photo: {
+      type: String,
+      default: "",
+      select: false,
+      trim: true,
+    },
+    bio: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+    location: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+    website: {
+      type: String,
+      default: "",
       trim: true,
     },
     OAuthId: {
@@ -61,6 +83,15 @@ userSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
     await hashUserPassword(this); // Hash only if password is modified.
   }
+
+  next();
+});
+
+userSchema.pre("save", async function (next) {
+  await Follower.create({
+    user: this._id,
+    follower: this._id,
+  });
 
   next();
 });

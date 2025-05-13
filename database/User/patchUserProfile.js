@@ -22,7 +22,7 @@ const patchUserProfile = async (userId, obj) => {
     }
   );
 
-  await setUserIntoRedis(user);
+  // await setUserIntoRedis(user);
 
   return user;
 };

@@ -1,0 +1,18 @@
+type Mutation {
+  createPost(
+    message: String
+    media: String
+    duration: Int
+    thumbnail: String
+  ): Post!
+
+  updatePost(
+    id: ID!
+    message: String
+    media: String
+    duration: Int
+    thumbnail: String
+  ): Post!
+
+  deletePost(id: ID!): String!
+}

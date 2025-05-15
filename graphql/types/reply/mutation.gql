@@ -1,0 +1,9 @@
+type Mutation {
+  createPostReply(
+    postId: ID!
+    message: String
+    media: String
+    duration: Int
+    thumbnail: String
+  ): Post!
+}

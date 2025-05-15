@@ -20,8 +20,8 @@ const getFollowingPostsByUserId = async (userId, page) => {
       },
     },
     { $unwind: "$posts" },
-    { $match: { "posts.ofReply": false } },
-    { $sort: { "posts.createdAt": -1 } },
+    { $match: { "posts.replyPostId": null } },
+    { $sort: { "posts.updatedAt": -1 } },
     { $skip: skip },
     { $limit: limit },
     {

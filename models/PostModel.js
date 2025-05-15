@@ -46,9 +46,10 @@ const postSchema = new Schema(
       type: Number,
       default: 0,
     },
-    ofReply: {
-      type: Boolean,
-      default: false,
+    replyPostId: {
+      type: Schema.Types.ObjectId,
+      ref: "Post",
+      default: null,
     },
   },
   {
@@ -58,6 +59,7 @@ const postSchema = new Schema(
 
 postSchema.index({ user: 1 });
 postSchema.index({ _id: 1 });
+postSchema.index({ replyPostId: 1 });
 
 const Post = model("Post", postSchema);
 

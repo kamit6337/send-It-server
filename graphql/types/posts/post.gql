@@ -6,7 +6,7 @@ type Post {
   media: String!
   thumbnail: String
   duration: Int
-  ofReply: Boolean
+  replyPostId: String
   createdAt: Date!
   updatedAt: Date!
   user: User!

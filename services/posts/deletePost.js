@@ -1,6 +1,5 @@
 import deleteLikesByPostIdDB from "../../database/Like/deleteLikesByPostIdDB.js";
 import deletePostDB from "../../database/Post/deletePostDB.js";
-import deleteReplyByPostIdDB from "../../database/Reply/deleteReplyByPostIdDB.js";
 import deleteSavesByPostIdDB from "../../database/Save/deleteSavesByPostIdDB.js";
 import catchGraphQLError from "../../lib/catchGraphQLError.js";
 import Req from "../../lib/Req.js";
@@ -16,7 +15,6 @@ const deletePost = catchGraphQLError(async (parent, args, contextValue) => {
     deletePostDB(id),
     deleteLikesByPostIdDB(id),
     deleteSavesByPostIdDB(id),
-    deleteReplyByPostIdDB(id),
   ];
 
   await Promise.all(promises);

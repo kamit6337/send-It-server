@@ -1,0 +1,30 @@
+type UserProfile {
+  _id: ID!
+  name: String!
+  email: String!
+  photo: String!
+  bg_photo: String
+  bio: String!
+  location: String!
+  website: String!
+  followersCount: Int!
+  followingCount: Int!
+  isFollowed: Boolean!
+  userPosts: Int!
+  likePosts: Int!
+  replyPosts: Int!
+  mediaPosts: Int!
+  savePosts: Int!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Query {
+  getUserProfile(email: String!): UserProfile!
+
+  getUserPosts(userId: ID!, page: Int!): [Post]!
+
+  getUserLikePosts(userId: ID!, page: Int!): [Post]!
+
+  getUserSavePosts(userId: ID!, page: Int!): [Post]!
+}

@@ -1,0 +1,3 @@
+type Query {
+  getPostReplies(postId: ID!, page: Int!): [Post]!
+}

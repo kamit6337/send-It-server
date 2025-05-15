@@ -1,0 +1,4 @@
+type Mutation {
+  updatePostLike(toggle: Boolean!, id: ID!): String!
+  updatePostSave(toggle: Boolean!, id: ID!): String!
+}

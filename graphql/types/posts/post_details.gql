@@ -2,6 +2,7 @@ scalar Date
 
 type PostDetail {
   _id: ID!
+  user: User!
   replyCount: Int!
   likeCount: Int!
   viewCount: Int!
@@ -9,7 +10,6 @@ type PostDetail {
   retweetCount: Int!
   createdAt: Date!
   updatedAt: Date!
-  user: User!
   isFollow: Boolean!
   isLiked: Boolean!
   isSaved: Boolean!

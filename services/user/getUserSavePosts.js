@@ -6,9 +6,9 @@ const getUserSavePosts = catchGraphQLError(
   async (parent, args, contextValue) => {
     const findUser = await Req(contextValue.req);
 
-    const { userId, page } = args;
+    const { page } = args;
 
-    const result = await getUserSavePostsDB(userId, page);
+    const result = await getUserSavePostsDB(findUser._id, page);
 
     return result;
   }

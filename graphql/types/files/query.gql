@@ -7,20 +7,15 @@ type URL {
   url: String!
 }
 
-enum MediaType {
-  IMAGE
-  VIDEO
-}
-
 enum FOLDER {
+  POST
+  CHAT
   THUMBNAIL
   PROFILE
   PROFILE_BG
 }
 
 type Query {
-  getMediaUrlForPosts(type: MediaType!): URL!
-  getMediaUrl(folder: FOLDER!): URL!
-  getMediaUrlForProfile: URL!
-  getMediaUrlForChats(type: MediaType!): URL!
+  getMediaUrlForImage(folder: FOLDER!): URL!
+  getMediaUrlForVideo(folder: FOLDER!): URL!
 }

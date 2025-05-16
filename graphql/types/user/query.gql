@@ -24,7 +24,13 @@ type Query {
 
   getUserPosts(userId: ID!, page: Int!): [Post]!
 
-  getUserLikePosts(userId: ID!, page: Int!): [Post]!
+  getUserMediaPosts(userId: ID!, page: Int!): [Post]!
 
-  getUserSavePosts(userId: ID!, page: Int!): [Post]!
+  getUserReplyPosts(userId: ID!, page: Int!): [Reply_Post]!
+
+  getUserLikePosts(page: Int!): [Post]!
+
+  getUserSavePosts(page: Int!): [Post]!
+
+  getUserSearch(search: String!): [User]!
 }

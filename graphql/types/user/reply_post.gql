@@ -1,0 +1,11 @@
+type Reply_Post {
+  _id: ID!
+  message: String!
+  media: String!
+  thumbnail: String
+  duration: Int
+  replyPostId: Post!
+  createdAt: Date!
+  updatedAt: Date!
+  user: User!
+}

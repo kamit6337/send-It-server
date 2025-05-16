@@ -1,0 +1,4 @@
+type Mutation {
+  createNewFollowing(userId: ID!): String!
+  removeSingleFollowing(userId: ID!): String!
+}

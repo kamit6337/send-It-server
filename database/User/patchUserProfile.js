@@ -20,7 +20,7 @@ const patchUserProfile = async (userId, obj) => {
       new: true,
       runValidators: true,
     }
-  );
+  ).lean();
 
   // await setUserIntoRedis(user);
 

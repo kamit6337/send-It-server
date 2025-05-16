@@ -1,0 +1,23 @@
+type User_Bio {
+  _id: ID!
+  name: String!
+  email: String!
+  photo: String!
+  bg_photo: String
+  bio: String!
+  location: String!
+  website: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Mutation {
+  updateUserProfile(
+    name: String!
+    photo: String!
+    bg_photo: String!
+    bio: String!
+    location: String!
+    website: String!
+  ): User_Bio!
+}

@@ -5,6 +5,7 @@ import postsResolvers from "./resolvers/posts.js";
 import likeAndSaveResolvers from "./resolvers/likeAndSave.js";
 import replyResolvers from "./resolvers/reply.js";
 import userResolvers from "./resolvers/user.js";
+import followersResolvers from "./resolvers/followers.js";
 
 const resolversArray = [
   authResolvers,
@@ -13,6 +14,7 @@ const resolversArray = [
   likeAndSaveResolvers,
   replyResolvers,
   userResolvers,
+  followersResolvers,
 ];
 
 const resolvers = mergeResolvers(resolversArray);

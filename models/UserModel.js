@@ -87,13 +87,18 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.pre("save", async function (next) {
-  await Follower.create({
-    user: this._id,
-    follower: this._id,
-  });
+userSchema.post("save", async function (doc, next) {
+  try {
+    await Follower.create({
+      user: doc._id,
+      follower: doc._id,
+    });
 
-  next();
+    next();
+  } catch (error) {
+    console.error("Failed to create self-follower:", err);
+    next(err); // optionally pass error, or just call next() if not critical
+  }
 });
 
 const User = mongoose.model("User", userSchema);

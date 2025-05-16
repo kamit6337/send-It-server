@@ -1,0 +1,12 @@
+type Follower {
+  _id: ID!
+  name: String!
+  email: String!
+  photo: String!
+  isFollowed: Boolean!
+}
+
+type Query {
+  getUserFollowers(userId: ID!, page: Int!): [Follower]!
+  getUserFollowings(userId: ID!, page: Int!): [Follower]!
+}

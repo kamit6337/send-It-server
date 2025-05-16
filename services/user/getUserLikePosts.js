@@ -6,9 +6,9 @@ const getUserLikePosts = catchGraphQLError(
   async (parent, args, contextValue) => {
     const findUser = await Req(contextValue.req);
 
-    const { userId, page } = args;
+    const { page } = args;
 
-    const result = await getUserLikePostsDB(userId, page);
+    const result = await getUserLikePostsDB(findUser._id, page);
 
     return result;
   }

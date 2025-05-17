@@ -28,7 +28,12 @@ const updatePost = catchGraphQLError(async (parent, args, contextValue) => {
 
   const response = {
     ...post,
-    user: findUser,
+    user: {
+      _id: findUser._id,
+      name: findUser.name,
+      email: findUser.email,
+      photo: findUser.photo,
+    },
   };
 
   io.emit("update-post", response);

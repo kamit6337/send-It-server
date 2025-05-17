@@ -33,7 +33,7 @@ const createPost = catchGraphQLError(async (parent, args, contextValue) => {
     },
   };
 
-  io.to(findUser._id?.toString()).emit("new-post", response);
+  io.emit("new-post", response);
 
   return response;
 });

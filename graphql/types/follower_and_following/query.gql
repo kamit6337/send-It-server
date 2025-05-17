@@ -9,4 +9,5 @@ type Follower {
 type Query {
   getUserFollowers(userId: ID!, page: Int!): [Follower]!
   getUserFollowings(userId: ID!, page: Int!): [Follower]!
+  isCurrentUserFollow(userId: ID!): Boolean!
 }

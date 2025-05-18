@@ -1,0 +1,12 @@
+scalar Date
+
+type Room {
+  _id: ID
+  users: [User!]
+  createdAt: Date
+  updatedAt: Date
+}
+
+type Query {
+  getUserRooms: [Room]!
+}

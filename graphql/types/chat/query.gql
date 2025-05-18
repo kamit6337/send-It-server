@@ -1,0 +1,13 @@
+type Chat {
+  _id: String!
+  room: String!
+  sender: String!
+  message: String!
+  media: String!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+type Query {
+  getRoomChats(roomId: ID!, page: Int!): [Chat]!
+}

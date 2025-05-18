@@ -1,12 +1,10 @@
 import mongoose from "mongoose";
 import { environment } from "../utils/environment.js";
-import Category from "../models/CategoryModel.js";
-import categoryDataDB from "../data/categoryDataDB.js";
-import productData from "../data/productData.js";
-import Product from "../models/ProductModel.js";
-import Address from "../models/AddressModel.js";
-import Buy from "../models/BuyModel.js";
-import categoryData from "../data/categoryData.js";
+import User from "../models/UserModel.js";
+import Post from "../models/PostModel.js";
+import Like from "../models/LikeModel.js";
+import Save from "../models/SaveModel.js";
+import Follower from "../models/FollowerModel.js";
 
 mongoose.connect(environment.MONGO_DB_URI);
 
@@ -23,11 +21,17 @@ mongoose.connection.on("connected", async () => {
   console.log("Connected to MongoDB");
 
   try {
-    const deleteAddress = await Address.deleteMany({
-      user: null,
-    });
+    const deleteAllUser = await User.deleteMany();
+    const deleteAllPost = await Post.deleteMany();
+    const deleteAllLike = await Like.deleteMany();
+    const deleteAllSave = await Save.deleteMany();
+    const deleteAllFollower = await Follower.deleteMany();
 
-    console.log("deleteAddress", deleteAddress);
+    console.log("deleteAllUser", deleteAllUser);
+    console.log("deleteAllPost", deleteAllPost);
+    console.log("deleteAllLike", deleteAllLike);
+    console.log("deleteAllSave", deleteAllSave);
+    console.log("deleteAllFollower", deleteAllFollower);
 
     mongoose.connection.close();
   } catch (error) {

@@ -34,7 +34,6 @@ const userSchema = new mongoose.Schema(
     bg_photo: {
       type: String,
       default: "",
-      select: false,
       trim: true,
     },
     bio: {

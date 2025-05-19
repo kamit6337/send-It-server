@@ -3,7 +3,7 @@ type User_Bio {
   name: String!
   email: String!
   photo: String!
-  bg_photo: String
+  bg_photo: String!
   bio: String!
   location: String!
   website: String!

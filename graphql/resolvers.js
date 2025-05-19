@@ -8,6 +8,7 @@ import userResolvers from "./resolvers/user.js";
 import followersResolvers from "./resolvers/followers.js";
 import roomResolvers from "./resolvers/room.js";
 import chatResolvers from "./resolvers/chat.js";
+import notificationResolvers from "./resolvers/notification.js";
 
 const resolversArray = [
   authResolvers,
@@ -19,6 +20,7 @@ const resolversArray = [
   followersResolvers,
   roomResolvers,
   chatResolvers,
+  notificationResolvers,
 ];
 
 const resolvers = mergeResolvers(resolversArray);

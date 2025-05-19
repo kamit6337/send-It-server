@@ -13,6 +13,7 @@ import socketConnect from "./lib/socketConnect.js";
 import newConnection from "./sockets/newConnection.js";
 import joinRooms from "./sockets/joinRooms.js";
 import onDisconnect from "./sockets/onDisconnect.js";
+import "./queues/notificationQueues/followQueue.js";
 
 const { app, httpServer, io } = socketConnect();
 

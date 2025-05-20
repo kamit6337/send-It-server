@@ -14,6 +14,11 @@ const notificationSchema = new Schema(
       ref: "User",
       required: true,
     },
+    type: {
+      type: String,
+      enum: ["like", "reply", "follower", "message"],
+      required: [true, "Notification type is a must"],
+    },
     sender: [
       {
         type: Schema.Types.ObjectId,
@@ -21,18 +26,13 @@ const notificationSchema = new Schema(
         required: true,
       },
     ],
-    followers: {
+    totalSenders: {
       type: Number,
       default: 0,
     },
     isRead: {
       type: Boolean,
       default: false,
-    },
-    type: {
-      type: String,
-      enum: ["like", "reply", "follower", "message"],
-      required: [true, "Notification type is a must"],
     },
     post: {
       type: Schema.Types.ObjectId,

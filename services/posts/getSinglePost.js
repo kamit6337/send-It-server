@@ -7,7 +7,7 @@ const getSinglePost = catchGraphQLError(async (parent, args, contextValue) => {
 
   const { id } = args;
 
-  const result = await getSinglePostDB(findUser._id, id);
+  const result = await getSinglePostDB(id);
   return result;
 });
 

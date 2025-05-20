@@ -5,7 +5,7 @@ import getUserById from "../../database/User/getUserById.js";
 import catchGraphQLError from "../../lib/catchGraphQLError.js";
 import Req from "../../lib/Req.js";
 import socketConnect from "../../lib/socketConnect.js";
-import { addFollowJob } from "../../queues/notificationQueues/followQueue.js";
+import { addFollowJob } from "../../queues/notificationQueues/followerQueue.js";
 
 const createNewFollowing = catchGraphQLError(
   async (parent, args, contextValue) => {
@@ -40,8 +40,6 @@ const createNewFollowing = catchGraphQLError(
       email: findUser.email,
       photo: findUser.photo,
     });
-
-    console.log("comes here");
 
     return "Followed Sucessfully";
   }

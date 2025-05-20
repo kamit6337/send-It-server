@@ -1,20 +1,16 @@
-type Notofication_Post {
-  _id: String!
-  user: String!
-  message: String
-  media: String
-}
-
 type Notification {
   _id: String!
   user: String!
-  sender: [User!]!
-  isRead: Boolean!
   type: String!
-  post: Notofication_Post
-  replyPost: Notofication_Post
+  message: String!
+  sender: [User!]!
+  totalSenders: Int!
+  isRead: Boolean!
+  post: String
+  room: String
 }
 
 type Query {
-  getUserNotifications: [Notification]!
+  getUserNotifications(page: Int!): [Notification]!
+  getUserNotificationCount: Int!
 }

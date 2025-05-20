@@ -1,8 +1,8 @@
 import Post from "../../models/PostModel.js";
 import ObjectID from "../../lib/ObjectID.js";
 
-const getSinglePostDB = async (userId, postId) => {
-  if (!userId || !postId) {
+const getSinglePostDB = async (postId) => {
+  if (!postId) {
     throw new Error("UserId or PostId is not provided");
   }
 
@@ -31,8 +31,8 @@ const getSinglePostDB = async (userId, postId) => {
         createdAt: 1, // Include the post's creation date
         updatedAt: 1, // Include the post's update date
         "user._id": 1,
-        "user.email": 1,
         "user.name": 1,
+        "user.email": 1,
         "user.photo": 1,
       },
     },

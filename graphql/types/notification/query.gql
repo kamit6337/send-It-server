@@ -1,3 +1,10 @@
+type Notification_Post {
+  _id: ID
+  user: String
+  message: String
+  media: String
+}
+
 type Notification {
   _id: String!
   user: String!
@@ -6,7 +13,7 @@ type Notification {
   sender: [User!]!
   totalSenders: Int!
   isRead: Boolean!
-  post: String
+  post: Notification_Post
   room: String
 }
 

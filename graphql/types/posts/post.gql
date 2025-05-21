@@ -9,5 +9,5 @@ type Post {
   replyPostId: String
   createdAt: Date!
   updatedAt: Date!
-  user: User!
+  user: String | User!
 }

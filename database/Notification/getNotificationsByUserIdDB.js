@@ -20,6 +20,9 @@ const getNotificationsByUserIdDB = async (userId, page) => {
         path: "sender",
         select: "_id name email photo",
       },
+      {
+        path: "post",
+      },
     ])
     .lean();
 

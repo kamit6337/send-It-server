@@ -18,6 +18,8 @@ const getUserNotifications = catchGraphQLError(
       };
     });
 
+    console.log("addMessageToNotifications", addMessageToNotifications);
+
     return addMessageToNotifications;
   }
 );

@@ -6,6 +6,7 @@ import uniqueObjectFromArray from "../../utils/javaScript/uniqueObjectFromArray.
 import filterFollowerIds from "../../utils/javaScript/filterFollowerIds.js";
 import notificationMsg from "../../utils/javaScript/notificationMsg.js";
 import getNotificationCountByUserIdDB from "../../database/Notification/getNotificationCountByUserIdDB.js";
+import createNewNotificationDB from "../../database/Notification/createNewNotificationDB.js";
 
 // BullMQ connection — don't use this for native Redis commands
 const bullConnection = redisClient.duplicate();
@@ -58,12 +59,16 @@ const worker = new Worker(
 
         const savingFollowerIds = filterFollowerIds(followerIds);
 
-        const newNotification = await Notification.create({
+        const newNotificationObj = {
           user: userId,
           type: "follower",
           sender: savingFollowerIds,
           totalSenders: followerIds.length,
-        });
+        };
+
+        const newNotification = await createNewNotificationDB(
+          newNotificationObj
+        );
 
         console.log("new notification", newNotification);
 
@@ -97,15 +102,15 @@ const worker = new Worker(
 
 // --- Worker Events ---
 worker.on("completed", (job) => {
-  console.log(`[Worker] Job ${job.id} completed`);
+  console.log(`[Worker] Job ${job.id} Follower completed`);
 });
 
 worker.on("failed", (job, err) => {
-  console.error(`[Worker] Job ${job.id} failed:`, err);
+  console.error(`[Worker] Job ${job.id} Follower failed:`, err);
 });
 
 worker.on("error", (err) => {
-  console.error(`[Worker] Worker error:`, err);
+  console.error(`[Worker] Worker Follower error:`, err);
 });
 
 console.log("[Worker] Follow batch worker started");

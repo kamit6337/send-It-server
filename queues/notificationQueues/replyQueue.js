@@ -5,6 +5,7 @@ import socketConnect from "../../lib/socketConnect.js";
 import Notification from "../../models/NotificationModel.js";
 import notificationMsg from "../../utils/javaScript/notificationMsg.js";
 import getNotificationCountByUserIdDB from "../../database/Notification/getNotificationCountByUserIdDB.js";
+import createNewNotificationDB from "../../database/Notification/createNewNotificationDB.js";
 
 // BullMQ connection — don't use this for native Redis commands
 const bullConnection = redisClient.duplicate();
@@ -80,15 +81,15 @@ const worker = new Worker(
 
             const savingSenderIds = filterFollowerIds(allSenderIds);
 
-            const newNotification = Notification.create({
+            const newNotificationObj = {
               user: userId,
               type: "reply",
               sender: savingSenderIds,
               totalSenders: allSenderIds.length,
               post,
-            });
+            };
 
-            return newNotification;
+            return createNewNotificationDB(newNotificationObj);
           })
         );
 
@@ -98,6 +99,11 @@ const worker = new Worker(
 
         promises.forEach((promise) => {
           const notificationData = JSON.parse(JSON.stringify(promise));
+
+          const findPost = allReplysSenderAndPost.find(
+            (obj) =>
+              obj.post._id?.toString() === notificationData.post?.toString()
+          )?.post;
 
           const senders = notificationData.sender
             .map((userId) => {
@@ -111,6 +117,7 @@ const worker = new Worker(
             ...notificationData,
             message: notificationMsg(notificationData),
             sender: senders,
+            post: findPost,
           });
         });
 
@@ -129,15 +136,15 @@ const worker = new Worker(
 
 // --- Worker Events ---
 worker.on("completed", (job) => {
-  console.log(`[Worker] Job ${job.id} completed`);
+  console.log(`[Worker] Job ${job.id} Reply completed`);
 });
 
 worker.on("failed", (job, err) => {
-  console.error(`[Worker] Job ${job.id} failed:`, err);
+  console.error(`[Worker] Job ${job.id} Reply failed:`, err);
 });
 
 worker.on("error", (err) => {
-  console.error(`[Worker] Worker error:`, err);
+  console.error(`[Worker] Worker Reply error:`, err);
 });
 
 console.log("[Worker] reply batch worker started");

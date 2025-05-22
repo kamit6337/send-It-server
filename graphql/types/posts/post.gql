@@ -1,13 +1,28 @@
 scalar Date
 
-type Post {
+type PostDetail {
   _id: ID!
-  message: String!
-  media: String!
-  thumbnail: String
-  duration: Int
-  replyPostId: String
+  post: ID!
+  replyCount: Int!
+  likeCount: Int!
+  viewCount: Int!
+  saveCount: Int!
+  retweetCount: Int!
   createdAt: Date!
   updatedAt: Date!
-  user: String | User!
+  isLiked: Boolean!
+  isSaved: Boolean!
+}
+
+type Post {
+  _id: ID!
+  user: User!
+  message: String!
+  media: String!
+  thumbnail: String!
+  duration: Int!
+  replyPost: Post
+  createdAt: Date!
+  updatedAt: Date!
+  isFollow: Boolean!
 }

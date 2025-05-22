@@ -1,8 +1,8 @@
 import ObjectID from "../../lib/ObjectID.js";
 import Follower from "../../models/FollowerModel.js";
 
-const getUserFollowingsDB = async (actualUserId, userId, page) => {
-  if (!actualUserId || !userId || !page) {
+const getUserFollowingsDB = async (userId, page) => {
+  if (!userId || !page) {
     throw new Error("ActualUserId or UserId or Page is not provided");
   }
 
@@ -29,47 +29,13 @@ const getUserFollowingsDB = async (actualUserId, userId, page) => {
     {
       $unwind: "$user",
     },
-    {
-      $lookup: {
-        from: "followers",
-        let: {
-          followingUserId: "$user._id",
-          actualUserId: ObjectID(actualUserId),
-        },
-        pipeline: [
-          {
-            $match: {
-              $expr: {
-                $and: [
-                  { $eq: ["$user", "$$followingUserId"] },
-                  // Check if the followed user is in the follower list of the current user
-                  { $eq: ["$follower", "$$actualUserId"] },
-                ],
-              },
-            },
-          },
-        ],
-        as: "isFollowed",
-      },
-    },
-    {
-      $addFields: {
-        "user.isFollowed": {
-          $cond: {
-            if: { $eq: [{ $size: "$isFollowed" }, 1] },
-            then: true,
-            else: false,
-          },
-        },
-      },
-    },
+
     {
       $project: {
         _id: "$user._id",
         name: "$user.name",
         email: "$user.email",
         photo: "$user.photo",
-        isFollowed: "$user.isFollowed",
       },
     },
   ]);

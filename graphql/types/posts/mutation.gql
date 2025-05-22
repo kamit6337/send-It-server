@@ -4,7 +4,7 @@ type Mutation {
     media: String
     duration: Int
     thumbnail: String
-  ): Post!
+  ): String!
 
   updatePost(
     id: ID!
@@ -12,7 +12,7 @@ type Mutation {
     media: String
     duration: Int
     thumbnail: String
-  ): Post!
+  ): String!
 
   deletePost(id: ID!): String!
 }

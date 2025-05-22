@@ -26,27 +26,7 @@ const postSchema = new Schema(
       type: Number,
       default: 0,
     },
-    replyCount: {
-      type: Number,
-      default: 0,
-    },
-    likeCount: {
-      type: Number,
-      default: 0,
-    },
-    viewCount: {
-      type: Number,
-      default: 0,
-    },
-    saveCount: {
-      type: Number,
-      default: 0,
-    },
-    retweetCount: {
-      type: Number,
-      default: 0,
-    },
-    replyPostId: {
+    replyPost: {
       type: Schema.Types.ObjectId,
       ref: "Post",
       default: null,
@@ -59,7 +39,8 @@ const postSchema = new Schema(
 
 postSchema.index({ user: 1 });
 postSchema.index({ _id: 1 });
-postSchema.index({ replyPostId: 1 });
+postSchema.index({ replyPost: 1 });
+postSchema.index({ user: 1, replyPost: 1 });
 
 const Post = model("Post", postSchema);
 

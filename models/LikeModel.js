@@ -16,6 +16,8 @@ const likeSchema = new Schema(
   }
 );
 
+// Create compound index on user and post
+likeSchema.index({ user: 1, post: 1 }, { unique: true });
 likeSchema.index({ user: 1 });
 likeSchema.index({ post: 1 });
 

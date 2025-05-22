@@ -1,5 +1,5 @@
 type Query {
   getPostReplies(postId: ID!, page: Int!): [Post]!
 
-  getSingleReply(postId: ID!): Reply_Post
+  getSingleReply(postId: ID!): Post!
 }

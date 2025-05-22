@@ -6,6 +6,11 @@ const roomResolvers = {
   Query: {
     getUserRooms: getUserRooms,
   },
+  Room: {
+    users: async (parent, args, { user, loaders }) => {
+      return await loaders.userLoader.load(parent.users);
+    },
+  },
   Mutation: {
     createNewRoom: createNewRoom,
     deleteRoom: deleteRoom,

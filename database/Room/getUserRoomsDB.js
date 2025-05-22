@@ -8,10 +8,6 @@ const getUserRoomsDB = async (userId) => {
   const rooms = await Room.find({
     users: userId,
   })
-    .populate({
-      path: "users",
-      select: "_id name email photo",
-    })
     .sort("-updatedAt")
     .lean();
 

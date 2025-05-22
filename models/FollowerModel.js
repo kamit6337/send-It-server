@@ -16,6 +16,7 @@ const followerSchema = new Schema(
   }
 );
 
+followerSchema.index({ user: 1, follower: 1 }, { unique: true });
 followerSchema.index({ user: 1 });
 followerSchema.index({ follower: 1 });
 

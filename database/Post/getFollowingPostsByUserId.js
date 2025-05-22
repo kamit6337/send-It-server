@@ -20,37 +20,11 @@ const getFollowingPostsByUserId = async (userId, page) => {
       },
     },
     { $unwind: "$posts" },
-    { $match: { "posts.replyPostId": null } },
     { $sort: { "posts.updatedAt": -1 } },
     { $skip: skip },
     { $limit: limit },
-    {
-      $lookup: {
-        from: "users",
-        localField: "posts.user",
-        foreignField: "_id",
-        as: "posts.user",
-      },
-    },
-    { $unwind: "$posts.user" },
-    {
-      $replaceRoot: {
-        newRoot: "$posts", // Replace the root document with the posts document
-      },
-    },
-    {
-      $project: {
-        _id: 1,
-        message: 1,
-        media: 1,
-        createdAt: 1,
-        updatedAt: 1,
-        "user._id": 1,
-        "user.name": 1,
-        "user.email": 1,
-        "user.photo": 1,
-      },
-    },
+    // Replace root with the post itself
+    { $replaceRoot: { newRoot: "$posts" } },
   ]);
 
   return followingPosts;

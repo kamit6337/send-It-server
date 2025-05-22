@@ -14,6 +14,8 @@ import newConnection from "./sockets/newConnection.js";
 import joinRooms from "./sockets/joinRooms.js";
 import onDisconnect from "./sockets/onDisconnect.js";
 import "./queues/notificationQueues/index.js";
+import createLoaders from "./loaders/loaders.js";
+import Req from "./lib/Req.js";
 
 const { app, httpServer, io } = socketConnect();
 
@@ -60,8 +62,9 @@ const init = async () => {
       "/graphql",
       cors(),
       expressMiddleware(server, {
-        context: ({ req }) => {
-          return { req };
+        context: async ({ req }) => {
+          const user = await Req(req);
+          return { req, user, loaders: createLoaders() };
         },
       })
     );

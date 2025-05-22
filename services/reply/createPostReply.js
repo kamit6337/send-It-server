@@ -55,6 +55,7 @@ const createPostReply = catchGraphQLError(
         email: findUser.email,
         photo: findUser.photo,
       },
+      isFollow: false,
     };
 
     io.emit("update-post-details", modifyPostDetail);

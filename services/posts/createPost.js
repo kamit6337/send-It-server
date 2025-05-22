@@ -31,11 +31,12 @@ const createPost = catchGraphQLError(async (parent, args, contextValue) => {
       email: findUser.email,
       photo: findUser.photo,
     },
+    isFollow: false, // this must be modified at the frontend on recieve by socket
   };
 
   io.emit("new-post", response);
 
-  return response;
+  return "New Post has been created";
 });
 
 export default createPost;

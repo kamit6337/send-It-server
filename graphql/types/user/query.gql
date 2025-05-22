@@ -7,6 +7,8 @@ type UserProfile {
   bio: String!
   location: String!
   website: String!
+  createdAt: Date!
+  updatedAt: Date!
   followersCount: Int!
   followingCount: Int!
   isFollowed: Boolean!
@@ -15,8 +17,6 @@ type UserProfile {
   replyPosts: Int!
   mediaPosts: Int!
   savePosts: Int!
-  createdAt: String!
-  updatedAt: String!
 }
 
 type Query {
@@ -26,7 +26,7 @@ type Query {
 
   getUserMediaPosts(userId: ID!, page: Int!): [Post]!
 
-  getUserReplyPosts(userId: ID!, page: Int!): [Reply_Post]!
+  getUserReplyPosts(userId: ID!, page: Int!): [Reply_Post_Replies]!
 
   getUserLikePosts(page: Int!): [Post]!
 

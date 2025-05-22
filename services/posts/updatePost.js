@@ -34,11 +34,12 @@ const updatePost = catchGraphQLError(async (parent, args, contextValue) => {
       email: findUser.email,
       photo: findUser.photo,
     },
+    isFollow: false, // this must be modified at the frontend on recieve by socket
   };
 
   io.emit("update-post", response);
 
-  return response;
+  return "Post has been updated";
 });
 
 export default updatePost;

@@ -1,11 +1,12 @@
-type Reply_Post {
+type Reply_Post_Replies {
   _id: ID!
+  user: User!
   message: String!
   media: String!
-  thumbnail: String
-  duration: Int
-  replyPostId: Post!
+  thumbnail: String!
+  duration: Int!
+  replyPost: Post
   createdAt: Date!
   updatedAt: Date!
-  user: User!
+  replies: [Post!]!
 }

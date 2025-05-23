@@ -9,16 +9,16 @@ const getUserByEmail = async (email) => {
     throw new Error("Email is not provided");
   }
 
-  // const get = await getUserByEmailRedis(email);
+  const get = await getUserByEmailRedis(email);
 
-  // if (get) {
-  //   // Convert the plain object from Redis into a Mongoose document
-  //   return User.hydrate(get);
-  // }
+  if (get) {
+    // Convert the plain object from Redis into a Mongoose document
+    return User.hydrate(get);
+  }
 
   const findUser = await User.findOne({ email });
 
-  // await setUserIntoRedis(findUser);
+  await setUserIntoRedis(findUser);
 
   return findUser;
 };

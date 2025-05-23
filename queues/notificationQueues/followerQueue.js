@@ -1,7 +1,6 @@
 import { Queue, Worker } from "bullmq";
 import redisClient from "../../redis/redisClient.js";
 import socketConnect from "../../lib/socketConnect.js";
-import Notification from "../../models/NotificationModel.js";
 import uniqueObjectFromArray from "../../utils/javaScript/uniqueObjectFromArray.js";
 import filterFollowerIds from "../../utils/javaScript/filterFollowerIds.js";
 import notificationMsg from "../../utils/javaScript/notificationMsg.js";

@@ -1,4 +1,5 @@
 import createNewChat from "../../services/chat/createNewChat.js";
+import deleteChat from "../../services/chat/deleteChat.js";
 import getRoomChats from "../../services/chat/getRoomChats.js";
 
 const chatResolvers = {
@@ -7,6 +8,7 @@ const chatResolvers = {
   },
   Mutation: {
     createNewChat: createNewChat,
+    deleteChat: deleteChat,
   },
 };
 

@@ -40,7 +40,7 @@ const createNewRoom = catchGraphQLError(async (parent, args, contextValue) => {
     ...newNotification,
   });
 
-  return result;
+  return "New Chat Room created";
 });
 
 export default createNewRoom;

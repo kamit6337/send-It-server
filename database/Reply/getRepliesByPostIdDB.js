@@ -9,15 +9,11 @@ const getRepliesByPostIdDB = async (postId, page) => {
   const skip = (page - 1) * limit;
 
   const replies = await Post.find({
-    replyPostId: postId,
+    replyPost: postId,
   })
     .sort({ updatedAt: -1 })
     .skip(skip)
     .limit(limit)
-    .populate({
-      path: "user",
-      select: "_id name email photo",
-    })
     .lean();
 
   return replies;

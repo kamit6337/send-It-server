@@ -8,5 +8,5 @@ type Reply_Post_Replies {
   replyPost: Post
   createdAt: Date!
   updatedAt: Date!
-  replies: [Post!]!
+  replies: [Post]!
 }

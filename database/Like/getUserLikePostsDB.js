@@ -14,23 +14,9 @@ const getUserLikePostsDB = async (userId, page) => {
     .sort("-updatedAt")
     .skip(skip)
     .limit(limit)
-    .populate({
-      path: "post",
-      populate: {
-        path: "user", // this is the user inside the Post
-        select: "_id name email photo",
-      },
-    })
-
     .lean();
 
-  if (likePosts.length === 0) {
-    return [];
-  }
-
-  const posts = likePosts.map((like) => like.post);
-
-  return posts;
+  return likePosts;
 };
 
 export default getUserLikePostsDB;

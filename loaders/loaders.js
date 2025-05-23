@@ -4,6 +4,7 @@ import createSaveLoader from "./Like_and_Save/createSaveLoader.js";
 import createPostDetailLoader from "./Post/createPostDetailLoader.js";
 import createPostLoader from "./Post/createPostLoader.js";
 import createPostRepliesLoader from "./Post/createPostRepliesLoader.js";
+import createRoomLoader from "./Room/createRoomLoader.js";
 import createUserLoader from "./User/createUserLoader.js";
 
 const createLoaders = () => ({
@@ -14,6 +15,7 @@ const createLoaders = () => ({
   likeLoader: createLikeLoader(),
   saveLoader: createSaveLoader(),
   postRepliesLoader: createPostRepliesLoader(),
+  roomLoader: createRoomLoader(),
 });
 
 export default createLoaders;

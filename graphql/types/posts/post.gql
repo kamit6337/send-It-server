@@ -24,5 +24,4 @@ type Post {
   replyPost: Post
   createdAt: Date!
   updatedAt: Date!
-  isFollow: Boolean!
 }

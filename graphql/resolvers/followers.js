@@ -1,7 +1,6 @@
 import getUserFollowersDB from "../../database/Follower/getUserFollowersDB.js";
 import getUserFollowingsDB from "../../database/Follower/getuserFollowingsDB.js";
 import createNewFollowing from "../../services/followers/createNewFollowing.js";
-import isCurrentUserFollow from "../../services/followers/isCurrentUserFollow.js";
 import removeSingleFollowing from "../../services/followers/removeSingleFollowing.js";
 
 const followersResolvers = {
@@ -18,7 +17,14 @@ const followersResolvers = {
       const result = await getUserFollowingsDB(userId, page);
       return result;
     },
-    isCurrentUserFollow: isCurrentUserFollow,
+    isCurrentUserFollow: async (parent, args, { user, loaders }) => {
+      const { userId } = args;
+
+      return await loaders.userFollowingLoader.load({
+        user: userId,
+        follower: user._id,
+      });
+    },
   },
   Follower: {
     isFollowed: async (parent, args, { user, loaders }) => {

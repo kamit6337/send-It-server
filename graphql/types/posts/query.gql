@@ -1,5 +1,5 @@
 type Query {
-  getUserFollowingPosts(page: Int!): [Post]!
+  getUserFollowingPosts(page: Int!): [Reply_Post_Replies]!
 
   getSinglePost(id: ID!): Post!
 

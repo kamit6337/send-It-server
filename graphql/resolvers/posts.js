@@ -9,13 +9,12 @@ const postsResolvers = {
     getSinglePost: async (parent, args, { user, loaders }) => {
       const { id } = args;
       const result = await loaders.postLoader.load(id);
-
-      console.log("result", result);
       return result;
     },
     getPostDetails: async (parent, args, { user, loaders }) => {
       const { id } = args;
-      return await loaders.postDetailLoader.load(id);
+      const result = await loaders.postDetailLoader.load(id);
+      return result;
     },
   },
   Post: {
@@ -23,16 +22,9 @@ const postsResolvers = {
       return await loaders.userLoader.load(parent.user);
     },
     replyPost: async (parent, args, { user, loaders }) => {
-      return await loaders.postLoader.load(parent.replyPost);
-    },
-    isFollow: async (parent, args, { user, loaders }) => {
-      const userId =
-        typeof parent.user === "object" ? parent.user._id : parent.user;
+      if (!parent.replyPost) return null;
 
-      return await loaders.userFollowingLoader.load({
-        user: userId,
-        follower: user._id,
-      });
+      return await loaders.postLoader.load(parent.replyPost);
     },
   },
   PostDetail: {

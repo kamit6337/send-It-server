@@ -1,4 +1,9 @@
+type Update_Like_Post {
+  bool: String!
+  count: Int!
+}
+
 type Mutation {
-  updatePostLike(toggle: Boolean!, id: ID!): String!
-  updatePostSave(toggle: Boolean!, id: ID!): String!
+  updatePostLike(toggle: Boolean!, id: ID!): Update_Like_Post!
+  updatePostSave(toggle: Boolean!, id: ID!): Update_Like_Post!
 }

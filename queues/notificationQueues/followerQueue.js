@@ -70,8 +70,6 @@ const worker = new Worker(
           newNotificationObj
         );
 
-        console.log("new notification", newNotification);
-
         console.log(`[Worker] Sent follow notification to user ${userId}`);
 
         let notification = JSON.parse(JSON.stringify(newNotification));

@@ -15,15 +15,6 @@ const getNotificationsByUserIdDB = async (userId, page) => {
     .sort("-updatedAt")
     .skip(skip)
     .limit(limit)
-    .populate([
-      {
-        path: "sender",
-        select: "_id name email photo",
-      },
-      {
-        path: "post",
-      },
-    ])
     .lean();
 
   return notifications;

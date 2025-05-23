@@ -1,3 +1,4 @@
+import amIFollowThisUser from "../../database/Follower/amIFollowThisUser.js";
 import userFollowersCount from "../../database/Follower/userFollowersCount.js";
 import userFollowingsCount from "../../database/Follower/userFollowingsCount.js";
 import getUserLikePostsDB from "../../database/Like/getUserLikePostsDB.js";
@@ -33,13 +34,27 @@ const userResolvers = {
     },
     getUserLikePosts: async (parent, args, { user, loaders }) => {
       const { page } = args;
-      const result = await getUserLikePostsDB(findUser._id, page);
+
+      const likes = await getUserLikePostsDB(user._id, page);
+
+      if (likes.length === 0) return [];
+
+      const postIds = likes.map((like) => like.post);
+
+      const result = await loaders.postLoader.loadMany(postIds);
+
       return result;
     },
     getUserSavePosts: async (parent, args, { user, loaders }) => {
       const { page } = args;
-      const result = await getUserSavePostsDB(findUser._id, page);
-      return result;
+
+      const saves = await getUserSavePostsDB(user._id, page);
+
+      if (saves.length === 0) return [];
+
+      const postIds = saves.map((like) => like.post);
+
+      return await loaders.postLoader.loadMany(postIds);
     },
     getUserReplyPosts: async (parent, args, { user, loaders }) => {
       const { userId, page } = args;
@@ -52,7 +67,7 @@ const userResolvers = {
         ...new Set(posts.map((post) => post.replyPost.toString())),
       ];
 
-      const replyPosts = await loaders.postLoader.load(replyPostIds);
+      const replyPosts = await loaders.postLoader.loadMany(replyPostIds);
 
       if (Array.isArray(replyPosts)) {
         return replyPosts.map((post) => ({
@@ -69,10 +84,18 @@ const userResolvers = {
   },
   Reply_Post_Replies: {
     replies: async (parent, args, { user, loaders }) => {
-      return await loaders.postRepliesLoader.load({
-        user: parent.userId,
+      const result = await loaders.postRepliesLoader.load({
+        user: parent.userId || user._id,
         replyPost: parent._id,
       });
+
+      if (!result || result.length === 0) return [];
+
+      return result;
+    },
+    replyPost: async (parent, args, { user, loaders }) => {
+      if (!parent.replyPost) return null;
+      return await loaders.postLoader.load(parent.replyPost);
     },
     user: async (parent, args, { user, loaders }) => {
       return await loaders.userLoader.load(parent.user);

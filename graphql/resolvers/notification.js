@@ -1,3 +1,4 @@
+import getNotificationCountByUserIdDB from "../../database/Notification/getNotificationCountByUserIdDB.js";
 import getNotificationsByUserIdDB from "../../database/Notification/getNotificationsByUserIdDB.js";
 import updateNotificationList from "../../services/notifications/updateNotificationList.js";
 import notificationMsg from "../../utils/javaScript/notificationMsg.js";
@@ -20,7 +21,17 @@ const notificationResolvers = {
       return notificationMsg(parent);
     },
     sender: async (parent, args, { user, loaders }) => {
-      return await loaders.userLoader.load(parent.sender);
+      return await loaders.userLoader.loadMany(parent.sender);
+    },
+    post: async (parent, args, { user, loaders }) => {
+      if (!parent.post) return null;
+
+      return loaders.postLoader.load(parent.post);
+    },
+    room: async (parent, args, { user, loaders }) => {
+      if (!parent.room) return null;
+
+      return await loaders.roomLoader.load(parent.room);
     },
   },
   Mutation: {

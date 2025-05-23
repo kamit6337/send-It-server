@@ -8,7 +8,7 @@ const roomResolvers = {
   },
   Room: {
     users: async (parent, args, { user, loaders }) => {
-      return await loaders.userLoader.load(parent.users);
+      return await loaders.userLoader.loadMany(parent.users);
     },
   },
   Mutation: {

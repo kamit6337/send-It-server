@@ -48,12 +48,6 @@ const init = async () => {
     const server = new ApolloServer({
       typeDefs,
       resolvers,
-      formatError: (formattedError, error) => {
-        console.log("formatted Error", formattedError);
-        console.log("error", error.message);
-
-        return error?.message;
-      },
     });
 
     await server.start();

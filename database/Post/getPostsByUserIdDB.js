@@ -15,10 +15,6 @@ const getPostsByUserIdDB = async (userId, page) => {
     .sort("-updatedAt")
     .skip(skip)
     .limit(limit)
-    .populate({
-      path: "user",
-      select: "_id name email photo",
-    })
     .lean();
 
   return posts;

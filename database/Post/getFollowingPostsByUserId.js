@@ -10,7 +10,7 @@ const getFollowingPostsByUserId = async (userId, page) => {
   const skip = (page - 1) * limit;
 
   const followingPosts = await Follower.aggregate([
-    { $match: { follower: ObjectID(userId) } },
+    { $match: { user: { $ne: ObjectID(userId) }, follower: ObjectID(userId) } },
     {
       $lookup: {
         from: "posts",

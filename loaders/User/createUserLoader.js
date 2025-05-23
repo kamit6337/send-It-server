@@ -4,8 +4,6 @@ import mapLoaderResult from "../../utils/javaScript/mapLoaderResult.js";
 
 const createUserLoader = () =>
   new DataLoader(async (ids) => {
-    console.log("ids users", ids);
-
     const userIds = [...ids];
 
     const users = await User.find({

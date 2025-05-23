@@ -19,9 +19,6 @@ export const addLikeJob = async (userId, sender, post) => {
   const key = `like-timer:${userId}`;
   const exists = await redisClient.exists(key);
 
-  console.log("sender", sender);
-  console.log("post", post);
-
   // Add follower to Redis list
   await redisClient.lpush(
     `like-batch-list:${userId}`,
@@ -54,13 +51,10 @@ const worker = new Worker(
     try {
       const { userId } = job.data;
       const { io } = socketConnect();
-      console.log("userId", userId);
 
       const key = `like-batch-list:${userId}`;
 
       const likeRaw = await redisClient.lrange(key, 0, -1);
-
-      console.log("likeRaw", likeRaw);
 
       const uniquePostIds = await redisClient.smembers(
         `like-unqiue-postId:${userId}`
@@ -97,8 +91,6 @@ const worker = new Worker(
             return createNewNotificationDB(newNotificationObj);
           })
         );
-
-        console.log("new notification", promises);
 
         console.log(`[Worker] Sent Like notification to user ${userId}`);
 

@@ -1,14 +1,11 @@
 import getFollowingPostsByUserId from "../../database/Post/getFollowingPostsByUserId.js";
 import catchGraphQLError from "../../lib/catchGraphQLError.js";
-import Req from "../../lib/Req.js";
 
 const getUserFollowingPosts = catchGraphQLError(
-  async (parent, args, contextValue) => {
-    const findUser = await Req(contextValue.req);
-
+  async (parent, args, { user }) => {
     const { page } = args;
 
-    const results = await getFollowingPostsByUserId(findUser._id, page);
+    const results = await getFollowingPostsByUserId(user._id, page);
 
     return results;
   }

@@ -1,45 +1,50 @@
-import updatePostDB from "../../database/Post/updatePostDB.js";
+import updatePostDetailDB from "../../database/Post/updatePostDetailDB.js";
+import userSavePostCount from "../../database/Post_Details/userSavePostCount.js";
 import createNewSaveDB from "../../database/Save/createNewSaveDB.js";
 import deleteSavesByUserIdDB from "../../database/Save/deleteSavesByUserIdDB.js";
 import catchGraphQLError from "../../lib/catchGraphQLError.js";
-import Req from "../../lib/Req.js";
 import socketConnect from "../../lib/socketConnect.js";
-import convertIntoPostDetail from "../../utils/javaScript/convertIntoPostDetail.js";
 
-const updatePostSave = catchGraphQLError(async (parent, args, contextValue) => {
-  const findUser = await Req(contextValue.req);
+const updatePostSave = catchGraphQLError(async (parent, args, { user }) => {
   const { io } = socketConnect();
 
   const { toggle, id } = args;
 
   if (toggle) {
-    await createNewSaveDB(findUser._id, id);
+    await createNewSaveDB(user._id, id);
 
     const obj = {
       $inc: { saveCount: 1 },
     };
 
-    const updatedPost = await updatePostDB(id, obj);
+    const updatedPost = await updatePostDetailDB(id, obj);
 
-    const modifyPostDetail = convertIntoPostDetail(updatedPost, findUser);
+    io.emit("update-post-details", updatedPost);
 
-    io.emit("update-post-details", modifyPostDetail);
+    const savePostCount = await userSavePostCount(user._id);
 
-    return "true";
+    return {
+      bool: "true",
+      count: savePostCount,
+    };
   }
 
-  await deleteSavesByUserIdDB(findUser._id, id);
+  await deleteSavesByUserIdDB(user._id, id);
 
   const obj = {
     $inc: { saveCount: -1 },
   };
 
-  const updatedPost = await updatePostDB(id, obj);
+  const updatedPost = await updatePostDetailDB(id, obj);
 
-  const modifyPostDetail = convertIntoPostDetail(updatedPost, findUser);
-  io.emit("update-post-details", modifyPostDetail);
+  io.emit("update-post-details", updatedPost);
 
-  return "false";
+  const savePostCount = await userSavePostCount(user._id);
+
+  return {
+    bool: "false",
+    count: savePostCount,
+  };
 });
 
 export default updatePostSave;

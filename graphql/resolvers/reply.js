@@ -5,6 +5,7 @@ const replyResolvers = {
   Query: {
     getPostReplies: async (parent, args, { user, loaders }) => {
       const { postId, page } = args;
+
       const result = await getRepliesByPostIdDB(postId, page);
       return result;
     },

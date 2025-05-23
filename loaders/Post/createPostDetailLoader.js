@@ -10,7 +10,8 @@ const createPostDetailLoader = () =>
       post: { $in: postIds },
     }).lean();
 
-    return mapLoaderResult(postIds, results);
+    const map = new Map(results.map((u) => [u.post.toString(), u]));
+    return postIds.map((postId) => map.get(postId.toString()));
   });
 
 export default createPostDetailLoader;

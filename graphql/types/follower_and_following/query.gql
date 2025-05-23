@@ -6,8 +6,18 @@ type Follower {
   isFollowed: Boolean!
 }
 
+type Top_Followed_User {
+  _id: ID!
+  name: String!
+  email: String!
+  photo: String!
+  isFollowed: Boolean!
+  followersCount: Int!
+}
+
 type Query {
   getUserFollowers(userId: ID!, page: Int!): [Follower]!
   getUserFollowings(userId: ID!, page: Int!): [Follower]!
   isCurrentUserFollow(userId: ID!): Boolean!
+  getTopFollowedUsers(page: Int!): [Top_Followed_User]!
 }

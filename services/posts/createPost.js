@@ -21,7 +21,11 @@ const createPost = catchGraphQLError(async (parent, args, contextValue) => {
     thumbnail,
   };
 
+  console.log("obj", obj);
+
   const createPostResult = await createPostDB(obj);
+
+  console.log("createPostResult", createPostResult);
 
   const response = {
     ...createPostResult,
@@ -31,7 +35,7 @@ const createPost = catchGraphQLError(async (parent, args, contextValue) => {
       email: findUser.email,
       photo: findUser.photo,
     },
-    isFollow: false, // this must be modified at the frontend on recieve by socket
+    replies: [],
   };
 
   io.emit("new-post", response);

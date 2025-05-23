@@ -1,3 +1,4 @@
+import getTopFollowedUsersDB from "../../database/Follower/getTopFollowedUsersDB.js";
 import getUserFollowersDB from "../../database/Follower/getUserFollowersDB.js";
 import getUserFollowingsDB from "../../database/Follower/getuserFollowingsDB.js";
 import createNewFollowing from "../../services/followers/createNewFollowing.js";
@@ -22,6 +23,20 @@ const followersResolvers = {
 
       return await loaders.userFollowingLoader.load({
         user: userId,
+        follower: user._id,
+      });
+    },
+    getTopFollowedUsers: async (parent, args, { user, loaders }) => {
+      const { page } = args;
+
+      const results = await getTopFollowedUsersDB(user._id, page);
+      return results;
+    },
+  },
+  Top_Followed_User: {
+    isFollowed: async (parent, args, { user, loaders }) => {
+      return await loaders.userFollowingLoader.load({
+        user: parent._id,
         follower: user._id,
       });
     },

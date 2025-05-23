@@ -5,5 +5,5 @@ type Mutation {
     media: String
     duration: Int
     thumbnail: String
-  ): Post!
+  ): String!
 }

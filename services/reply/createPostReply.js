@@ -30,7 +30,7 @@ const createPostReply = catchGraphQLError(async (parent, args, { user }) => {
     media,
     duration,
     thumbnail,
-    replyPostId: postId,
+    replyPost: postId,
   };
 
   const createPostResult = await createPostDB(obj);
@@ -44,10 +44,10 @@ const createPostReply = catchGraphQLError(async (parent, args, { user }) => {
   const response = {
     ...createPostResult,
     user: {
-      _id: findUser._id,
-      name: findUser.name,
-      email: findUser.email,
-      photo: findUser.photo,
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      photo: user.photo,
     },
   };
 
@@ -58,16 +58,16 @@ const createPostReply = catchGraphQLError(async (parent, args, { user }) => {
   const getPost = await getSinglePostDB(postId);
 
   const sender = {
-    _id: findUser._id,
-    name: findUser.name,
-    email: findUser.email,
-    photo: findUser.photo,
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    photo: user.photo,
   };
 
   if (user._id?.toString() !== getPost.user?.toString()) {
     await addReplyJob(getPost.user, sender, getPost);
   }
-  return response;
+  return "Post reply has been created";
 });
 
 export default createPostReply;

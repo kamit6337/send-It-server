@@ -17,7 +17,7 @@ const notificationMsg = (notification) => {
   }
 
   if (clone.type === FOLLOWER) {
-    return `${clone.length} new user(s) followed you.`;
+    return `${clone.totalSenders} new user(s) followed you.`;
   }
 
   if (clone.type === MESSAGE) {

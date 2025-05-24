@@ -1,4 +1,4 @@
-import getChatsByRoomIdDB from "../../database/chat/getChatsByRoomIdDB.js";
+import getChatsByRoomIdDB from "../../database/Chat/getChatsByRoomIdDB.js";
 import catchGraphQLError from "../../lib/catchGraphQLError.js";
 import Req from "../../lib/Req.js";
 

@@ -1,4 +1,4 @@
-import createNewChatDB from "../../database/chat/createNewChatDB.js";
+import createNewChatDB from "../../database/Chat/createNewChatDB.js";
 import catchGraphQLError from "../../lib/catchGraphQLError.js";
 import Req from "../../lib/Req.js";
 import socketConnect from "../../lib/socketConnect.js";

@@ -2,10 +2,13 @@ import createPostDB from "../../database/Post/createPostDB.js";
 import getSinglePostDB from "../../database/Post/getSinglePostDB.js";
 import updatePostDetailDB from "../../database/Post/updatePostDetailDB.js";
 import catchGraphQLError from "../../lib/catchGraphQLError.js";
+import Req from "../../lib/Req.js";
 import socketConnect from "../../lib/socketConnect.js";
 import { addReplyJob } from "../../queues/notificationQueues/replyQueue.js";
 
-const createPostReply = catchGraphQLError(async (parent, args, { user }) => {
+const createPostReply = catchGraphQLError(async (parent, args, { req }) => {
+  const user = await Req(req);
+
   const { io } = socketConnect();
 
   const {

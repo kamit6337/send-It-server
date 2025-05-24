@@ -12,27 +12,36 @@ import userSavePostCount from "../../database/Post_Details/userSavePostCount.js"
 import getRepliesByUserIdDB from "../../database/Reply/getRepliesByUserIdDB.js";
 import getUserSavePostsDB from "../../database/Save/getUserSavePostsDB.js";
 import getUserByEmail from "../../database/User/getUserByEmail.js";
+import Req from "../../lib/Req.js";
 import getUserSearch from "../../services/user/getUserSearch.js";
 import updateUserProfile from "../../services/user/updateUserProfile.js";
 
 const userResolvers = {
   Query: {
-    getUserProfile: async (parent, args, { user, loaders }) => {
+    getUserProfile: async (parent, args, { req, loaders }) => {
+      const user = await Req(req);
+
       const { email } = args;
       const userProfile = await getUserByEmail(email);
       return userProfile;
     },
-    getUserPosts: async (parent, args, { user, loaders }) => {
+    getUserPosts: async (parent, args, { req, loaders }) => {
+      const user = await Req(req);
+
       const { userId, page } = args;
       const result = await getPostsByUserIdDB(userId, page);
       return result;
     },
-    getUserMediaPosts: async (parent, args, { user, loaders }) => {
+    getUserMediaPosts: async (parent, args, { req, loaders }) => {
+      const user = await Req(req);
+
       const { userId, page } = args;
       const result = await getMediaPostsByUserIdDB(userId, page);
       return result;
     },
-    getUserLikePosts: async (parent, args, { user, loaders }) => {
+    getUserLikePosts: async (parent, args, { req, loaders }) => {
+      const user = await Req(req);
+
       const { page } = args;
 
       const likes = await getUserLikePostsDB(user._id, page);
@@ -45,7 +54,9 @@ const userResolvers = {
 
       return result;
     },
-    getUserSavePosts: async (parent, args, { user, loaders }) => {
+    getUserSavePosts: async (parent, args, { req, loaders }) => {
+      const user = await Req(req);
+
       const { page } = args;
 
       const saves = await getUserSavePostsDB(user._id, page);
@@ -56,7 +67,9 @@ const userResolvers = {
 
       return await loaders.postLoader.loadMany(postIds);
     },
-    getUserReplyPosts: async (parent, args, { user, loaders }) => {
+    getUserReplyPosts: async (parent, args, { req, loaders }) => {
+      const user = await Req(req);
+
       const { userId, page } = args;
 
       const posts = await getRepliesByUserIdDB(userId, page);
@@ -83,7 +96,9 @@ const userResolvers = {
     getUserSearch: getUserSearch,
   },
   Reply_Post_Replies: {
-    replies: async (parent, args, { user, loaders }) => {
+    replies: async (parent, args, { req, loaders }) => {
+      const user = await Req(req);
+
       const result = await loaders.postRepliesLoader.load({
         user: parent.userId || user._id,
         replyPost: parent._id,
@@ -93,44 +108,64 @@ const userResolvers = {
 
       return result;
     },
-    replyPost: async (parent, args, { user, loaders }) => {
+    replyPost: async (parent, args, { req, loaders }) => {
+      const user = await Req(req);
+
       if (!parent.replyPost) return null;
       return await loaders.postLoader.load(parent.replyPost);
     },
-    user: async (parent, args, { user, loaders }) => {
+    user: async (parent, args, { req, loaders }) => {
+      const user = await Req(req);
+
       return await loaders.userLoader.load(parent.user);
     },
   },
   UserProfile: {
-    followersCount: async (parent, args, { user, loaders }) => {
+    followersCount: async (parent, args, { req, loaders }) => {
+      const user = await Req(req);
+
       const followerCount = await userFollowersCount(parent._id);
       return followerCount;
     },
-    followingCount: async (parent, args, { user, loaders }) => {
+    followingCount: async (parent, args, { req, loaders }) => {
+      const user = await Req(req);
+
       const followingCount = await userFollowingsCount(parent._id);
       return followingCount;
     },
-    isFollowed: async (parent, args, { user, loaders }) => {
+    isFollowed: async (parent, args, { req, loaders }) => {
+      const user = await Req(req);
+
       const findFollowing = await amIFollowThisUser(parent._id, user._id);
       return findFollowing;
     },
-    userPosts: async (parent, args, { user, loaders }) => {
+    userPosts: async (parent, args, { req, loaders }) => {
+      const user = await Req(req);
+
       const postCount = await userPostCount(parent._id);
       return postCount;
     },
-    likePosts: async (parent, args, { user, loaders }) => {
+    likePosts: async (parent, args, { req, loaders }) => {
+      const user = await Req(req);
+
       const likePostCount = await userLikeCount(parent._id);
       return likePostCount;
     },
-    replyPosts: async (parent, args, { user, loaders }) => {
+    replyPosts: async (parent, args, { req, loaders }) => {
+      const user = await Req(req);
+
       const replyPostCount = await userReplyCount(parent._id);
       return replyPostCount;
     },
-    mediaPosts: async (parent, args, { user, loaders }) => {
+    mediaPosts: async (parent, args, { req, loaders }) => {
+      const user = await Req(req);
+
       const mediaPostCount = await userMediaPostCount(parent._id);
       return mediaPostCount;
     },
-    savePosts: async (parent, args, { user, loaders }) => {
+    savePosts: async (parent, args, { req, loaders }) => {
+      const user = await Req(req);
+
       const savePostCount = await userSavePostCount(parent._id);
       return savePostCount;
     },

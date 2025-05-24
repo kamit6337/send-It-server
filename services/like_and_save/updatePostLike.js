@@ -4,10 +4,13 @@ import getSinglePostDB from "../../database/Post/getSinglePostDB.js";
 import updatePostDetailDB from "../../database/Post/updatePostDetailDB.js";
 import userLikeCount from "../../database/Post_Details/userLikeCount.js";
 import catchGraphQLError from "../../lib/catchGraphQLError.js";
+import Req from "../../lib/Req.js";
 import socketConnect from "../../lib/socketConnect.js";
 import { addLikeJob } from "../../queues/notificationQueues/likeQueue.js";
 
-const updatePostLike = catchGraphQLError(async (parent, args, { user }) => {
+const updatePostLike = catchGraphQLError(async (parent, args, { req }) => {
+  const user = await Req(req);
+
   const { io } = socketConnect();
 
   const { toggle, id: postId } = args;

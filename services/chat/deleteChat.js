@@ -1,19 +1,20 @@
 import deleteChatByIdDB from "../../database/Chat/deleteChatByIdDB.js";
 import catchGraphQLError from "../../lib/catchGraphQLError.js";
+import Req from "../../lib/Req.js";
 import socketConnect from "../../lib/socketConnect.js";
 
-const deleteChat = catchGraphQLError(
-  async (parent, args, { user, loaders }) => {
-    const { io } = socketConnect();
+const deleteChat = catchGraphQLError(async (parent, args, { req, loaders }) => {
+  const findUser = await Req(req);
 
-    const { chatId, roomId } = args;
+  const { io } = socketConnect();
 
-    await deleteChatByIdDB(chatId);
+  const { chatId, roomId } = args;
 
-    io.to(roomId).emit("delete-chat", { roomId, chatId });
+  await deleteChatByIdDB(chatId);
 
-    return "Chat has been deleted";
-  }
-);
+  io.to(roomId).emit("delete-chat", { roomId, chatId });
+
+  return "Chat has been deleted";
+});
 
 export default deleteChat;

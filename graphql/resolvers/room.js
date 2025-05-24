@@ -1,3 +1,4 @@
+import Req from "../../lib/Req.js";
 import createNewRoom from "../../services/room/createNewRoom.js";
 import deleteRoom from "../../services/room/deleteRoom.js";
 import getUserRooms from "../../services/room/getUserRooms.js";
@@ -7,7 +8,9 @@ const roomResolvers = {
     getUserRooms: getUserRooms,
   },
   Room: {
-    users: async (parent, args, { user, loaders }) => {
+    users: async (parent, args, { req, loaders }) => {
+      const user = await Req(req);
+
       return await loaders.userLoader.loadMany(parent.users);
     },
   },

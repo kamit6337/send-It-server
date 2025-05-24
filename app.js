@@ -57,8 +57,7 @@ const init = async () => {
       cors(),
       expressMiddleware(server, {
         context: async ({ req }) => {
-          const user = await Req(req);
-          return { req, user, loaders: createLoaders() };
+          return { req, loaders: createLoaders() };
         },
       })
     );

@@ -3,9 +3,12 @@ import userSavePostCount from "../../database/Post_Details/userSavePostCount.js"
 import createNewSaveDB from "../../database/Save/createNewSaveDB.js";
 import deleteSavesByUserIdDB from "../../database/Save/deleteSavesByUserIdDB.js";
 import catchGraphQLError from "../../lib/catchGraphQLError.js";
+import Req from "../../lib/Req.js";
 import socketConnect from "../../lib/socketConnect.js";
 
-const updatePostSave = catchGraphQLError(async (parent, args, { user }) => {
+const updatePostSave = catchGraphQLError(async (parent, args, { req }) => {
+  const user = await Req(req);
+
   const { io } = socketConnect();
 
   const { toggle, id } = args;

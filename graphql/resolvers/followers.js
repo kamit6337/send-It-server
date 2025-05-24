@@ -1,6 +1,6 @@
 import getTopFollowedUsersDB from "../../database/Follower/getTopFollowedUsersDB.js";
 import getUserFollowersDB from "../../database/Follower/getUserFollowersDB.js";
-import getUserFollowingsDB from "../../database/Follower/getuserFollowingsDB.js";
+import getUserFollowingsDB from "../../database/Follower/getUserFollowingsDB.js";
 import createNewFollowing from "../../services/followers/createNewFollowing.js";
 import removeSingleFollowing from "../../services/followers/removeSingleFollowing.js";
 

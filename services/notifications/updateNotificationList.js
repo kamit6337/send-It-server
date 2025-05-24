@@ -11,8 +11,6 @@ const updateNotificationList = catchGraphQLError(
 
     const update = await updateNotificationDB(ids);
 
-    console.log("update notification", update);
-
     const notificationCount = await getNotificationCountByUserIdDB(
       findUser._id
     );

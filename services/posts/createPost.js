@@ -21,11 +21,7 @@ const createPost = catchGraphQLError(async (parent, args, contextValue) => {
     thumbnail,
   };
 
-  console.log("obj", obj);
-
   const createPostResult = await createPostDB(obj);
-
-  console.log("createPostResult", createPostResult);
 
   const response = {
     ...createPostResult,

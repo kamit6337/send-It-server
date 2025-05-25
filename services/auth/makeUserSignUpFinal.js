@@ -30,7 +30,7 @@ const makeUserSignUpFinal = catchGraphQLError(
     const createUser = await postCreateUser(obj);
 
     if (!createUser) {
-      throw new Error("Issue in Signup. Please try later", 404);
+      throw new Error("Issue in Signup. Please try later");
     }
 
     const token = encrypt({

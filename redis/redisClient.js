@@ -8,16 +8,21 @@ const redisClient = new Redis(environment.REDIS_URL, {
   enableReadyCheck: true,
 });
 
-redisClient.on("connect", () => {
-  console.log("Redis client connected");
-});
+const initRedis = () => {
+  console.log("Initializing Redis...");
 
-redisClient.on("ready", () => {
-  console.log("Redis client ready");
-});
+  redisClient.on("connect", () => {
+    console.log("Redis client connected");
+  });
 
-redisClient.on("error", (err) => {
-  console.error("Redis error:", err);
-});
+  redisClient.on("ready", () => {
+    console.log("Redis client ready");
+  });
 
+  redisClient.on("error", (err) => {
+    console.error("Redis error:", err);
+  });
+};
+
+export { initRedis };
 export default redisClient;

@@ -9,7 +9,7 @@ const newPassword = catchGraphQLError(async (parent, args, contextValue) => {
   const { resetToken, password } = args;
 
   if (!resetToken || !password) {
-    throw new Error("resetToken and Password is required");
+    throw new Error("ResetToken and Password is required");
   }
 
   const userId = await getUserIdFromRedis(resetToken);
@@ -23,7 +23,7 @@ const newPassword = catchGraphQLError(async (parent, args, contextValue) => {
     updatedAt: Date.now(),
   };
 
-  await patchUserProfile(findUser._id.toString(), obj);
+  await patchUserProfile(userId, obj);
 
   await deleteKeyFromRedis(resetToken);
 

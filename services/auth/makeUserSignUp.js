@@ -12,7 +12,7 @@ const makeUserSignUp = catchGraphQLError(async (parent, args, contextValue) => {
   const { name, email, password } = args;
 
   if (!name || !email || !password) {
-    throw new Error("Not provided all field", 404);
+    throw new Error("Not provided all field");
   }
 
   // MARK: CHECK USER IS ALREADY PRESENT OR NOT

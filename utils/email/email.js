@@ -4,6 +4,7 @@ import { environment } from "../environment.js";
 // Ensure environment variables are properly typed and defaulted
 const EMAIL_USER = environment.MY_GMAIL_ID;
 const EMAIL_PASS = environment.MY_GMAIL_PASSWORD;
+const PROJECT_NAME = environment.PROJECT_NAME;
 
 const transporter = nodemailer.createTransport({
   service: "Gmail", // or another email service
@@ -15,7 +16,7 @@ const transporter = nodemailer.createTransport({
 
 const sendingEmail = async (to, subject, html) => {
   const mailOptions = {
-    from: `Project-Name <${EMAIL_USER}>`,
+    from: `${PROJECT_NAME} <${EMAIL_USER}>`,
     to,
     subject,
     html,

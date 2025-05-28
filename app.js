@@ -15,7 +15,6 @@ import joinRooms from "./sockets/joinRooms.js";
 import onDisconnect from "./sockets/onDisconnect.js";
 import "./queues/notificationQueues/index.js";
 import createLoaders from "./loaders/loaders.js";
-import Req from "./lib/Req.js";
 
 const { app, httpServer, io } = socketConnect();
 

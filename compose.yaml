@@ -1,14 +1,14 @@
 services:
   server:
     build:
-      context: ./server
+      context: ./
       dockerfile: Dockerfile
     volumes:
-      - ./server:/app
+      - :/app
     ports:
       - 8000:8000
     env_file:
-      - ./server/.env
+      - .env
     depends_on:
       - redis
     command: npm run dev # Command to run the server, no need for ./server prefix

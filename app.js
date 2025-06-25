@@ -23,10 +23,6 @@ const init = async () => {
       res.send("Hello from the server");
     });
 
-    app.get("/health", (req, res) => {
-      res.send("Server health is fine and good");
-    });
-
     // MARK: SOCKET CONNECTION
     io.use(socketAuthMiddleware);
 
@@ -61,6 +57,9 @@ const init = async () => {
     );
 
     // NOTE: DIFFERENT ROUTES
+    app.get("/health", (req, res) => {
+      res.send("Server health is fine and good");
+    });
     app.use("/auth", authRouter);
 
     // NOTE: UNIDENTIFIED ROUTES

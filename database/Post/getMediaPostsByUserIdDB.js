@@ -5,7 +5,7 @@ const getMediaPostsByUserIdDB = async (userId, page) => {
     throw new Error("UserID or Page is not provided");
   }
 
-  const limit = 20;
+  const limit = 10;
   const skip = (page - 1) * limit;
 
   const posts = await Post.find({

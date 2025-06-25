@@ -4,6 +4,7 @@ import { setUserIdIntoRedis } from "../../redis/Auth/forgotPassword.js";
 import sendingEmail from "../../utils/email/email.js";
 import resetPasswordLinkTemplate from "../../utils/email/resetPasswordLinkTemplate.js";
 import { environment } from "../../utils/environment.js";
+import isLocalhostOrigin from "../../utils/isLocalhostOrigin.js";
 import generateResetToken from "../../utils/javaScript/generateResetToken.js";
 
 const forgotPassword = catchGraphQLError(async (parent, args, contextValue) => {
@@ -21,7 +22,10 @@ const forgotPassword = catchGraphQLError(async (parent, args, contextValue) => {
 
   const secretToken = generateResetToken();
 
-  const url = `${environment.CLIENT_URL}/newPassword?resetToken=${secretToken}`;
+  const url = `${
+    isLocalhostOrigin(req) || environment.CLIENT_URL
+  }/newPassword?resetToken=${secretToken}`;
+  // const url = `${environment.CLIENT_URL}/newPassword?resetToken=${secretToken}`;
 
   const html = resetPasswordLinkTemplate(url);
 

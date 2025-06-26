@@ -7,6 +7,7 @@ import Save from "../models/SaveModel.js";
 import Follower from "../models/FollowerModel.js";
 import Notification from "../models/NotificationModel.js";
 import PostDetail from "../models/PostDetailModel.js";
+import Chat from "../models/ChatModel.js";
 
 mongoose.connect(environment.MONGO_DB_URI);
 
@@ -23,16 +24,14 @@ mongoose.connection.on("connected", async () => {
   console.log("Connected to MongoDB");
 
   try {
-    const posts = await Post.updateMany(
+    const result = await Chat.updateMany(
+      {},
       {
-        replyPostId: { $exists: true },
-      },
-      {
-        $rename: { replyPostId: "replyPost" },
+        $set: { deleted: false },
       }
     );
 
-    console.log("posts", posts);
+    console.log("result", result);
 
     mongoose.connection.close();
   } catch (error) {

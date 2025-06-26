@@ -1,7 +1,8 @@
-import createNewChatDB from "../../database/Chat/createNewChatDB.js";
 import catchGraphQLError from "../../lib/catchGraphQLError.js";
 import Req from "../../lib/Req.js";
 import socketConnect from "../../lib/socketConnect.js";
+import { setNewChatIntoRedis } from "../../redis/Chat/chat.js";
+import ObjectID from "../../lib/ObjectID.js";
 
 const createNewChat = catchGraphQLError(async (parent, args, contextValue) => {
   const findUser = await Req(contextValue.req);
@@ -14,17 +15,21 @@ const createNewChat = catchGraphQLError(async (parent, args, contextValue) => {
   }
 
   const obj = {
+    _id: ObjectID().toString(),
     room: roomId,
-    sender: findUser._id,
+    sender: findUser._id.toString(),
+    isSeen: [findUser._id.toString()],
     message,
     media,
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
   };
 
-  const result = await createNewChatDB(obj);
+  await setNewChatIntoRedis(obj);
 
-  io.to(roomId).emit("new-chat", result);
+  io.to(roomId).emit("new-chat", obj);
 
-  return result;
+  return obj;
 });
 
 export default createNewChat;

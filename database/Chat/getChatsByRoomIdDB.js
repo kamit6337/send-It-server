@@ -1,12 +1,9 @@
 import Chat from "../../models/ChatModel.js";
 
-const getChatsByRoomIdDB = async (roomId, page) => {
-  if (!roomId || !page) {
-    throw new Error("RoomId or Page is not provided");
+const getChatsByRoomIdDB = async (roomId, skip, limit) => {
+  if (!roomId || skip === undefined || limit === undefined) {
+    throw new Error("RoomId or skip or limit is not provided");
   }
-
-  const limit = 20;
-  const skip = (page - 1) * limit;
 
   const chats = await Chat.find({
     room: roomId,

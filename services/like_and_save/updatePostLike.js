@@ -6,7 +6,7 @@ import userLikeCount from "../../database/Post_Details/userLikeCount.js";
 import catchGraphQLError from "../../lib/catchGraphQLError.js";
 import Req from "../../lib/Req.js";
 import socketConnect from "../../lib/socketConnect.js";
-import { addLikeJob } from "../../queues/notificationQueues/likeQueue.js";
+import { addNotificationJob } from "../../queues/notificationQueues/notificationQueue.js";
 
 const updatePostLike = catchGraphQLError(async (parent, args, { req }) => {
   const user = await Req(req);
@@ -36,7 +36,8 @@ const updatePostLike = catchGraphQLError(async (parent, args, { req }) => {
     };
 
     if (user._id?.toString() !== getPost.user?.toString()) {
-      await addLikeJob(getPost.user, sender, getPost);
+      // await addLikeJob(getPost.user, sender, getPost);
+      await addNotificationJob(getPost.user, "like", { sender, post: getPost });
     }
 
     const likePostCount = await userLikeCount(user._id);

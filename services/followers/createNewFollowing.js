@@ -5,7 +5,7 @@ import getUserById from "../../database/User/getUserById.js";
 import catchGraphQLError from "../../lib/catchGraphQLError.js";
 import Req from "../../lib/Req.js";
 import socketConnect from "../../lib/socketConnect.js";
-import { addFollowJob } from "../../queues/notificationQueues/followerQueue.js";
+import { addNotificationJob } from "../../queues/notificationQueues/notificationQueue.js";
 
 const createNewFollowing = catchGraphQLError(
   async (parent, args, contextValue) => {
@@ -34,12 +34,20 @@ const createNewFollowing = catchGraphQLError(
     });
 
     // Add to follow notification queue
-    await addFollowJob(userId, {
+
+    await addNotificationJob(userId, "follower", {
       _id: findUser._id,
       name: findUser.name,
       email: findUser.email,
       photo: findUser.photo,
     });
+
+    // await addFollowJob(userId, {
+    //   _id: findUser._id,
+    //   name: findUser.name,
+    //   email: findUser.email,
+    //   photo: findUser.photo,
+    // });
 
     return "Followed Sucessfully";
   }

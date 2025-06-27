@@ -14,6 +14,7 @@ import newConnection from "./sockets/newConnection.js";
 import joinRooms from "./sockets/joinRooms.js";
 import onDisconnect from "./sockets/onDisconnect.js";
 import createLoaders from "./loaders/loaders.js";
+import "./redis/Pub-Sub/index.js";
 
 const { app, httpServer, io } = socketConnect();
 

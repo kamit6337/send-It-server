@@ -4,7 +4,7 @@ import updatePostDetailDB from "../../database/Post/updatePostDetailDB.js";
 import catchGraphQLError from "../../lib/catchGraphQLError.js";
 import Req from "../../lib/Req.js";
 import socketConnect from "../../lib/socketConnect.js";
-import { addReplyJob } from "../../queues/notificationQueues/replyQueue.js";
+import { addNotificationJob } from "../../queues/notificationQueues/notificationQueue.js";
 
 const createPostReply = catchGraphQLError(async (parent, args, { req }) => {
   const user = await Req(req);
@@ -68,7 +68,8 @@ const createPostReply = catchGraphQLError(async (parent, args, { req }) => {
   };
 
   if (user._id?.toString() !== getPost.user?.toString()) {
-    await addReplyJob(getPost.user, sender, getPost);
+    // await addReplyJob(getPost.user, sender, getPost);
+    await addNotificationJob(getPost.user, "reply", { sender, post: getPost });
   }
   return "Post reply has been created";
 });

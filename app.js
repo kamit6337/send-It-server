@@ -15,6 +15,7 @@ import joinRooms from "./sockets/joinRooms.js";
 import onDisconnect from "./sockets/onDisconnect.js";
 import createLoaders from "./loaders/loaders.js";
 import "./redis/Pub-Sub/index.js";
+import pingWorker from "./utils/pingWorker.js";
 
 const { app, httpServer, io } = socketConnect();
 
@@ -56,6 +57,12 @@ const init = async () => {
         },
       })
     );
+
+    await pingWorker();
+
+    setInterval(() => {
+      pingWorker();
+    }, 50 * 1000);
 
     // NOTE: DIFFERENT ROUTES
     app.get("/health", (req, res) => {

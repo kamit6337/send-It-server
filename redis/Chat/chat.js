@@ -5,7 +5,7 @@ export const getRoomChatsOfRedisLength = async (roomId) => {
     throw new Error("RoomId is not provided");
   }
 
-  const length = await redisClient.zrevrange(`Chat_Room:${roomId}`, 0, -1);
+  const length = await redisClient.zcard(`Chat_Room:${roomId}`);
   return length || 0;
 };
 

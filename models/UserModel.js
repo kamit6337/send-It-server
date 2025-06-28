@@ -51,6 +51,11 @@ const userSchema = new mongoose.Schema(
       default: "",
       trim: true,
     },
+    messageBy: {
+      type: String,
+      enum: ["anyone", "followers", "followings", "no_one"],
+      default: "anyone",
+    },
     OAuthId: {
       type: String,
       default: null,

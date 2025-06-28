@@ -24,10 +24,10 @@ mongoose.connection.on("connected", async () => {
   console.log("Connected to MongoDB");
 
   try {
-    const result = await Chat.updateMany(
+    const result = await User.updateMany(
       {},
       {
-        $set: { deleted: false },
+        $set: { messageBy: "anyone" },
       }
     );
 

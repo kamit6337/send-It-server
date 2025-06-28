@@ -4,6 +4,7 @@ type Chat {
   sender: String!
   message: String!
   media: String!
+  deleted: Boolean!
   createdAt: Date!
   updatedAt: Date!
 }

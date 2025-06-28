@@ -1,4 +1,4 @@
 type Mutation {
-  createNewRoom(userId: ID!): String!
+  createNewRoom(userId: ID!): Room!
   deleteRoom(roomId: ID!): String!
 }

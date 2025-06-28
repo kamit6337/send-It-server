@@ -14,6 +14,7 @@ import getUserSavePostsDB from "../../database/Save/getUserSavePostsDB.js";
 import getUserByEmail from "../../database/User/getUserByEmail.js";
 import Req from "../../lib/Req.js";
 import getUserSearch from "../../services/user/getUserSearch.js";
+import updateUserMsgToggle from "../../services/user/updateUserMsgToggle.js";
 import updateUserProfile from "../../services/user/updateUserProfile.js";
 
 const userResolvers = {
@@ -172,6 +173,7 @@ const userResolvers = {
   },
   Mutation: {
     updateUserProfile: updateUserProfile,
+    updateUserMsgToggle: updateUserMsgToggle,
   },
 };
 

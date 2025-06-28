@@ -3,6 +3,7 @@ import Req from "../../lib/Req.js";
 import socketConnect from "../../lib/socketConnect.js";
 import { setNewChatIntoRedis } from "../../redis/Chat/chat.js";
 import ObjectID from "../../lib/ObjectID.js";
+import { addChatJob } from "../../queues/chatQueues/chatQueue.js";
 
 const createNewChat = catchGraphQLError(async (parent, args, contextValue) => {
   const findUser = await Req(contextValue.req);
@@ -28,6 +29,8 @@ const createNewChat = catchGraphQLError(async (parent, args, contextValue) => {
   await setNewChatIntoRedis(obj);
 
   io.to(roomId).emit("new-chat", obj);
+
+  await addChatJob(roomId);
 
   return obj;
 });

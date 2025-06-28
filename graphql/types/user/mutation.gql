@@ -1,3 +1,10 @@
+enum MESSAGE_TYPE {
+  ANYONE
+  FOLLOWERS
+  FOLLOWINGS
+  NO_ONE
+}
+
 type Mutation {
   updateUserProfile(
     name: String!
@@ -7,4 +14,6 @@ type Mutation {
     location: String!
     website: String!
   ): UserProfile!
+
+  updateUserMsgToggle(messageBy: MESSAGE_TYPE!): String!
 }

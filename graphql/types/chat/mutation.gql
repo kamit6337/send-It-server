@@ -1,4 +1,5 @@
 type Mutation {
   createNewChat(roomId: ID!, message: String, media: String): Chat!
   deleteChat(chatId: ID!, roomId: ID!): String!
+  isSeenChat(chatIds: [ID!]!): String!
 }

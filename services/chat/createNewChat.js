@@ -19,7 +19,7 @@ const createNewChat = catchGraphQLError(async (parent, args, contextValue) => {
     _id: ObjectID().toString(),
     room: roomId,
     sender: findUser._id.toString(),
-    isSeen: [findUser._id.toString()],
+    isSeen: false,
     message,
     media,
     createdAt: Date.now(),

@@ -9,12 +9,10 @@ const chatSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  isSeen: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ],
+  isSeen: {
+    type: Boolean,
+    default: false,
+  },
   message: {
     type: String,
     trim: true,

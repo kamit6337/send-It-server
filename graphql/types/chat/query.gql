@@ -11,4 +11,5 @@ type Chat {
 
 type Query {
   getRoomChats(roomId: ID!, page: Int!): [Chat]!
+  getUnseenChatsCount(roomId: ID!): Int!
 }

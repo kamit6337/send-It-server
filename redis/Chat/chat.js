@@ -51,3 +51,18 @@ export const deleteChatMsgIntoRedis = async (chatId) => {
   await redisClient.hset(`Chat_Msg:${chatId}`, "deleted", true);
   return true;
 };
+
+export const isSeenChatMsgIntoRedis = async (chatId) => {
+  if (!chatId) return false;
+
+  const isExist = await redisClient.exists(`Chat_Msg:${chatId}`);
+
+  if (!isExist) return false;
+
+  const msg = await redisClient.hget(`Chat_Msg:${chatId}`, "isSeen");
+
+  if (msg === "true") return true; // already seen
+
+  await redisClient.hset(`Chat_Msg:${chatId}`, "isSeen", true);
+  return true;
+};

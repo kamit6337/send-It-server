@@ -13,6 +13,15 @@ const roomResolvers = {
 
       return await loaders.userLoader.loadMany(parent.users);
     },
+    unSeenChatsCount: async (parent, args, { req, loaders }) => {
+      const findUser = await Req(req);
+      const roomId = parent._id;
+
+      return await loaders.unSeenChatsCountLoader.load({
+        roomId,
+        userId: findUser._id,
+      });
+    },
   },
   Mutation: {
     createNewRoom: createNewRoom,

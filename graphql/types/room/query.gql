@@ -1,8 +1,9 @@
 scalar Date
 
 type Room {
-  _id: ID
+  _id: ID!
   users: [User!]
+  unSeenChatsCount: Int!
   createdAt: Date
   updatedAt: Date
 }

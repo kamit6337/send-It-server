@@ -1,5 +1,6 @@
 import getNotificationByIdDB from "../../database/Notification/getNotificationByIdDB.js";
 import getNotificationCountByUserIdDB from "../../database/Notification/getNotificationCountByUserIdDB.js";
+import socketConnect from "../../lib/socketConnect.js";
 import notificationMsg from "../../utils/javaScript/notificationMsg.js";
 import { redisSub } from "../redisClient.js";
 
@@ -11,6 +12,8 @@ console.log("Redis Pub-Sub listening for Notification channel");
 // 2. Listen for messages
 redisSub.on("message", async (channel, message) => {
   if (channel !== "notification") return;
+
+  const { io } = socketConnect();
 
   const notificationIds = JSON.parse(message);
 

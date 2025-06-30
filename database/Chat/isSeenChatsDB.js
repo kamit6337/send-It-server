@@ -7,6 +7,7 @@ const isSeenChatsDB = async (chatIds) => {
   const updateIsSeen = await Chat.updateMany(
     {
       _id: { $in: chatIds },
+      isSeen: false,
     },
     {
       isSeen: true,

@@ -1,3 +1,4 @@
+import unSeenChatsCountLoader from "./Chat/unSeenChatsCountLoader.js";
 import createUserFollowingLoader from "./Follower/createUserFollowingLoader.js";
 import createLikeLoader from "./Like_and_Save/createLikeLoader.js";
 import createSaveLoader from "./Like_and_Save/createSaveLoader.js";
@@ -16,6 +17,7 @@ const createLoaders = () => ({
   saveLoader: createSaveLoader(),
   postRepliesLoader: createPostRepliesLoader(),
   roomLoader: createRoomLoader(),
+  unSeenChatsCountLoader: unSeenChatsCountLoader(),
 });
 
 export default createLoaders;

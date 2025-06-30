@@ -4,6 +4,7 @@ type Chat {
   sender: String!
   message: String!
   media: String!
+  isSeen: Boolean!
   deleted: Boolean!
   createdAt: Date!
   updatedAt: Date!
@@ -11,5 +12,4 @@ type Chat {
 
 type Query {
   getRoomChats(roomId: ID!, page: Int!): [Chat]!
-  getUnseenChatsCount(roomId: ID!): Int!
 }

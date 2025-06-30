@@ -26,7 +26,11 @@ export const getChatsFromRedis = async (roomId, skip, limit) => {
     chatIds.map((chatId) => redisClient.hgetall(`Chat_Msg:${chatId}`))
   );
 
-  return chatMsgs;
+  return chatMsgs.map((chat) => ({
+    ...chat,
+    isSeen: chat.isSeen === "true",
+    deleted: chat.deleted === "true",
+  }));
 };
 
 export const setNewChatIntoRedis = async (chatObj) => {

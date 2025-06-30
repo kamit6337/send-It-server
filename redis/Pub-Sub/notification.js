@@ -17,6 +17,8 @@ redisSub.on("message", async (channel, message) => {
 
   const notificationIds = JSON.parse(message);
 
+  console.log("notificationIds", notificationIds);
+
   if (!notificationIds || notificationIds.length === 0) {
     console.log("Notifications Ids not provided");
     return;
@@ -33,7 +35,7 @@ redisSub.on("message", async (channel, message) => {
 
   const userId = notifications[0].user.toString();
 
-  const notificationCount = await getNotificationCountByUserIdDB(userId);
+  // const notificationCount = await getNotificationCountByUserIdDB(userId);
 
-  io.to(userId).emit("notification-count", notificationCount);
+  io.to(userId).emit("notification-count", notifications.length);
 });

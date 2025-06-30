@@ -8,6 +8,7 @@ const updateNotificationDB = async (ids) => {
   const update = await Notification.updateMany(
     {
       _id: { $in: ids },
+      isRead: false,
     },
     { $set: { isRead: true } }
   );

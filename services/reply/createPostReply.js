@@ -1,5 +1,5 @@
 import createPostDB from "../../database/Post/createPostDB.js";
-import getSinglePostDB from "../../database/Post/getSinglePostDB.js";
+import getPostByIdDB from "../../database/Post/getPostByIdDB.js";
 import updatePostDetailDB from "../../database/Post/updatePostDetailDB.js";
 import catchGraphQLError from "../../lib/catchGraphQLError.js";
 import Req from "../../lib/Req.js";
@@ -58,18 +58,13 @@ const createPostReply = catchGraphQLError(async (parent, args, { req }) => {
 
   io.emit("new-reply", response);
 
-  const getPost = await getSinglePostDB(postId);
+  const getPost = await getPostByIdDB([postId]);
 
-  const sender = {
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    photo: user.photo,
-  };
-
-  if (user._id?.toString() !== getPost.user?.toString()) {
-    // await addReplyJob(getPost.user, sender, getPost);
-    await addNotificationJob(getPost.user, "reply", { sender, post: getPost });
+  if (user._id?.toString() !== getPost[0].user?.toString()) {
+    await addNotificationJob(getPost[0].user, "reply", {
+      sender: user._id,
+      post: postId,
+    });
   }
   return "Post reply has been created";
 });

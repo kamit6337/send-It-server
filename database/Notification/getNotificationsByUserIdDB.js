@@ -10,9 +10,8 @@ const getNotificationsByUserIdDB = async (userId, page) => {
 
   const notifications = await Notification.find({
     user: userId,
-    isRead: false,
   })
-    .sort("-updatedAt")
+    .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit)
     .lean();

@@ -1,6 +1,6 @@
 import createNewLikeDB from "../../database/Like/createNewLikeDB.js";
 import deleteLikesByUserIdDB from "../../database/Like/deleteLikesByUserIdDB.js";
-import getSinglePostDB from "../../database/Post/getSinglePostDB.js";
+import getPostByIdDB from "../../database/Post/getPostByIdDB.js";
 import updatePostDetailDB from "../../database/Post/updatePostDetailDB.js";
 import userLikeCount from "../../database/Post_Details/userLikeCount.js";
 import catchGraphQLError from "../../lib/catchGraphQLError.js";
@@ -26,18 +26,13 @@ const updatePostLike = catchGraphQLError(async (parent, args, { req }) => {
 
     io.emit("update-post-details", updatedPostDetail);
 
-    const getPost = await getSinglePostDB(postId);
+    const getPost = await getPostByIdDB([postId]);
 
-    const sender = {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      photo: user.photo,
-    };
-
-    if (user._id?.toString() !== getPost.user?.toString()) {
-      // await addLikeJob(getPost.user, sender, getPost);
-      await addNotificationJob(getPost.user, "like", { sender, post: getPost });
+    if (user._id?.toString() !== getPost[0].user?.toString()) {
+      await addNotificationJob(getPost[0].user, "like", {
+        sender: user._id,
+        post: postId,
+      });
     }
 
     const likePostCount = await userLikeCount(user._id);

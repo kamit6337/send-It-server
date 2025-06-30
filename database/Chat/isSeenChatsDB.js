@@ -10,7 +10,7 @@ const isSeenChatsDB = async (chatIds) => {
       isSeen: false,
     },
     {
-      isSeen: true,
+      $set: { isSeen: true },
     }
   );
 

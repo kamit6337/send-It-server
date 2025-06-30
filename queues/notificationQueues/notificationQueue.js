@@ -21,15 +21,13 @@ export const addNotificationJob = async (userId, notificationType, data) => {
   const exists = await redisClient.exists(key);
 
   // Add Data to Redis list
-  await redisClient.lpush(
-    `${notificationType}-batch-list:${userId}`,
-    JSON.stringify(data)
-  );
 
-  if (notificationType === "like" || notificationType === "reply") {
-    await redisClient.sadd(
-      `${notificationType}-unqiue-postId:${userId}`,
-      data?.post._id
+  if (notificationType === "follower") {
+    await redisClient.sadd(`${notificationType}-batch-list:${userId}`, data);
+  } else {
+    await redisClient.lpush(
+      `${notificationType}-batch-list:${userId}`,
+      JSON.stringify(data)
     );
   }
 
@@ -41,13 +39,6 @@ export const addNotificationJob = async (userId, notificationType, data) => {
       `${notificationType}-batch-list:${userId}`,
       3 * 60 // 3 mins
     );
-
-    if (notificationType === "like" || notificationType === "reply") {
-      await redisClient.expire(
-        `${notificationType}-unqiue-postId:${userId}`,
-        3 * 60 // 3 mins
-      );
-    }
 
     await notificationQueue.add(
       `notification-${notificationType}`,

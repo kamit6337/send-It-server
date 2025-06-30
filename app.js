@@ -16,6 +16,7 @@ import onDisconnect from "./sockets/onDisconnect.js";
 import createLoaders from "./loaders/loaders.js";
 import "./redis/Pub-Sub/index.js";
 import pingWorker from "./utils/pingWorker.js";
+import redisClient from "./redis/redisClient.js";
 
 const { app, httpServer, io } = socketConnect();
 
@@ -58,6 +59,7 @@ const init = async () => {
       })
     );
 
+    // await redisClient.flushall();
     await pingWorker();
 
     setInterval(() => {

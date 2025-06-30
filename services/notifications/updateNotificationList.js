@@ -11,11 +11,11 @@ const updateNotificationList = catchGraphQLError(
 
     const update = await updateNotificationDB(ids);
 
-    const notificationCount = await getNotificationCountByUserIdDB(
-      findUser._id
-    );
+    // const notificationCount = await getNotificationCountByUserIdDB(
+    //   findUser._id
+    // );
 
-    return notificationCount;
+    return ids.length;
   }
 );
 

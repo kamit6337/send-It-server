@@ -34,20 +34,7 @@ const createNewFollowing = catchGraphQLError(
     });
 
     // Add to follow notification queue
-
-    await addNotificationJob(userId, "follower", {
-      _id: findUser._id,
-      name: findUser.name,
-      email: findUser.email,
-      photo: findUser.photo,
-    });
-
-    // await addFollowJob(userId, {
-    //   _id: findUser._id,
-    //   name: findUser.name,
-    //   email: findUser.email,
-    //   photo: findUser.photo,
-    // });
+    await addNotificationJob(userId, "follower", findUser._id.toString());
 
     return "Followed Sucessfully";
   }

@@ -1,14 +1,12 @@
 import DataLoader from "dataloader";
-import Post from "../../models/PostModel.js";
 import mapLoaderResult from "../../utils/javaScript/mapLoaderResult.js";
+import getPostByIdDB from "../../database/Post/getPostByIdDB.js";
 
 const createPostLoader = () =>
   new DataLoader(async (ids) => {
     const postIds = [...ids];
 
-    const posts = await Post.find({
-      _id: { $in: postIds },
-    }).lean();
+    const posts = await getPostByIdDB(postIds);
 
     return mapLoaderResult(postIds, posts);
   });

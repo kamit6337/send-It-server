@@ -5,6 +5,7 @@ import getUserById from "../../database/User/getUserById.js";
 import catchGraphQLError from "../../lib/catchGraphQLError.js";
 import Req from "../../lib/Req.js";
 import socketConnect from "../../lib/socketConnect.js";
+import { addNotificationJob } from "../../queues/notificationQueues/notificationQueue.js";
 
 const removeSingleFollowing = catchGraphQLError(
   async (parent, args, contextValue) => {
@@ -31,6 +32,9 @@ const removeSingleFollowing = catchGraphQLError(
       followerUser: findUser,
       followerCount: followingUserFollowerCount,
     });
+
+    // Add to follow notification queue
+    await addNotificationJob(userId, "unfollow", findUser._id.toString());
 
     return "Following Removed Successfully";
   }

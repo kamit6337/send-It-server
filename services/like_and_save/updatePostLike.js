@@ -1,5 +1,6 @@
 import createNewLikeDB from "../../database/Like/createNewLikeDB.js";
 import deleteLikesByUserIdDB from "../../database/Like/deleteLikesByUserIdDB.js";
+import checkAlreadyPostNotificationDB from "../../database/Notification/checkAlreadyPostNotificationDB.js";
 import getPostByIdDB from "../../database/Post/getPostByIdDB.js";
 import updatePostDetailDB from "../../database/Post/updatePostDetailDB.js";
 import userLikeCount from "../../database/Post_Details/userLikeCount.js";
@@ -29,10 +30,17 @@ const updatePostLike = catchGraphQLError(async (parent, args, { req }) => {
     const getPost = await getPostByIdDB([postId]);
 
     if (user._id?.toString() !== getPost[0].user?.toString()) {
-      await addNotificationJob(getPost[0].user, "like", {
-        sender: user._id,
-        post: postId,
-      });
+      const needToSendNotification = await checkAlreadyPostNotificationDB(
+        user._id,
+        postId
+      );
+
+      if (!needToSendNotification) {
+        await addNotificationJob(getPost[0].user, "like", {
+          sender: user._id,
+          post: postId,
+        });
+      }
     }
 
     const likePostCount = await userLikeCount(user._id);

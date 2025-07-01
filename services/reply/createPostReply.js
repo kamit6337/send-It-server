@@ -1,3 +1,4 @@
+import checkAlreadyPostNotificationDB from "../../database/Notification/checkAlreadyPostNotificationDB.js";
 import createPostDB from "../../database/Post/createPostDB.js";
 import getPostByIdDB from "../../database/Post/getPostByIdDB.js";
 import updatePostDetailDB from "../../database/Post/updatePostDetailDB.js";
@@ -61,10 +62,17 @@ const createPostReply = catchGraphQLError(async (parent, args, { req }) => {
   const getPost = await getPostByIdDB([postId]);
 
   if (user._id?.toString() !== getPost[0].user?.toString()) {
-    await addNotificationJob(getPost[0].user, "reply", {
-      sender: user._id,
-      post: postId,
-    });
+    const needToSendNotification = await checkAlreadyPostNotificationDB(
+      user._id,
+      postId
+    );
+
+    if (!needToSendNotification) {
+      await addNotificationJob(getPost[0].user, "reply", {
+        sender: user._id,
+        post: postId,
+      });
+    }
   }
   return "Post reply has been created";
 });

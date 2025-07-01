@@ -1,6 +1,7 @@
 const LIKE = "like";
 const REPLY = "reply";
 const FOLLOWER = "follower";
+const UNFOLLOW = "unfollow";
 const MESSAGE = "message";
 
 const notificationMsg = (notification) => {
@@ -18,6 +19,10 @@ const notificationMsg = (notification) => {
 
   if (clone.type === FOLLOWER) {
     return `${clone.totalSenders} new user(s) followed you.`;
+  }
+
+  if (clone.type === UNFOLLOW) {
+    return `${clone.totalSenders} new user(s) unfollow you.`;
   }
 
   if (clone.type === MESSAGE) {

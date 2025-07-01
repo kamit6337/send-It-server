@@ -39,7 +39,6 @@ const postSchema = new Schema(
 );
 
 postSchema.index({ user: 1 });
-postSchema.index({ _id: 1 });
 postSchema.index({ replyPost: 1 });
 postSchema.index({ user: 1, replyPost: 1 });
 

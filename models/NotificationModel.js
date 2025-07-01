@@ -16,10 +16,17 @@ const notificationSchema = new Schema(
     },
     type: {
       type: String,
-      enum: ["like", "reply", "follower", "message"],
+      enum: ["follower", "unfollow", "like", "reply", "message"],
       required: [true, "Notification type is a must"],
     },
     sender: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
+    ],
+    senderIds: [
       {
         type: Schema.Types.ObjectId,
         ref: "User",

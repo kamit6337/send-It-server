@@ -8,7 +8,7 @@ const notificationQueue = new Queue("notification-batch", {
   connection: bullConnection,
 });
 
-const notificationTypes = ["follower", "like", "reply"];
+const notificationTypes = ["follower", "unfollow", "like", "reply"];
 
 export const addNotificationJob = async (userId, notificationType, data) => {
   if (!notificationTypes.includes(notificationType)) {
@@ -22,7 +22,7 @@ export const addNotificationJob = async (userId, notificationType, data) => {
 
   // Add Data to Redis list
 
-  if (notificationType === "follower") {
+  if (notificationType === "follower" || notificationType === "unfollow") {
     await redisClient.sadd(`${notificationType}-batch-list:${userId}`, data);
   } else {
     await redisClient.lpush(

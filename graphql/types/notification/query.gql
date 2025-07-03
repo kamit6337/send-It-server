@@ -1,3 +1,5 @@
+scalar Date
+
 type Notification {
   _id: String!
   user: String!
@@ -8,6 +10,8 @@ type Notification {
   isRead: Boolean!
   post: Post
   room: Room
+  createdAt: Date
+  updatedAt: Date
 }
 
 type Query {

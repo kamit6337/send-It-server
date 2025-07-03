@@ -1,5 +1,18 @@
+type Following_Post {
+  _id: ID!
+  user: User!
+  message: String!
+  media: String!
+  thumbnail: String!
+  duration: Int!
+  replyPost: Post
+  createdAt: Date!
+  updatedAt: Date!
+  replies: [Post]!
+}
+
 type Query {
-  getUserFollowingPosts(page: Int!): [Reply_Post_Replies]!
+  getUserFollowingPosts(page: Int!): [Following_Post]!
 
   getSinglePost(id: ID!): Post!
 

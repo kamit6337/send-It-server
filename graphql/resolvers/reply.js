@@ -12,8 +12,8 @@ const replyResolvers = {
       const result = await getRepliesByPostIdDB(postId, page);
       return result;
     },
-    getSingleReply: async (parent, args, { req, loaders }) => {
-      const user = await Req(req);
+    getSingleReply: async (parent, args, { req, user, authError, loaders }) => {
+      if (!user) throw new Error(authError || "UnAuthorized");
 
       const { postId } = args;
       return await loaders.postLoader.load(postId);

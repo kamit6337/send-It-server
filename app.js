@@ -17,6 +17,7 @@ import createLoaders from "./loaders/loaders.js";
 import "./redis/Pub-Sub/index.js";
 import pingWorker from "./utils/pingWorker.js";
 import redisClient from "./redis/redisClient.js";
+import Req from "./lib/Req.js";
 
 const { app, httpServer, io } = socketConnect();
 
@@ -54,7 +55,21 @@ const init = async () => {
       cors(),
       expressMiddleware(server, {
         context: async ({ req }) => {
-          return { req, loaders: createLoaders() };
+          let user = null;
+          let authError = null;
+
+          try {
+            // Try to authenticate the user
+            user = await Req(req);
+            authError = null;
+          } catch (err) {
+            // Silently ignore error for public routes (optional auth)
+            // You may log or handle this differently if needed
+            user = null;
+            authError = err.message;
+          }
+
+          return { req, user, authError, loaders: createLoaders() };
         },
       })
     );

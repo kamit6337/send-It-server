@@ -27,20 +27,20 @@ const notificationResolvers = {
 
       return notificationMsg(parent);
     },
-    sender: async (parent, args, { req, loaders }) => {
-      const user = await Req(req);
+    sender: async (parent, args, { req, user, authError, loaders }) => {
+      if (!user) throw new Error(authError || "UnAuthorized");
 
       return await loaders.userLoader.loadMany(parent.sender);
     },
-    post: async (parent, args, { req, loaders }) => {
-      const user = await Req(req);
+    post: async (parent, args, { req, user, authError, loaders }) => {
+      if (!user) throw new Error(authError || "UnAuthorized");
 
       if (!parent.post) return null;
 
       return loaders.postLoader.load(parent.post);
     },
-    room: async (parent, args, { req, loaders }) => {
-      const user = await Req(req);
+    room: async (parent, args, { req, user, authError, loaders }) => {
+      if (!user) throw new Error(authError || "UnAuthorized");
 
       if (!parent.room) return null;
 

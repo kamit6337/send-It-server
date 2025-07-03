@@ -97,8 +97,8 @@ const userResolvers = {
     getUserSearch: getUserSearch,
   },
   Reply_Post_Replies: {
-    replies: async (parent, args, { req, loaders }) => {
-      const user = await Req(req);
+    replies: async (parent, args, { req, user, authError, loaders }) => {
+      if (!user) throw new Error(authError || "UnAuthorized");
 
       const result = await loaders.postRepliesLoader.load({
         user: parent.userId || user._id,
@@ -109,14 +109,14 @@ const userResolvers = {
 
       return result;
     },
-    replyPost: async (parent, args, { req, loaders }) => {
-      const user = await Req(req);
+    replyPost: async (parent, args, { req, user, authError, loaders }) => {
+      if (!user) throw new Error(authError || "UnAuthorized");
 
       if (!parent.replyPost) return null;
       return await loaders.postLoader.load(parent.replyPost);
     },
-    user: async (parent, args, { req, loaders }) => {
-      const user = await Req(req);
+    user: async (parent, args, { req, user, authError, loaders }) => {
+      if (!user) throw new Error(authError || "UnAuthorized");
 
       return await loaders.userLoader.load(parent.user);
     },

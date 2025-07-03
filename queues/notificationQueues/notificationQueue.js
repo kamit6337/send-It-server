@@ -21,7 +21,6 @@ export const addNotificationJob = async (userId, notificationType, data) => {
   const exists = await redisClient.exists(key);
 
   // Add Data to Redis list
-
   if (notificationType === "follower" || notificationType === "unfollow") {
     await redisClient.sadd(`${notificationType}-batch-list:${userId}`, data);
   } else {

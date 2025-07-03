@@ -23,8 +23,12 @@ const followersResolvers = {
       const result = await getUserFollowingsDB(userId, page);
       return result;
     },
-    isCurrentUserFollow: async (parent, args, { req, loaders }) => {
-      const user = await Req(req);
+    isCurrentUserFollow: async (
+      parent,
+      args,
+      { req, user, authError, loaders }
+    ) => {
+      if (!user) throw new Error(authError || "UnAuthorized");
 
       const { userId } = args;
 
@@ -43,8 +47,8 @@ const followersResolvers = {
     },
   },
   Top_Followed_User: {
-    isFollowed: async (parent, args, { req, loaders }) => {
-      const user = await Req(req);
+    isFollowed: async (parent, args, { req, user, authError, loaders }) => {
+      if (!user) throw new Error(authError || "UnAuthorized");
 
       return await loaders.userFollowingLoader.load({
         user: parent._id,
@@ -53,8 +57,8 @@ const followersResolvers = {
     },
   },
   Follower: {
-    isFollowed: async (parent, args, { req, loaders }) => {
-      const user = await Req(req);
+    isFollowed: async (parent, args, { req, user, authError, loaders }) => {
+      if (!user) throw new Error(authError || "UnAuthorized");
 
       return await loaders.userFollowingLoader.load({
         user: parent._id,

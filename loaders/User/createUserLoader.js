@@ -1,6 +1,5 @@
 import DataLoader from "dataloader";
 import User from "../../models/UserModel.js";
-import mapLoaderResult from "../../utils/javaScript/mapLoaderResult.js";
 
 const createUserLoader = () =>
   new DataLoader(async (ids) => {
@@ -10,7 +9,9 @@ const createUserLoader = () =>
       _id: { $in: userIds },
     }).lean();
 
-    return mapLoaderResult(userIds, users);
+    const map = new Map(users.map((u) => [u._id.toString(), u]));
+
+    return ids.map((id) => map.get(id.toString()));
   });
 
 export default createUserLoader;

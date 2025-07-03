@@ -10,7 +10,6 @@ const createPostRepliesLoader = () =>
     ];
     const userIds = [...new Set(keys.map(({ user }) => user.toString()))];
 
-    // Query all replies where replyPost is in list and user is in list
     const posts = await Post.find({
       replyPost: { $in: replyPostIds },
       user: { $in: userIds },
